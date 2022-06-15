@@ -203,7 +203,11 @@ helmfile apply
 
 # Application Version Information 
 
-SpatialAPIAppVersion: 0.1.10419
-MemberlistAppVersion: 0.1.0
-QueryCoordinatorAppVersion: 0.1.11845
-InstallManagerAppVersion: 0.1.11805
+SpatialAPIAppVersion: 0.1.10419 
+
+MemberlistAppVersion: 0.1.0 
+
+QueryCoordinatorAppVersion: 0.1.11845 
+
+InstallManagerAppVersion: 0.1.11805 
+
