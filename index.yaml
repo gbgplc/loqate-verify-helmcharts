@@ -1,0 +1,56 @@
+apiVersion: v1
+entries:
+  installmanager:
+  - apiVersion: v2
+    appVersion: 0.1.11805
+    created: "2022-06-15T12:57:09.059756163Z"
+    description: Download and setup loqate data using installmanager job
+    digest: 17f66ea116253890233b15ca49c75425af2af6f43e597c51c51525ecfc4de9fb
+    home: https://www.loqate.com/en-gb/
+    icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
+    keywords:
+    - loqate
+    - verify
+    - installmanager
+    maintainers:
+    - email: help@gbgplc.com
+      name: GBG
+    name: installmanager
+    type: application
+    urls:
+    - https://charts.loqate.com/installmanager-0.1.0.tgz
+    version: 0.1.0
+  memberlist:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-06-15T12:57:09.060038378Z"
+    description: A Helm chart for Kubernetes
+    digest: c0688cc4dc281a75783aeea6df71fa8b686779946294783f53cc740851fb0074
+    name: memberlist
+    type: application
+    urls:
+    - https://charts.loqate.com/memberlist-0.1.0.tgz
+    version: 0.1.0
+  querycoordinator:
+  - apiVersion: v2
+    appVersion: 0.1.11845
+    created: "2022-06-15T12:57:09.060963226Z"
+    description: A Helm chart for Loqate Verify's QueryCoordinator
+    digest: d8431deb65dc55db0f12ed0623445c4eff49d670df6b4ddde27e6869fc27acfc
+    name: querycoordinator
+    type: application
+    urls:
+    - https://charts.loqate.com/querycoordinator-0.1.0.tgz
+    version: 0.1.0
+  spatial-api:
+  - apiVersion: v2
+    appVersion: 0.1.10419
+    created: "2022-06-15T12:57:09.062235492Z"
+    description: A Helm chart for Kubernetes
+    digest: 34e6f5ec07e9ce1c0ae63b83c20e185f996b74e3d66849cfa6081b16967418d2
+    name: spatial-api
+    type: application
+    urls:
+    - https://charts.loqate.com/spatial-api-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-06-15T12:57:09.058102877Z"
