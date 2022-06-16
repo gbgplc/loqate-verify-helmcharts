@@ -82,6 +82,9 @@ With Next Generation Verify (NGV) we have decided to provide you with the same i
 
 Our implementation of Open telemetry enables you to gain insights into the NGV cluster. Whilst we provide you with sample dashboards using Prometheus and Grafana these tools are loosely coupled to our cluster, providing you the opportunity to customise to your needs, and your IT tools.
 
+### Security
+For vulnerability disclosure or security findings, please contact your account representative.
+
 ## Prerequisites
 
 - Kubernetes 1.19+
