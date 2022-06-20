@@ -3,9 +3,9 @@ entries:
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.11805
-    created: "2022-06-20T11:13:13.042037228Z"
+    created: "2022-06-20T13:23:32.017164671Z"
     description: Download and setup loqate data using installmanager job
-    digest: b7ad3962bab660d8e5a0a73de459bc8f581341c2a96f85d9f781a4daafad87c5
+    digest: 1153f311ef9d29a5d57ca8e543eacc0e6e354be8300f5298b05052dd0e167e4e
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -23,9 +23,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-06-20T11:13:13.042877632Z"
+    created: "2022-06-20T13:23:32.01818767Z"
     description: A Helm chart for Kubernetes
-    digest: 0765e7beef7ab9c4d2d9b517594f0c3dd63ca7c39716b91246342d386f1d19ff
+    digest: 4264700188b4a45a4dba7184d0758a1982d34eccabe5502cf9922342fdfa4ccc
     name: memberlist
     type: application
     urls:
@@ -34,9 +34,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.11845
-    created: "2022-06-20T11:13:13.045472427Z"
+    created: "2022-06-20T13:23:32.02006527Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: c511c3ad36eb6e5754f252d8f14205d3afd49b287929e324f0f9829eb9207055
+    digest: c2e7aa46a48c7d4538d44f78d5b8289953d5f75b474d4c0d6e8474c7d350e791
     name: querycoordinator
     type: application
     urls:
@@ -45,12 +45,12 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.10419
-    created: "2022-06-20T11:13:13.049074887Z"
+    created: "2022-06-20T13:23:32.02243477Z"
     description: A Helm chart for Kubernetes
-    digest: 827676a4e59208d7f1dd2389319d82d74cf0f67964674e03a3c6c789f6d96e27
+    digest: ed41f1c56d4ade9bc72e60e9f47886cd92b8485924da4c2fbc6aab96a6cea984
     name: spatial-api
     type: application
     urls:
     - https://charts.loqate.com/spatial-api-0.1.0.tgz
     version: 0.1.0
-generated: "2022-06-20T11:13:13.040022098Z"
+generated: "2022-06-20T13:23:32.015481571Z"
