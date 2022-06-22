@@ -4,6 +4,7 @@
   - [The Next Generation of Address Verification & Cleansing](#the-next-generation-of-address-verification--cleansing)
     - [A Quick Overview of Verify’s Capabilities](#a-quick-overview-of-verifys-capabilities)
     - [What Next Generation Verify offers you](#what-next-generation-verify-offers-you)
+    - [Security](#security)
   - [Prerequisites](#prerequisites)
     - [Data Storage](#data-storage)
     - [Routing](#routing)
@@ -18,8 +19,12 @@
       - [QueryCoordinator](#querycoordinator)
   - [Individual Component Installation](#individual-component-installation)
     - [Add Repo](#add-repo)
+    - [Docker Images](#docker-images)
     - [Install Data](#install-data)
     - [Install Charts](#install-charts)
+      - [Rest of World Deployment Considerations](#rest-of-world-deployment-considerations)
+      - [Adding Country Specific Deployments](#adding-country-specific-deployments)
+      - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
     - [Uninstall Chart](#uninstall-chart)
     - [Upgrading Chart](#upgrading-chart)
     - [Adding the Loqate chart repo](#adding-the-loqate-chart-repo)
@@ -83,6 +88,7 @@ With Next Generation Verify (NGV) we have decided to provide you with the same i
 Our implementation of Open telemetry enables you to gain insights into the NGV cluster. Whilst we provide you with sample dashboards using Prometheus and Grafana these tools are loosely coupled to our cluster, providing you the opportunity to customise to your needs, and your IT tools.
 
 ### Security
+
 For vulnerability disclosure or security findings, please contact your account representative.
 
 ## Prerequisites
@@ -169,10 +175,16 @@ helm repo add loqate https://charts.loqate.com
 
 _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
 
+### Docker Images
+
+The components installmanager, spatial-api, and querycoordinator have associated docker images.  These docker images are hosted in private repositories on docker hub, so you will need a docker hub account for us to grant access to the repositories.
+
+NOTE: The first few commandline examples include the options for passing your docker hub credentials, but for the sake of brevity, not all examples will include these options.
+
 ### Install Data
 
 ``` bash
-helm install --create-namespace -n verify im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set app.products=<PRODUCTS TO INSTALL>
+helm install --create-namespace -n verify im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set app.products=<PRODUCTS TO INSTALL> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 Ensure the download is fully completed before continuing.
@@ -181,13 +193,43 @@ Ensure the download is fully completed before continuing.
 
 ``` bash
 helm install -n verify ml loqate/memberlist
-helm install -n verify sa loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc
-helm install -n verify qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.verify.svc
+helm install -n verify sa loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n verify qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
+
+#### Rest of World Deployment Considerations
+
+To ensure the spatial-api deployment is working, it regularly performs an address lookup.  To perform this lookup a country code is required.  For country specific deployments, the country code for that deployment is used but for ROW deployments it defaults to 'GB'.
+
+If you do not have GB data installed or available to the ROW deployment, you must specify a country code for data that is available.  This can be set by changing the value of `healthcheckRowCountry` in the _values.yaml_ file of the spatial-api deployment, or by using  `--set verify.healthcheckRowCountry=<COUNTRY CODE>` option on the `helm install` command.
+
+#### Adding Country Specific Deployments
+
+To get the best performance and flexible scaling, we recommend having deployments dedicated to countries you anticipate will be serving a large number of requests.
+
+To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
+
+``` bash
+helm install -n verify sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
+```
+
+NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
+
+#### Certified Datasets (CASS, SERP, AMAS)
+
+To use any of the certified datasets extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
+
+Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
+
+``` bash
+helm install -n verify sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+```
+
+NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
 
 ### Uninstall Chart
 
@@ -966,11 +1008,11 @@ verify:
 
 # Application Version Information 
 
-SpatialAPIAppVersion: 0.1.10419 
+SpatialAPIAppVersion: 0.1.16684 
 
 MemberlistAppVersion: 0.1.0 
 
-QueryCoordinatorAppVersion: 0.1.11845 
+QueryCoordinatorAppVersion: 0.1.15400 
 
-InstallManagerAppVersion: 0.1.11805 
+InstallManagerAppVersion: 0.1.15237 
 

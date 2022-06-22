@@ -18,19 +18,19 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.1.0
+    version: ^0.2.0
     values:
       - image:
           repository: gbgroup/loqate-verify-install-manager
           tag: "0.1.15237"
-      - app:
+        app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
           products: "KBCOMMON,DSVGBR"
-      - storage:
+        storage:
           path: /run/desktop/mnt/host/c/loqate/data
-      - imagePullSecrets:
+        imagePullSecrets:
           - name: "installmanager"
-      - imageCredentials:
+        imageCredentials:
           username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
           password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
     waitForJobs: true
@@ -38,34 +38,38 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.1.0
+    version: ^0.2.0
     values:
       - image:
           repository: gbgroup/loqate-verify-spatial-api
-          tag: "0.1.13834"
-      - storage:
+          tag: "0.1.16684"
+        storage:
           path: /run/desktop/mnt/host/c/loqate/data
-      - imagePullSecrets:
+        imagePullSecrets:
           - name: "spatial-api"
-      - imageCredentials:
+        imageCredentials:
           username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
           password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
+        app:
+          libraryPath: "/lib64"
+        verify:
+          dataset: "row"
+          healthcheckRowCountry: "gb"
     needs:
     - installmanager
 
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.1.0
+    version: ^0.2.0
     values:
       - image:
           repository: gbgroup/loqate-verify-query-coordinator
           tag: "0.1.15400"
-      - imagePullSecrets:
+        imagePullSecrets:
           - name: "querycoordinator"
-      - imageCredentials:
+        imageCredentials:
           username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
           password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
     needs:
     - installmanager
-
