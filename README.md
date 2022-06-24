@@ -137,6 +137,8 @@ mkdir lqtcharts && cd lqtcharts/
 wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
 
 export LICENSE_KEY="<API_KEY>"
+export DOCKER_USERNAME="docker_username"
+export DOCKER_PASSWORD="docker_password"
 
 helmfile apply
 ```
@@ -352,7 +354,7 @@ verify:
 
 ```json
 {
-   
+
    "Options": {
         "Geocode": "true"
     },
@@ -677,7 +679,7 @@ verify:
 
 ```json
 {
-   
+
    "options": {
         "certify": "true"
     },
@@ -750,7 +752,7 @@ verify:
         "certify": "true"
     },
     "input": [
-      {             
+      {
        "Address": "999 Baker Way STE 320",
        "Locality": "San Mateo",
        "AdministrativeArea": "California",
@@ -1001,7 +1003,7 @@ verify:
             "Sequence": "1",
             "SubAdministrativeArea": "Guadalajara",
             "Thoroughfare": "Ley"
-        }  
+        }
     ]
 }
 ```
