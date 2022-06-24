@@ -1,11 +1,22 @@
 apiVersion: v1
 entries:
+  ai-parse:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-06-24T14:23:11.135168593Z"
+    description: loqate-verify-ai-parse-service
+    digest: ad1891be2252561021d7ad55cbcc54d0ab5e4d778e31f508210df6a7b291c9a0
+    name: ai-parse
+    type: application
+    urls:
+    - https://charts.loqate.com/ai-parse-0.1.0.tgz
+    version: 0.1.0
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.15237
-    created: "2022-06-24T14:20:12.137513635Z"
+    created: "2022-06-24T14:23:11.136203006Z"
     description: Download and setup loqate data using installmanager job
-    digest: 1aa2fd20b787d47ac998ccfccd7c54e11c67fb7f92d80fbcaea37fc5d68c1a6f
+    digest: 55afc1d9b47b5a94cadb4976d123313e9dbba712610abbeea9a050f487758cd5
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -23,9 +34,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-06-24T14:20:12.137868429Z"
+    created: "2022-06-24T14:23:11.136562711Z"
     description: A Helm chart for Kubernetes
-    digest: 12db540270025de0c8b607be71eceaf74e9db0af2b24c916edb7c3f94c667577
+    digest: 51808814a28a83345489d48baccc0decdef28895623b52179ea4031e3b473334
     name: memberlist
     type: application
     urls:
@@ -34,9 +45,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.15400
-    created: "2022-06-24T14:20:12.139228907Z"
+    created: "2022-06-24T14:23:11.138126031Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: b9f6fa96920aa83d89e708c70062d0f7279570ef11178d7ae9b2f06a352d1495
+    digest: 7d3a010cc505efd3296dd12c6398c6d3bb42ca3ea563fc2003be44fcd707da1d
     name: querycoordinator
     type: application
     urls:
@@ -45,12 +56,12 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.16684
-    created: "2022-06-24T14:20:12.140497687Z"
+    created: "2022-06-24T14:23:11.139889054Z"
     description: A Helm chart for Kubernetes
-    digest: 9c223eb8a6707b5348cc334e16ccd0786eacd5d0f46128d7cf5aa878718309fd
+    digest: 0bdf461018c98c6bf591fdb63db587e6ba08cd737c30cd74e3b98433245d4ca5
     name: spatial-api
     type: application
     urls:
     - https://charts.loqate.com/spatial-api-0.2.0.tgz
     version: 0.2.0
-generated: "2022-06-24T14:20:12.136290354Z"
+generated: "2022-06-24T14:23:11.132672861Z"
