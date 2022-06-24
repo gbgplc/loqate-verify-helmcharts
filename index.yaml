@@ -3,9 +3,9 @@ entries:
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.15237
-    created: "2022-06-24T14:05:33.384217522Z"
+    created: "2022-06-24T14:20:12.137513635Z"
     description: Download and setup loqate data using installmanager job
-    digest: 3ec798d00f1494faf6ab921393adafaba1a84a2639fb0b94b138d0eaaa598b2d
+    digest: 1aa2fd20b787d47ac998ccfccd7c54e11c67fb7f92d80fbcaea37fc5d68c1a6f
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -23,9 +23,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-06-24T14:05:33.384530222Z"
+    created: "2022-06-24T14:20:12.137868429Z"
     description: A Helm chart for Kubernetes
-    digest: 8e1ca964a8a8e6a962b17c59e58da186ae998d9d40ee5a6121f412c1c25bebe8
+    digest: 12db540270025de0c8b607be71eceaf74e9db0af2b24c916edb7c3f94c667577
     name: memberlist
     type: application
     urls:
@@ -34,9 +34,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.15400
-    created: "2022-06-24T14:05:33.38591822Z"
+    created: "2022-06-24T14:20:12.139228907Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: 38b8f3410f0cc656a466d9e85faf5bd8e59fc78fe9fbd4256b10609a2bb409d7
+    digest: b9f6fa96920aa83d89e708c70062d0f7279570ef11178d7ae9b2f06a352d1495
     name: querycoordinator
     type: application
     urls:
@@ -45,12 +45,12 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.16684
-    created: "2022-06-24T14:05:33.387339918Z"
+    created: "2022-06-24T14:20:12.140497687Z"
     description: A Helm chart for Kubernetes
-    digest: 9ea290d05910cb4a96a500bec33d3c706d37fb42c613979c591bd36194990e6f
+    digest: 9c223eb8a6707b5348cc334e16ccd0786eacd5d0f46128d7cf5aa878718309fd
     name: spatial-api
     type: application
     urls:
     - https://charts.loqate.com/spatial-api-0.2.0.tgz
     version: 0.2.0
-generated: "2022-06-24T14:05:33.383007024Z"
+generated: "2022-06-24T14:20:12.136290354Z"
