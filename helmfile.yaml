@@ -21,6 +21,9 @@ releases:
     version: ^0.1.0
     values:
       - nameOverride: lqtshared
+        imageCredentials:
+          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
+          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
 
   - name: installmanager
     namespace: loqate
@@ -35,12 +38,12 @@ releases:
           products: "KBCOMMON,DSVGBR"
         storage:
           path: /run/desktop/mnt/host/c/loqate/data
-      - imagePullSecrets:
+        createSecret: false
+        imagePullSecrets:
           - name: "lqtshared"
-      - imageCredentials:
-          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
-          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
     waitForJobs: true
+    needs:
+    - lqtshared
 
   - name: spatial-api
     namespace: loqate
@@ -52,13 +55,9 @@ releases:
           tag: "0.1.16684"
         storage:
           path: /run/desktop/mnt/host/c/loqate/data
-      - imagePullSecrets:
+        createSecret: false
+        imagePullSecrets:
           - name: "lqtshared"
-      - verify:
-          healthcheckRowCountry: gb
-      - imageCredentials:
-          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
-          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
         app:
           libraryPath: "/lib64"
         verify:
@@ -75,10 +74,8 @@ releases:
       - image:
           repository: gbgroup/loqate-verify-query-coordinator
           tag: "0.1.15400"
-      - imagePullSecrets:
+        createSecret: false
+        imagePullSecrets:
           - name: "lqtshared"
-      - imageCredentials:
-          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
-          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
     needs:
     - installmanager

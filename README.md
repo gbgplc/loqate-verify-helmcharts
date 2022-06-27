@@ -1010,6 +1010,9 @@ verify:
 
 # Application Version Information 
 
+SecretAppVersion: 1.16.0 
+
+
 SpatialAPIAppVersion: 0.1.16684 
 
 MemberlistAppVersion: 0.1.0 
