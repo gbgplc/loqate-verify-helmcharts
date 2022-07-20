@@ -6,32 +6,32 @@
     - [What Next Generation Verify offers you](#what-next-generation-verify-offers-you)
     - [Security](#security)
   - [Prerequisites](#prerequisites)
-    - [Data Storage](#data-storage)
+    - [Reference Data Storage](#reference-data-storage)
     - [Routing](#routing)
     - [Scaling](#scaling)
     - [Recommended](#recommended)
-  - [Quick Start](#quick-start)
   - [How it Works](#how-it-works)
     - [Components](#components)
       - [InstallManager](#installmanager)
       - [Memberlist](#memberlist)
       - [Spatial-API](#spatial-api)
       - [QueryCoordinator](#querycoordinator)
-  - [Individual Component Installation](#individual-component-installation)
-    - [Add Repo](#add-repo)
-    - [Docker Images](#docker-images)
-    - [Install Data](#install-data)
-    - [Install Charts](#install-charts)
-      - [Rest of World Deployment Considerations](#rest-of-world-deployment-considerations)
-      - [Adding Country Specific Deployments](#adding-country-specific-deployments)
-      - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
-    - [Uninstall Chart](#uninstall-chart)
-    - [Upgrading Chart](#upgrading-chart)
-    - [Adding the Loqate chart repo](#adding-the-loqate-chart-repo)
+  - [Quick Start](#quick-start)
   - [Helmfile](#helmfile)
     - [Install](#install)
     - [Uninstall](#uninstall)
     - [Config Values](#config-values)
+  - [Helm](#helm)
+    - [Docker Images](#docker-images)
+    - [Add Repo](#add-repo)
+    - [Install Data](#install-data)
+    - [Install Charts](#install-charts)
+    - [Upgrade Chart](#upgrade-chart)
+    - [Uninstall Chart](#uninstall-chart)
+  - [Important Configuration Settings](#important-configuration-settings)
+    - [Rest of World Deployment Considerations](#rest-of-world-deployment-considerations)
+    - [Adding Country Specific Deployments](#adding-country-specific-deployments)
+    - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
   - [Usage](#usage)
     - [Functions](#functions)
     - [Verify Request](#verify-request)
@@ -63,8 +63,6 @@
 
 Combining the trusted power of Loqate’s leading Global Address Knowledge Base and simple to use APIs with modern web-scale architectural approaches; Next Gen Verify is the enterprise ready solution for global address parsing, standardising, cleansing, and enhancing.
 
-_[Sign up](https://account.loqate.com/register/) for a free trial account!_
-
 ### A Quick Overview of Verify’s Capabilities
 
 The Loqate solution will parse, standardise, verify, cleanse and format address data via a single, easy to integrate API for over 245 countries and territories. Our solution has a proven track record in providing customers with global data coupled powered by our superior parsing and matching engine.
@@ -77,15 +75,15 @@ The Loqate solution will parse, standardise, verify, cleanse and format address 
 
 - Loqate’s solution transliterates words or letters from different global character sets into either native or Roman characters across 8 scripts including: Cyrillic, Hellenic, Hebrew, Kanji, Simplified Chinese, Arabic, Thai, Hangul.
 
-_See [loqate.com](https://www.loqate.com/resources/support/cleanse-api/international-batch-cleanse/) for detailed API documentation._
+_See [loqate.com](https://www.loqate.com/resources/support/cleanse-api/international-batch-cleanse/) for field descriptions and server options._
 
 ### What Next Generation Verify offers you
 
 We recognise that our partners need solutions which enable them to manage their cloud estate seamlessly, using modern container orchestration to keep cost under control whilst scaling to meet demand.
 
-With Next Generation Verify (NGV) we have decided to provide you with the same implementation we run for our own implementation. Providing out of the box helm charts which allow you to deploy and run in your own cloud infrastructure with ease.
+With Next Generation Verify (NGV) we provide you with the same implementation we run. Providing out of the box helm charts which allow you to deploy and run in your own cloud infrastructure with ease.
 
-Our implementation of Open telemetry enables you to gain insights into the NGV cluster. Whilst we provide you with sample dashboards using Prometheus and Grafana these tools are loosely coupled to our cluster, providing you the opportunity to customise to your needs, and your IT tools.
+Observability is provided using Open Telemetry traces, stdout logging, and prometheus metrics, enabling you to gain insights into the NGV cluster.
 
 ### Security
 
@@ -96,9 +94,9 @@ For vulnerability disclosure or security findings, please contact your account r
 - Kubernetes 1.19+
 - Helm v3.7.0
 
-### Data Storage
+### Reference Data Storage
 
-The data is accessed using a Persistent Volume (PV).  It is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart.  The provided yaml files mount a local volume and will need updating/replacing with the details of your PV.  The `values.yaml` files for both charts have `storage` properties for configuring the PV.
+The reference data is accessed using a Persistent Volume (PV).  It is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart.  The provided yaml files mount a local volume and will need updating/replacing with the details of your PV.  The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
 Currently, to store all the data you will need at least 250Gi of storage and downloading it will take 20-30 minutes.
 
@@ -116,32 +114,20 @@ _[Read more](https://kubernetes.io/docs/concepts/services-networking/ingress/#pr
 
 ### Scaling
 
-You can use either KEDA or HPA not both.  The default is HPA.
+Each of the querycoordinator and spatial-api components can be scaled with either HPA or KEDA.  By default they both use HPA but they can be set independently.
 
 _[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [Learn more](https://keda.sh/resources/) about KEDA_
 
 ### Recommended
 
-In addition to minimum:
+In addition to kubernetes and helm:
 
+- Helmfile [v0.144.0]
 - Istio [v1.11.4]
 - Keda [v2.4]
+- Prometheus [v2.34.0]
 
 _Our product is supported with the above versions of pre-requisites, any other versions of these pre-requisites are considered out of scope._
-
-## Quick Start
-
-```bash
-mkdir lqtcharts && cd lqtcharts/
-
-wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
-
-export LICENSE_KEY="<API_KEY>"
-export DOCKER_USERNAME="docker_username"
-export DOCKER_PASSWORD="docker_password"
-
-helmfile apply
-```
 
 ## How it Works
 
@@ -167,7 +153,116 @@ Searches and caches data for one country or all countries
 
 Forwards requests to the appropriate Spatial-API
 
-## Individual Component Installation
+## Quick Start
+
+This quick start uses [helmfile](#helmfile)
+ and, on Unix, the helm plugin _helm-diff_.  If you do not or cannot use helmfile, see the section for [helm](#helm).
+
+Note: Whether you are using helm or helmfile, please pay particular attention to the [important configuration settings](#important-configuration-settings).
+
+Unix:
+
+```bash
+mkdir lqtcharts && cd lqtcharts/
+
+wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
+
+export LICENSE_KEY="<API_KEY>"
+export DOCKER_USERNAME="docker_username"
+export DOCKER_PASSWORD="docker_password"
+
+helmfile apply
+```
+
+Windows:
+
+```powershell
+mkdir lqtcharts
+cd lqtcharts
+
+Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
+
+$env:LICENSE_KEY="<API_KEY>"
+$env:DOCKER_USERNAME="docker_username"
+$env:DOCKER_PASSWORD="docker_password"
+
+helmfile sync
+```
+
+## Helmfile
+
+Helmfile can be used to easily install all components in a simple K8s environment. It will automatically pull from the Loqate charts repository.
+
+helm diff is a plugin used by helmfile and will need to be installed to helm.  This appears to not work on Windows.
+
+```helm plugin install https://github.com/databus23/helm-diff```
+
+More information on helmfile as well as how to use it can be found here: <https://github.com/helmfile/helmfile>
+
+An example helmfile can be downloaded from <https://charts.loqate.com/helmfile.yaml>
+
+### Install
+
+Unix:
+
+```bash
+helmfile apply
+```
+
+Windows:
+
+```powershell
+helmfile sync
+```
+
+### Uninstall
+
+```helmfile delete```
+
+### Config Values
+
+Location of locally available GKR data to mount.  This needs to be set the same for both installmanager and spatial-api.
+
+Unix:
+
+```yml
+storage:
+  path: /opt/loqate/data
+```
+
+Windows using docker desktop:
+
+```yml
+storage:
+  path: /run/desktop/mnt/host/c/loqate/data
+```
+
+Setting license key & products for installmanager
+
+```yml
+- app:
+  licenseKey: licensekey
+  products: "KBCOMMON,DSVGBR"
+```
+
+Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
+
+Setting dataset for spatial-api
+
+```yml
+verify:
+  dataset: "row"
+```
+
+For more information, see [Important Configuration Settings](#important-configuration-settings)
+
+## Helm
+
+### Docker Images
+
+The components installmanager, spatial-api, and querycoordinator have associated docker images.  These docker images are hosted in private repositories on docker hub, so you will need a docker hub account for us to grant access to the repositories.
+
+NOTE: The first few commandline examples include the options for passing your docker hub credentials, but for the sake of brevity, not all examples will include these options.
 
 ### Add Repo
 
@@ -177,16 +272,10 @@ helm repo add loqate https://charts.loqate.com
 
 _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
 
-### Docker Images
-
-The components installmanager, spatial-api, and querycoordinator have associated docker images.  These docker images are hosted in private repositories on docker hub, so you will need a docker hub account for us to grant access to the repositories.
-
-NOTE: The first few commandline examples include the options for passing your docker hub credentials, but for the sake of brevity, not all examples will include these options.
-
 ### Install Data
 
 ``` bash
-helm install --create-namespace -n verify im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set app.products=<PRODUCTS TO INSTALL> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install --create-namespace -n loqate im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set app.products=<PRODUCTS TO INSTALL> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 Ensure the download is fully completed before continuing.
@@ -194,44 +283,22 @@ Ensure the download is fully completed before continuing.
 ### Install Charts
 
 ``` bash
-helm install -n verify ml loqate/memberlist
-helm install -n verify sa loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
-helm install -n verify qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate ml loqate/memberlist
+helm install -n loqate sa loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
-#### Rest of World Deployment Considerations
+### Upgrade Chart
 
-To ensure the spatial-api deployment is working, it regularly performs an address lookup.  To perform this lookup a country code is required.  For country specific deployments, the country code for that deployment is used but for ROW deployments it defaults to 'GB'.
-
-If you do not have GB data installed or available to the ROW deployment, you must specify a country code for data that is available.  This can be set by changing the value of `healthcheckRowCountry` in the _values.yaml_ file of the spatial-api deployment, or by using  `--set verify.healthcheckRowCountry=<COUNTRY CODE>` option on the `helm install` command.
-
-#### Adding Country Specific Deployments
-
-To get the best performance and flexible scaling, we recommend having deployments dedicated to countries you anticipate will be serving a large number of requests.
-
-To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
-
-``` bash
-helm install -n verify sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
+```bash
+helm upgrade verify <CHART> --install
 ```
 
-NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
-
-#### Certified Datasets (CASS, SERP, AMAS)
-
-To use any of the certified datasets extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
-
-Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
-
-``` bash
-helm install -n verify sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
-```
-
-NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
+_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
 ### Uninstall Chart
 
@@ -249,68 +316,43 @@ This deletes the kubernetes namespace that was created for the Helm release.
 
 _See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
 
-### Upgrading Chart
+## Important Configuration Settings
 
-```bash
-helm upgrade verify <CHART> --install
+### Rest of World Deployment Considerations
+
+To ensure the spatial-api deployment is working, it regularly performs an address lookup.  To perform this lookup a country code is required.  For country specific deployments, the country code for that deployment is used but for ROW deployments it defaults to 'GB'.
+
+If you do not have GB data installed or available to the ROW deployment, you must specify a ISO 3166-2 country code for data that is available.  This can be set by changing the value of `healthcheckRowCountry` in the _values.yaml_ file of the spatial-api deployment, or by using  `--set verify.healthcheckRowCountry=<COUNTRY CODE>` option on the `helm install` command.
+
+### Adding Country Specific Deployments
+
+To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving a large number of requests.
+
+To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
+
+``` bash
+helm install -n verify sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
 ```
 
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
+NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
 
-### Adding the Loqate chart repo
+### Certified Datasets (CASS, SERP, AMAS)
 
-```bash
-helm repo add loqate https://charts.loqate.com
+To use any of the certified datasets extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
+
+Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
+
+``` bash
+helm install -n verify sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
 
-## Helmfile
-
-Helmfile can be used to easily install all components in a simple K8s environment. It will automatically pull from the Loqate charts repository.
-
-helm diff is a plugin used by helmfile and will need to be installed to helm.
-```helm plugin install https://github.com/databus23/helm-diff```
-
-More information on helmfile as well as how to use it can be found here: <https://github.com/helmfile/helmfile>
-
-An example helmfile can be downloaded from <https://charts.loqate.com/helmfile.yaml>
-
-[Getting started with helmfile](#helmfile)
-
-### Install
-
-```helmfile apply```
-
-### Uninstall
-
-```helmfile delete```
-
-### Config Values
-
-Location of locally available GKR data to mount.
-
-```yml
-storage:
-  path: /run/desktop/mnt/host/c/loqate/data
-```
-
-Setting license key & products for installmanager
-
-```yml
-- app:
-  licenseKey: licensekey
-  products: "KBCOMMON,DSVGBR"
-```
-
-Setting dataset for spatial-api
-
-```yml
-verify:
-  dataset: row
-```
+NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
 
 ## Usage
 
 ### Functions
+
+The querycoordinator chart contains templates for a kubernetes ingress and an istio gateway but both are disabled by default. To test the installation, forward port 8900 of the querycoordinator service and use the following urls.
 
 | Function | URL |
 | -------- | --- |
@@ -324,22 +366,24 @@ verify:
 
 | Name | Description |
 | ---- | --- |
-| input | An array of addresses that you want to verify. The country field must contain a valid ISO2 or ISO3 country code. |
-| options | Used to specify various options and override processes.
+| input | An array of addresses that you want to verify. For optimal processing, the country field should contain a valid ISO2 or ISO3 country code.  Without a country code, requests will be routed to the `row` deployment, please see [How it Works](#how-it-works) and [Important Configuration Settings](#important-configuration-settings). |
+| options | Used to specify various options and override processes. |
 
-**Option** comprised of the following:
+**Options** comprised of the following:
 
 1. Geocode (boolean as string) - If you want geo-coordinates to be appended to your results (if available)
-2. Processes (array of string) - Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode
-3. Certify (boolean as string) - Use certified data set. AMAS (AU), CASS (US) or SERP (CA).
-4. Enhance (boolean as string) - Use enhanced dataset. Returns enhance fields if applicable.
+2. Processes (array of string) - Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied.
+3. Certify (boolean as string) - Use certified dataset. AMAS (AU), CASS (US) or SERP (CA).
+4. Enhance (boolean as string) - Use enhanced datasets. Returns enhance fields if applicable.
 5. ServerOptions (object) - Properties are OptionName and value is OptionValue.
+
+More information about [server options](https://support.loqate.com/server-options/).
 
 #### Response Fields
 
 | Name | Description |
 | --- | --- |
-| output | An array of matches records |
+| output | An array of matched records |
 
 **Output** comprised of the following:
 
@@ -348,21 +392,22 @@ verify:
 3. Address Elements – The cleansed address elements
 4. Latitude/Longitude – The latitude and longitude of the address(if Geocode is used)
 
+See this complete list of [field descriptions](https://support.loqate.com/documentation/fielddescrip/).
+
 ### Request and Response Format
 
 #### Request - Geocode as true
 
 ```json
 {
-
-   "Options": {
+    "Options": {
         "Geocode": "true"
     },
     "input": [
         {
-            "Address1": "13 coppice place",
-            "Address2": "winchester",
-            "PostalCode": "RG24 7JU",
+            "Address1": "GB Group",
+            "Address2": "The Foundation",
+            "PostalCode": "CH4 9GB",
             "Country": "GB"
         }
     ]
@@ -375,39 +420,45 @@ verify:
 {
     "output": [
         {
-            "AQI": "E",
-            "AVC": "V44-I44-P6-060",
-            "Address": "13 Belle Vue Road<BR>Old Basing<BR>Basingstoke<BR>RG24 7JU",
-            "Address1": "13 Belle Vue Road",
-            "Address2": "Old Basing",
-            "Address3": "Basingstoke",
-            "Address4": "RG24 7JU",
-            "AdministrativeArea": "Hampshire",
+            "AQI": "A",
+            "AVC": "V44-I55-P6-100",
+            "Address": "Gb Group<BR>The Foundation<BR>Herons Way<BR>Chester Business Park<BR>Chester<BR>CH4 9GB",
+            "Address1": "Gb Group",
+            "Address2": "The Foundation",
+            "Address3": "Herons Way",
+            "Address4": "Chester Business Park",
+            "Address5": "Chester",
+            "Address6": "CH4 9GB",
+            "AdministrativeArea": "Cheshire",
+            "Building": "The Foundation",
+            "BuildingName": "The",
+            "BuildingTrailingType": "Foundation",
+            "BuildingType": "Foundation",
             "Country": "GB",
             "CountryName": "United Kingdom",
-            "DeliveryAddress": "13 Belle Vue Road<BR>Old Basing",
-            "DeliveryAddress1": "13 Belle Vue Road",
-            "DeliveryAddress2": "Old Basing",
-            "DependentLocality": "Old Basing",
+            "DeliveryAddress": "The Foundation<BR>Herons Way<BR>Chester Business Park",
+            "DeliveryAddress1": "The Foundation",
+            "DeliveryAddress2": "Herons Way",
+            "DeliveryAddress3": "Chester Business Park",
+            "DependentLocality": "Chester Business Park",
             "GeoAccuracy": "P4",
             "GeoDistance": "0.0",
             "HyphenClass": "B",
             "ISO3166-2": "GB",
             "ISO3166-3": "GBR",
             "ISO3166-N": "826",
-            "Latitude": "51.269483",
-            "Locality": "Basingstoke",
-            "Longitude": "-1.040478",
+            "Latitude": "53.162461",
+            "Locality": "Chester",
+            "Longitude": "-2.898728",
             "MatchRuleLabel": "C1ap",
-            "PostalCode": "RG24 7JU",
-            "PostalCodePrimary": "RG24 7JU",
-            "Premise": "13",
-            "PremiseNumber": "13",
+            "Organization": "Gb Group",
+            "OrganizationName": "Gb",
+            "OrganizationTrailingType": "Group",
+            "OrganizationType": "Group",
+            "PostalCode": "CH4 9GB",
+            "PostalCodePrimary": "CH4 9GB",
             "Sequence": "1",
-            "Thoroughfare": "Belle Vue Road",
-            "ThoroughfareName": "Coppice",
-            "ThoroughfareTrailingType": "Place",
-            "ThoroughfareType": "Place"
+            "Thoroughfare": "Herons Way"
         }
     ]
 }
@@ -420,15 +471,16 @@ verify:
     "options": {
         "Processes":["Verify"]
     },
-    "input": [{
+    "input": [
+        {
             "Address1": "7511 Oakvale Ct",
             "PostalCode": "95660",
             "Locality": "North Highlands",
             "AdministrativeArea": "CA",
             "Country": "US"
-    }]
+        }
+    ]
 }
-
 ```
 
 #### Response - Process option as ‘Verify’
@@ -464,7 +516,6 @@ verify:
         }
     ]
 }
-
 ```
 
 #### Request - Process option as ‘Search’
@@ -679,7 +730,6 @@ verify:
 
 ```json
 {
-
    "options": {
         "certify": "true"
     },
@@ -752,13 +802,13 @@ verify:
         "certify": "true"
     },
     "input": [
-      {
-       "Address": "999 Baker Way STE 320",
-       "Locality": "San Mateo",
-       "AdministrativeArea": "California",
-       "PostalCode": "94404",
-       "Country": "US"
-      }
+        {
+            "Address1": "999 Baker Way STE 320",
+            "Locality": "San Mateo",
+            "AdministrativeArea": "California",
+            "PostalCode": "94404",
+            "Country": "US"
+        }
     ]
 }
 ```
@@ -769,34 +819,37 @@ verify:
 {
     "output": [
         {
-            "AQI": "C",
-            "AVC": "P22-I22-P6-100",
-            "Address": "SAN MATEO CA 94404",
-            "Address1": "SAN MATEO CA 94404",
+            "AQI": "A",
+            "AVC": "V55-I55-P7-100",
+            "Address": "999 BAKER WAY STE 320<BR>SAN MATEO CA 94404-1566",
+            "Address1": "999 BAKER WAY STE 320",
+            "Address2": "SAN MATEO CA 94404-1566",
             "AdministrativeArea": "CA",
-            "AutoZoneIndicator": "",
+            "AutoZoneIndicator": "D",
             "BusinessIndicator": " ",
-            "CMRAIndicator": " ",
-            "CarrierRoute": "",
+            "CMRAIndicator": "N",
+            "CarrierRoute": "C005",
             "CentralizedIndicator": "",
-            "CheckDigit": "",
-            "CongressionalDistrict": "",
+            "CheckDigit": "7",
+            "CongressionalDistrict": "14",
             "Country": "US",
             "CountryName": "UNITED STATES",
             "CurbIndicator": "",
-            "DPVConfirmedIndicator": " ",
-            "DPVFootnotes": "A1M1",
+            "DPVConfirmedIndicator": "Y",
+            "DPVFootnotes": "AABB",
             "DPVLACSIndicator": " ",
             "DefaultFlag": " ",
-            "DeliveryPointBarCode": "",
+            "DeliveryAddress": "999 BAKER WAY STE 320",
+            "DeliveryAddress1": "999 BAKER WAY STE 320",
+            "DeliveryPointBarCode": "957",
             "DependentLocality": "",
             "DropCount": "",
             "DropSiteIndicator": " ",
             "EducationalIndicator": " ",
-            "FIPSCountyCode": "",
+            "FIPSCountyCode": "081",
             "FalsePositiveIndicator": " ",
-            "Finance": "000000",
-            "Footnotes": "F#",
+            "Finance": "056894",
+            "Footnotes": "",
             "ISO3166-2": "US",
             "ISO3166-3": "USA",
             "ISO3166-N": "840",
@@ -804,35 +857,47 @@ verify:
             "LACSLinkIndicator": " ",
             "Locality": "SAN MATEO",
             "NDCBUIndicator": "",
-            "NoStatIndicator": " ",
+            "NoStatIndicator": "N",
             "Organization": "",
             "OtherIndicator": "",
             "PMBNumber": "",
             "PMBType": "",
-            "PostalCode": "94404",
+            "PostBoxNumber": "",
+            "PostBoxType": "",
+            "PostalCode": "94404-1566",
             "PostalCodePrimary": "94404",
-            "PostalCodeSecondary": "",
-            "PostalCodeSecondaryRangeHigh": "0000",
-            "PostalCodeSecondaryRangeLow": "0000",
-            "PrimaryAddressLine": "",
-            "PrimaryNumRangeCode": " ",
-            "PrimaryNumRangeHigh": "",
-            "PrimaryNumRangeLow": "",
-            "RecordType": " ",
-            "ResidentialDelivery": " ",
-            "ReturnCode": "21",
+            "PostalCodeSecondary": "1566",
+            "PostalCodeSecondaryRangeHigh": "1566",
+            "PostalCodeSecondaryRangeLow": "1566",
+            "Premise": "999",
+            "PremiseNumber": "999",
+            "PrimaryAddressLine": "999 BAKER WAY STE 320",
+            "PrimaryNumRangeCode": "O",
+            "PrimaryNumRangeHigh": "0000000999",
+            "PrimaryNumRangeLow": "0000000999",
+            "RecordType": "H",
+            "ResidentialDelivery": "N",
+            "ReturnCode": "31",
             "SUITELinkFootnote": "",
             "SeasonalIndicator": " ",
-            "SecondaryAddressLine": "SAN MATEO",
-            "SecondaryNumRangeCode": " ",
-            "SecondaryNumRangeHigh": "",
-            "SecondaryNumRangeLow": "",
+            "SecondaryAddressLine": "SAN MATEO CA 94404-1566",
+            "SecondaryNumRangeCode": "E",
+            "SecondaryNumRangeHigh": "00000320",
+            "SecondaryNumRangeLow": "00000320",
             "Sequence": "1",
             "SubAdministrativeArea": "SAN MATEO",
-            "ThrowbackIndicator": " ",
-            "VacantIndicator": " ",
-            "eLOTCode": "",
-            "eLOTNumber": ""
+            "SubBuilding": "STE 320",
+            "SubBuildingLeadingType": "STE",
+            "SubBuildingNumber": "320",
+            "Thoroughfare": "BAKER WAY",
+            "ThoroughfareName": "BAKER",
+            "ThoroughfarePostDirection": "",
+            "ThoroughfarePreDirection": "",
+            "ThoroughfareTrailingType": "WAY",
+            "ThrowbackIndicator": "N",
+            "VacantIndicator": "Y",
+            "eLOTCode": "A",
+            "eLOTNumber": "0074"
         }
     ]
 }
@@ -847,10 +912,7 @@ verify:
     },
     "input": [
         {
-            "Address1": "55 Adelaide St E",
-            "Locality": "Toronto",
-            "PostalCode": "M5C 1K6",
-            "AdministrativeArea": "ON",
+            "Address1": "8 Charlotte St # 8, Toronto, Ontario, M5V 0K4",
             "Country": "CA"
         }
     ]
@@ -861,16 +923,39 @@ verify:
 
 ```json
 {
-    "options": {
-        "certify": "true"
-    },
-    "input": [
+    "output": [
         {
-            "Address1": "55 Adelaide St E",
-            "Locality": "Toronto",
-            "PostalCode": "M5C 1K6",
+            "AQI": "C",
+            "AVC": "V55-I55-P6-091",
+            "AddInfo": "",
+            "Address": "8-8 CHARLOTTE ST<BR>TORONTO ON  M5V 0K4",
+            "Address1": "8-8 CHARLOTTE ST",
+            "Address2": "TORONTO ON  M5V 0K4",
             "AdministrativeArea": "ON",
-            "Country": "CA"
+            "Country": "CA",
+            "CountryName": "CANADA",
+            "DeliveryAddress": "8-8 CHARLOTTE ST",
+            "DeliveryAddress1": "8-8 CHARLOTTE ST",
+            "EndExpiryDate": "2022-06-16",
+            "ISO3166-2": "CA",
+            "ISO3166-3": "CAN",
+            "ISO3166-N": "124",
+            "Locality": "TORONTO",
+            "PostalCode": "M5V 0K4",
+            "PostalCodePrimary": "M5V 0K4",
+            "Premise": "8",
+            "PremiseNumber": "8",
+            "Result": "VALID",
+            "Sequence": "1",
+            "SerpStatusEx": "V",
+            "StartExpiryDate": "2022-05-13",
+            "SubBuilding": "8",
+            "SubBuildingNumber": "8",
+            "SubBuildingType": "-",
+            "Thoroughfare": "CHARLOTTE ST",
+            "ThoroughfareName": "CHARLOTTE",
+            "ThoroughfareTrailingType": "ST",
+            "ThoroughfareType": "ST"
         }
     ]
 }
@@ -958,12 +1043,8 @@ verify:
     },
     "input": [
         {
-            "Address": "",
-            "Address1": "ley 2732",
-            "Country": "MX",
-            "AdministrativeArea": "Madrid",
-            "Locality": "guadalajara",
-            "PostalCode": "44680"
+            "Address": "1290 Mukawachoyanagisawa,Hokuto-Shi Yamanashi 408-0307",
+            "Country": "JP"
         }
     ]
 }
@@ -975,34 +1056,30 @@ verify:
 {
     "output": [
         {
-            "AQI": "E",
-            "AVC": "P22-I24-P6-073",
-            "Address": "Ley 2732<BR>Fracc Circunvalación Vallarta<BR>44680 Guadalajara JAL",
-            "Address1": "Ley 2732",
-            "Address2": "Fracc Circunvalación Vallarta",
-            "Address3": "44680 Guadalajara JAL",
-            "AddressFormat": "Thoroughfare Premise<BR>DependentLocality<BR>PostalCode Locality AdministrativeArea",
-            "AdministrativeArea": "JAL",
-            "Country": "MX",
-            "CountryName": "Mexico",
-            "DeliveryAddress": "Ley 2732<BR>Fracc Circunvalación Vallarta",
-            "DeliveryAddress1": "Ley 2732",
-            "DeliveryAddress2": "Fracc Circunvalación Vallarta",
-            "DeliveryAddressFormat": "Thoroughfare Premise<BR>DependentLocality",
-            "DependentLocality": "Fracc Circunvalación Vallarta",
-            "HyphenClass": "A",
-            "ISO3166-2": "MX",
-            "ISO3166-3": "MEX",
-            "ISO3166-N": "484",
-            "Locality": "Guadalajara",
-            "MatchRuleLabel": "C2",
-            "PostalCode": "44680",
-            "PostalCodePrimary": "44680",
-            "Premise": "2732",
-            "PremiseNumber": "2732",
+            "AQI": "A",
+            "AVC": "V44-I44-P6-100",
+            "Address": "４０８－０３０７<BR>山梨県北杜市武川町柳澤１２９０",
+            "Address1": "４０８－０３０７",
+            "Address2": "山梨県北杜市武川町柳澤１２９０",
+            "AddressFormat": "PostalCode<BR>AdministrativeAreaLocalityThoroughfarePremise",
+            "AdministrativeArea": "山梨県",
+            "Country": "JP",
+            "CountryName": "Japan",
+            "DeliveryAddress": "武川町柳澤１２９０",
+            "DeliveryAddress1": "武川町柳澤１２９０",
+            "DeliveryAddressFormat": "ThoroughfarePremise",
+            "HyphenClass": "C",
+            "ISO3166-2": "JP",
+            "ISO3166-3": "JPN",
+            "ISO3166-N": "392",
+            "Locality": "北杜市",
+            "MatchRuleLabel": "V1a",
+            "PostalCode": "４０８－０３０７",
+            "PostalCodePrimary": "４０８－０３０７",
+            "Premise": "１２９０",
+            "PremiseNumber": "１２９０",
             "Sequence": "1",
-            "SubAdministrativeArea": "Guadalajara",
-            "Thoroughfare": "Ley"
+            "Thoroughfare": "武川町柳澤"
         }
     ]
 }
