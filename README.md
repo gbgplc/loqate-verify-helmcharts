@@ -284,8 +284,8 @@ Ensure the download is fully completed before continuing.
 
 ``` bash
 helm install -n loqate ml loqate/memberlist
-helm install -n loqate sa loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
-helm install -n loqate qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.verify.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate sa loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.loqate.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
