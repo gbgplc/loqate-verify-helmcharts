@@ -242,7 +242,7 @@ Setting license key & products for installmanager
 ```yml
 - app:
   licenseKey: licensekey
-  products: "KBCOMMON,DSVGBR"
+  products: "ALL"
 ```
 
 Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
@@ -275,7 +275,7 @@ _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation
 ### Install Data
 
 ``` bash
-helm install --create-namespace -n loqate im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set app.products=<PRODUCTS TO INSTALL> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install --create-namespace -n loqate im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
 
 Ensure the download is fully completed before continuing.

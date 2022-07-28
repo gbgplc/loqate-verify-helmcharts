@@ -35,7 +35,6 @@ releases:
           tag: "0.1.15237"
         app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
-          products: "KBCOMMON,DSVGBR"
         storage:
           path: /run/desktop/mnt/host/c/loqate/data
         createSecret: false
