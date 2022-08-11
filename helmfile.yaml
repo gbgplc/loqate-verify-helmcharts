@@ -61,7 +61,6 @@ releases:
           libraryPath: "/lib64"
         verify:
           dataset: "row"
-          healthcheckRowCountry: "gb"
     needs:
     - installmanager
 

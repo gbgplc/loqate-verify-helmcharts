@@ -29,7 +29,6 @@
     - [Upgrade Chart](#upgrade-chart)
     - [Uninstall Chart](#uninstall-chart)
   - [Important Configuration Settings](#important-configuration-settings)
-    - [Rest of World Deployment Considerations](#rest-of-world-deployment-considerations)
     - [Adding Country Specific Deployments](#adding-country-specific-deployments)
     - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
   - [Usage](#usage)
@@ -317,12 +316,6 @@ This deletes the kubernetes namespace that was created for the Helm release.
 _See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
 
 ## Important Configuration Settings
-
-### Rest of World Deployment Considerations
-
-To ensure the spatial-api deployment is working, it regularly performs an address lookup.  To perform this lookup a country code is required.  For country specific deployments, the country code for that deployment is used but for ROW deployments it defaults to 'GB'.
-
-If you do not have GB data installed or available to the ROW deployment, you must specify a ISO 3166-2 country code for data that is available.  This can be set by changing the value of `healthcheckRowCountry` in the _values.yaml_ file of the spatial-api deployment, or by using  `--set verify.healthcheckRowCountry=<COUNTRY CODE>` option on the `helm install` command.
 
 ### Adding Country Specific Deployments
 
