@@ -55,6 +55,11 @@
       - [Response - Enhance option to return enhanced data set](#response---enhance-option-to-return-enhanced-data-set)
       - [Request - Server Options](#request---server-options)
       - [Response - Server Options](#response---server-options)
+  - [TERMS AND CONDITIONS FOR USE](#terms-and-conditions-for-use)
+    - [1. DEFINITIONS](#1-definitions)
+    - [2. LICENCE](#2-licence)
+    - [3. DISCLAIMER OF WARRANTY](#3-disclaimer-of-warranty)
+    - [4. LIMITATION OF LIABILITY](#4-limitation-of-liability)
 
 [Jump to quickstart Installation](#quick-start)
 
@@ -1077,6 +1082,35 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
     ]
 }
 ```
+
+## TERMS AND CONDITIONS FOR USE
+
+### 1. DEFINITIONS
+
+- **“Licence”** shall mean the Terms and Conditions for use of the Loqate NGV Software as defined by Clauses 1 – 4 (inclusive) below.
+- **“Customer Entity”** means any Customer Group Company that receives or benefits from the Loqate NGV Software provided by GBG.
+- **“Datasets”** means an individual data service included or delivered as part of the Software and/or Service and selected by the Customer and referenced on the Order Form. Where applicable, this may incorporate Supplier Data or Supplier Technology or utilise information derived from Supplier Data or Supplier Technology.
+- **“Service”** means the service provided by GBG, including any and all Datasets, provided to the Customer in accordance with an agreement together with any other ancillary services provided by GBG to a customer pursuant to an agreement.
+- **“Software”** means the GBG product or solution, including any and all Datasets, provided to the Customer in accordance with an Agreement together with any other ancillary services provided by GBG to the Customer pursuant to an agreement.
+- **“You”** shall mean an individual or Customer Entity exercising permissions granted by this Licence.
+
+### 2. LICENCE
+
+2.1 Subject to the terms and conditions of this Licence, GBG hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, revocable licence to use the Loqate NGV Software provided always that such use of the Loqate NGV Software is with a GBG Service and / or Software only.
+
+2.2 By using the  Loqate NGV Software You agree that:
+
+2.2.1 You will not use or exploit the Intellectual Property Rights in the Loqate NGV Software or permit others to use or exploit the Intellectual Property Rights in the Loqate NGV Software outside of the terms of the Licence;  
+
+2.2.2 Your use of the Loqate NGV Software through any software, equipment, materials or services not provided by GBG will not infringe the rights of any third party.
+
+### 3. DISCLAIMER OF WARRANTY
+
+Unless required by applicable law or agreed to in writing, GBG provides the NGV Software on an "as is" basis. Any and all warranties, conditions and other terms relating to the NGV Software whether express or implied by law, custom or otherwise are, to the fullest extent permitted by law, excluded from the Licence. GBG shall not be responsible for the decisions that You make as a result of the information, NGV Software or data that GBG provides to the You. You are solely responsible for determining the appropriateness of using the Loqate NGV Software and assume any risk associated with Your exercise of permissions under this Licence.
+
+### 4. LIMITATION OF LIABILITY
+
+In no event shall GBG be liable to You , whether such liability arises in contract, tort (including, without limitation, negligence) misrepresentation or otherwise for damages, including any direct, indirect, special, incidental, or consequential damages whatsoever arising as a result of this Licence or out of the use or inability to use the Loqate NGV Software (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if GBG has been advised of the possibility of such damages.
 
 # Application Version Information 
 
