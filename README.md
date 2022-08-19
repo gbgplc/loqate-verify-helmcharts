@@ -298,7 +298,7 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 ### Upgrade Chart
 
 ```bash
-helm upgrade verify <CHART> --install
+helm upgrade <RELEASE_NAME> <CHART> --install
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
@@ -306,13 +306,13 @@ _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documen
 ### Uninstall Chart
 
 ``` bash
-helm uninstall -n verify <RELEASE_NAME>
+helm uninstall -n loqate <RELEASE_NAME>
 ```
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
 ``` bash
-kubectl delete namespace verify
+kubectl delete namespace loqate
 ```
 
 This deletes the kubernetes namespace that was created for the Helm release.
@@ -328,7 +328,7 @@ To get the best performance and flexible scaling, we recommend having spatial-ap
 To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
 
 ``` bash
-helm install -n verify sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
+helm install -n loqate sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
 ```
 
 NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
@@ -340,7 +340,7 @@ To use any of the certified datasets extra libraries are required.  Given an app
 Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
 ``` bash
-helm install -n verify sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+helm install -n loqate sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
 
 NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
