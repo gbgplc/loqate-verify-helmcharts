@@ -9,7 +9,6 @@
     - [Reference Data Storage](#reference-data-storage)
     - [Routing](#routing)
     - [Scaling](#scaling)
-    - [Recommended](#recommended)
   - [How it Works](#how-it-works)
     - [Components](#components)
       - [InstallManager](#installmanager)
@@ -95,8 +94,17 @@ For vulnerability disclosure or security findings, please contact your account r
 
 ## Prerequisites
 
-- Kubernetes 1.19+
-- Helm v3.7.0
+- Mandatory 
+  - Kubernetes [v1.19+]
+  - Helm [v3.7.0]
+- Recommended
+  - Helmfile [v0.144.0]
+  - Istio [v1.11.4]
+  - Keda [v2.4]
+  - Prometheus [v2.34.0]
+
+_Our product is supported with the above versions of pre-requisites, any other versions of these pre-requisites are considered out of scope._
+
 
 ### Reference Data Storage
 
@@ -122,16 +130,7 @@ Each of the querycoordinator and spatial-api components can be scaled with eithe
 
 _[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [Learn more](https://keda.sh/resources/) about KEDA_
 
-### Recommended
 
-In addition to kubernetes and helm:
-
-- Helmfile [v0.144.0]
-- Istio [v1.11.4]
-- Keda [v2.4]
-- Prometheus [v2.34.0]
-
-_Our product is supported with the above versions of pre-requisites, any other versions of these pre-requisites are considered out of scope._
 
 ## How it Works
 
