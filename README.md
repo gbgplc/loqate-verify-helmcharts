@@ -328,7 +328,7 @@ To get the best performance and flexible scaling, we recommend having spatial-ap
 To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
 
 ``` bash
-helm install -n loqate sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=gb
+helm install -n loqate sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
 ```
 
 NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
@@ -340,7 +340,7 @@ To use any of the certified datasets extra libraries are required.  Given an app
 Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
 ``` bash
-helm install -n loqate sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.verify.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+helm install -n loqate sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
 
 NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
