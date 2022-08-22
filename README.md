@@ -17,6 +17,7 @@
       - [QueryCoordinator](#querycoordinator)
   - [Quick Start](#quick-start)
     - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
+    - [Testing the Installation](#testing-the-installation)
   - [Helmfile](#helmfile)
     - [Install](#install)
     - [Uninstall](#uninstall)
@@ -260,6 +261,98 @@ Edit complete
 
 The data installation has finished when you see the `Edit complete` line.
 
+### Testing the Installation
+
+The NGV installation can be tested by sending requests through the system.  First, open a port to receive requests.  You may want to do this in a new shell because the command does not terminate.
+
+``` shell
+kubectl port-forward -n loqate svc/querycoordinator 8900:8900
+```
+
+A version request will determine if the software and data was successfully installed:
+
+Unix:
+
+``` bash
+curl -X GET http://localhost:8900/api/version
+```
+
+Successful response:
+
+``` bash
+{"version":"2.44.0.16383-1f51bc7"}
+```
+
+Windows:
+
+``` powershell
+Invoke-WebRequest -Method GET http://localhost:8900/api/version
+```
+
+Successful response:
+
+``` powershell
+StatusCode        : 200
+StatusDescription : OK
+Content           : {"version":"2.44.0.16383-1f51bc7"}
+RawContent        : HTTP/1.1 200 OK
+                    Content-Length: 34
+                    Content-Type: application/json; charset=utf-8
+                    Date: Mon, 22 Aug 2022 11:10:08 GMT
+
+                    {"version":"2.44.0.16383-1f51bc7"}
+Forms             : {}
+Headers           : {[Content-Length, 34], [Content-Type, application/json; charset=utf-8], [Date, Mon, 22 Aug 2022 11:10:08 GMT]}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 34
+```
+
+Although the version request is sufficient to prove the installation worked, here is a verify request for confirmation.
+
+Unix:
+
+``` bash
+curl -X POST http://localhost:8900/verify -d '{"input":[{"Address1":"TheFoundation","Locality":"Chester","Country":"GB"}]}'
+```
+
+Successful output:
+
+```bash
+{"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park\u003cBR\u003eChester","Address1":"The Foundation","Address2":"Herons 
+Way","Address3":"Chester Business Park","Address4":"Chester","AdministrativeArea":"Cheshire","Building":"The Foundation","Country":"GB","CountryName":"United Kingdom","DeliveryAddress":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park","DeliveryAddress1":"The Foundation","DeliveryAddress2":"Herons Way","DeliveryAddress3":"Chester Business Park","DependentLocality":"Chester Business Park","HyphenClass":"B","ISO3166-2":"GB","ISO3166-3":"GBR","ISO3166-N":"826","Locality":"Chester","MatchRuleLabel":"1","Sequence":"1","Thoroughfare":"Herons Way"}]}
+```
+
+Windows:
+
+``` powershell
+Invoke-WebRequest http://localhost:8900/verify -Method POST -Body "{`"input`":[{`"Address1`":`"TheFoundation`",`"Locality`":`"Chester`",`"Country`":`"GB`"}]}"
+```
+
+Successful output:
+
+``` powershell
+StatusCode        : 200
+StatusDescription : OK
+Content           : {"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park\u003cBR\u003eChester","Address1":"The
+                    Foundation","Address2":"Herons W...
+RawContent        : HTTP/1.1 200 OK
+                    Content-Length: 773
+                    Content-Type: application/json; charset=utf-8
+                    Date: Mon, 22 Aug 2022 11:40:03 GMT
+
+                    {"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003c...
+Forms             : {}
+Headers           : {[Content-Length, 773], [Content-Type, application/json; charset=utf-8], [Date, Mon, 22 Aug 2022 11:40:03 GMT]}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 773
+```
+
 ## Helmfile
 
 Helmfile can be used to easily install all components in a simple K8s environment. It will automatically pull from the Loqate charts repository.
@@ -419,11 +512,11 @@ NOTE: This example requires but does not include passing docker hub credentials,
 
 The querycoordinator chart contains templates for a kubernetes ingress and an istio gateway but both are disabled by default. To test the installation, forward port 8900 of the querycoordinator service and use the following urls.
 
-| Function | URL |
-| -------- | --- |
-| Verify | <http://localhost:8900/verify> |
-| Version | <http://localhost:8900/api/version> |
-| GKR info | <http://localhost:8900/api/gkrinfo> |
+| Function | Method | URL |
+| -------- | ------ | --- |
+| Verify   | POST   | <http://localhost:8900/verify> |
+| Version  | GET    | <http://localhost:8900/api/version> |
+| GKR info | GET    | <http://localhost:8900/api/gkrinfo> |
 
 ### Verify Request
 
