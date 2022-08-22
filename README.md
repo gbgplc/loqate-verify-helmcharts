@@ -16,6 +16,7 @@
       - [Spatial-API](#spatial-api)
       - [QueryCoordinator](#querycoordinator)
   - [Quick Start](#quick-start)
+    - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
   - [Helmfile](#helmfile)
     - [Install](#install)
     - [Uninstall](#uninstall)
@@ -94,7 +95,7 @@ For vulnerability disclosure or security findings, please contact your account r
 
 ## Prerequisites
 
-- Mandatory 
+- Mandatory
   - Kubernetes [v1.19+]
   - Helm [v3.7.0]
 - Recommended
@@ -105,12 +106,11 @@ For vulnerability disclosure or security findings, please contact your account r
 
 _Our product is supported with the above versions of pre-requisites, any other versions of these pre-requisites are considered out of scope._
 
-
 ### Reference Data Storage
 
 The reference data is accessed using a Persistent Volume (PV).  It is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart.  The provided yaml files mount a local volume and will need updating/replacing with the details of your PV.  The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
-Currently, to store all the data you will need at least 250Gi of storage and downloading it will take 20-30 minutes.
+Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours.
 
 These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faster storage will produce better response times.
 
@@ -129,8 +129,6 @@ _[Read more](https://kubernetes.io/docs/concepts/services-networking/ingress/#pr
 Each of the querycoordinator and spatial-api components can be scaled with either HPA or KEDA.  By default they both use HPA but they can be set independently.
 
 _[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [Learn more](https://keda.sh/resources/) about KEDA_
-
-
 
 ## How it Works
 
@@ -191,6 +189,76 @@ $env:DOCKER_PASSWORD="docker_password"
 
 helmfile sync
 ```
+
+### Checking Progress of Data Installation
+
+To check the progress of the data installation, first get the name of the installmanager pod:
+
+``` shell
+kubectl get pods -n loqate
+```
+
+Example output:
+
+``` shell
+NAME                                READY   STATUS             RESTARTS      AGE
+installmanager-787zf                1/1     Running            0             15s
+querycoordinator-59d4dbfb8b-rt9cr   0/1     Running            0             14s
+spatial-api-58fbdb8486-d52rc        0/1     Running            0             13s
+```
+
+Then get the logs of the pod:
+
+``` shell
+kubectl logs installmanager-787zf -n loqate --follow
+```
+
+Example output:
+
+``` shell
+Native library STLPort failed to load, ignore this if not using solaris OS.
+java.lang.UnsatisfiedLinkError: no stlport in java.library.path
+Welcome to the Installation Manager - version 15.0.0
+Running using local API version 2.42.1.16022-8876f6e
+
+Reading /src/im/silent.txt for silent installation...
+
+Contacting license server to validate the license key.
++++
+Done validating license key.
+
+Fetching information from server about the available data packs.
+
+Contacting license server for information on available updates.
++++
+Done fetching information from server regarding available data packs.
+----------------------------------------
+Space available : 118.0 GB
+Space required for download : XXX.X GB
+----------------------------------------
+Downloading data packs.
+
+...
+
+Completed downloading data packs.
+----------------------------------------
+Space available : 62.8 GB
+Space required for install : XXX.X GB
+----------------------------------------
+Beginning installing of data packs.
+
+...
+
+Completed installing the data packs.
+Datapack installation was successfull.
+XXX of XXX datapack(s) installed successfully.
+Installation complete. Editing loqate.ini file now...
+ReferenceDataCacheSize=7
+Updating loqate.ini
+Edit complete
+```
+
+The data installation has finished when you see the `Edit complete` line.
 
 ## Helmfile
 
