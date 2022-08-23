@@ -496,7 +496,7 @@ NOTE: This example requires but does not include passing docker hub credentials,
 
 ### Certified Datasets (CASS, SERP, AMAS)
 
-To use any of the certified datasets extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
+To use any of the certified datasets, extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
 
 Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
