@@ -32,7 +32,7 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-install-manager
-          tag: "0.1.15237"
+          tag: "0.1.22799"
         app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
         storage:
@@ -51,7 +51,7 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-spatial-api
-          tag: "0.1.16684"
+          tag: "0.1.23512"
         storage:
           path: /run/desktop/mnt/host/c/loqate/data
         createSecret: false
@@ -71,7 +71,7 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-query-coordinator
-          tag: "0.1.15400"
+          tag: "0.1.23669"
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
