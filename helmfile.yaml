@@ -28,7 +28,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.0
+    version: ^0.2.1
     values:
       - image:
           repository: gbgroup/loqate-verify-install-manager
@@ -47,7 +47,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.2.0
+    version: ^0.2.1
     values:
       - image:
           repository: gbgroup/loqate-verify-spatial-api
@@ -67,7 +67,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.2.0
+    version: ^0.2.1
     values:
       - image:
           repository: gbgroup/loqate-verify-query-coordinator

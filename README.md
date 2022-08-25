@@ -1277,7 +1277,7 @@ In no event shall GBG be liable to You , whether such liability arises in contra
 SecretAppVersion: 1.16.0 
 
 
-SpatialAPIAppVersion: 0.1.123512 
+SpatialAPIAppVersion: 0.1.23512 
 
 MemberlistAppVersion: 0.1.0 
 
