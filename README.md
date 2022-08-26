@@ -25,10 +25,12 @@
   - [Helm](#helm)
     - [Docker Images](#docker-images)
     - [Add Repo](#add-repo)
+    - [Create namespace](#create-namespace)
     - [Install Data](#install-data)
     - [Install Charts](#install-charts)
     - [Upgrade Chart](#upgrade-chart)
     - [Uninstall Chart](#uninstall-chart)
+    - [Delete namespace](#delete-namespace)
   - [Important Configuration Settings](#important-configuration-settings)
     - [Adding Country Specific Deployments](#adding-country-specific-deployments)
     - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
@@ -164,7 +166,7 @@ Note: Whether you are using helm or helmfile, please pay particular attention to
 
 Unix:
 
-```bash
+``` bash
 mkdir lqtcharts && cd lqtcharts/
 
 wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
@@ -178,7 +180,7 @@ helmfile apply
 
 Windows:
 
-```powershell
+``` powershell
 mkdir lqtcharts
 cd lqtcharts
 
@@ -195,13 +197,13 @@ helmfile sync
 
 To check the progress of the data installation, first get the name of the installmanager pod:
 
-``` shell
+``` bash
 kubectl get pods -n loqate
 ```
 
 Example output:
 
-``` shell
+``` bash
 NAME                                READY   STATUS             RESTARTS      AGE
 installmanager-787zf                1/1     Running            0             15s
 querycoordinator-59d4dbfb8b-rt9cr   0/1     Running            0             14s
@@ -210,13 +212,13 @@ spatial-api-58fbdb8486-d52rc        0/1     Running            0             13s
 
 Then get the logs of the pod:
 
-``` shell
+``` bash
 kubectl logs installmanager-787zf -n loqate --follow
 ```
 
 Example output:
 
-``` shell
+``` text
 Native library STLPort failed to load, ignore this if not using solaris OS.
 java.lang.UnsatisfiedLinkError: no stlport in java.library.path
 Welcome to the Installation Manager - version 15.0.0
@@ -265,7 +267,7 @@ The data installation has finished when you see the `Edit complete` line.
 
 The NGV installation can be tested by sending requests through the system.  First, open a port to receive requests.  You may want to do this in a new shell because the command does not terminate.
 
-``` shell
+``` bash
 kubectl port-forward -n loqate svc/querycoordinator 8900:8900
 ```
 
@@ -279,7 +281,7 @@ curl -X GET http://localhost:8900/api/version
 
 Successful response:
 
-``` bash
+``` json
 {"version":"2.44.0.16383-1f51bc7"}
 ```
 
@@ -320,7 +322,7 @@ curl -X POST http://localhost:8900/verify -d '{"input":[{"Address1":"TheFoundati
 
 Successful output:
 
-```bash
+``` json
 {"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park\u003cBR\u003eChester","Address1":"The Foundation","Address2":"Herons 
 Way","Address3":"Chester Business Park","Address4":"Chester","AdministrativeArea":"Cheshire","Building":"The Foundation","Country":"GB","CountryName":"United Kingdom","DeliveryAddress":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park","DeliveryAddress1":"The Foundation","DeliveryAddress2":"Herons Way","DeliveryAddress3":"Chester Business Park","DependentLocality":"Chester Business Park","HyphenClass":"B","ISO3166-2":"GB","ISO3166-3":"GBR","ISO3166-N":"826","Locality":"Chester","MatchRuleLabel":"1","Sequence":"1","Thoroughfare":"Herons Way"}]}
 ```
@@ -369,13 +371,13 @@ An example helmfile can be downloaded from <https://charts.loqate.com/helmfile.y
 
 Unix:
 
-```bash
+``` bash
 helmfile apply
 ```
 
 Windows:
 
-```powershell
+``` powershell
 helmfile sync
 ```
 
@@ -389,21 +391,21 @@ Location of locally available GKR data to mount.  This needs to be set the same 
 
 Unix:
 
-```yml
+``` yml
 storage:
   path: /opt/loqate/data
 ```
 
 Windows using docker desktop:
 
-```yml
+``` yml
 storage:
   path: /run/desktop/mnt/host/c/loqate/data
 ```
 
 Setting license key & products for installmanager
 
-```yml
+``` yml
 - app:
   licenseKey: licensekey
   products: "ALL"
@@ -413,7 +415,7 @@ Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-a
 
 Setting dataset for spatial-api
 
-```yml
+``` yml
 verify:
   dataset: "row"
 ```
@@ -434,13 +436,19 @@ helm repo add loqate https://charts.loqate.com
 
 _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
 
+### Create namespace
+
+``` bash
+kubectl create namespace loqate
+```
+
 ### Install Data
 
 ``` bash
-helm install --create-namespace -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
-Ensure the download is fully completed before continuing.
+Ensure the download is fully completed before continuing, see [Checking Progress of Data Installation](#checking-progress-of-data-installation).
 
 ### Install Charts
 
@@ -456,15 +464,14 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 
 ### Upgrade Chart
 
-```bash
+``` bash
 helm upgrade <RELEASE_NAME> <CHART> --install
 ```
 
 The example below is an upgrade when you get a new license key with a new data set added.
 
-```bash
+``` bash
 helm upgrade -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
-
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
@@ -474,6 +481,8 @@ _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documen
 ``` bash
 helm uninstall -n loqate <RELEASE_NAME>
 ```
+
+### Delete namespace
 
 This removes all the Kubernetes components associated with the chart and deletes the release.
 
@@ -557,7 +566,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Geocode as true
 
-```json
+``` json
 {
     "Options": {
         "Geocode": "true"
@@ -575,7 +584,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Geocode as true
 
-```json
+``` json
 {
     "output": [
         {
@@ -625,7 +634,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Process option as ‘Verify’
 
-```json
+``` json
 {
     "options": {
         "Processes":["Verify"]
@@ -644,7 +653,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Process option as ‘Verify’
 
-```json
+``` json
 {
     "output": [
         {
@@ -679,7 +688,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Process option as ‘Search’
 
-```json
+``` json
 {
     "input": [
         {
@@ -698,7 +707,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Process option as ‘Search’
 
-```json
+``` json
 {
     "output": [
         [
@@ -784,7 +793,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Process option as ‘ReverseGeocode’
 
-```json
+``` json
 {
     "options": {
         "Processes": ["ReverseGeocode"],
@@ -804,7 +813,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Process option as ‘ReverseGeocode’
 
-```json
+``` json
 {
     "output": [
         [
@@ -887,7 +896,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Certify option - Certified data set AMAS (AU)
 
-```json
+``` json
 {
    "options": {
         "certify": "true"
@@ -905,7 +914,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Certify option - Certified data set AMAS (AU)
 
-```json
+``` json
 {
     "output": [
         {
@@ -955,7 +964,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Certify option - Certified data set CASS (US)
 
-```json
+``` json
 {
     "options": {
         "certify": "true"
@@ -974,7 +983,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Certify option - Certified data set CASS (US)
 
-```json
+``` json
 {
     "output": [
         {
@@ -1064,7 +1073,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Certify option - Certified data set SERP (CA)
 
-```json
+``` json
 {
     "options": {
         "certify": "true"
@@ -1080,7 +1089,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Certify option - Certified data set SERP (CA)
 
-```json
+``` json
 {
     "output": [
         {
@@ -1122,7 +1131,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Enhance option to return enhanced data set
 
-```json
+``` json
 {
     "options": {
         "Enhance": "true"
@@ -1141,7 +1150,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Enhance option to return enhanced data set
 
-```json
+``` json
 {
     "output": [
         {
@@ -1192,7 +1201,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Request - Server Options
 
-```json
+``` json
 {
     "Options": {
         "ServerOptions": {
@@ -1211,7 +1220,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 
 #### Response - Server Options
 
-```json
+``` json
 {
     "output": [
         {
