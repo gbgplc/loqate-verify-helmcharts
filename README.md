@@ -426,8 +426,6 @@ For more information, see [Important Configuration Settings](#important-configur
 
 The components installmanager, spatial-api, and querycoordinator have associated docker images.  These docker images are hosted in private repositories on docker hub, so you will need a docker hub account for us to grant access to the repositories.
 
-NOTE: The first few commandline examples include the options for passing your docker hub credentials, but for the sake of brevity, not all examples will include these options.
-
 ### Add Repo
 
 ``` bash
@@ -439,7 +437,7 @@ _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation
 ### Install Data
 
 ``` bash
-helm install --create-namespace -n loqate im loqate/installmanager --set app.licenseKey=<LICENSE KEY> --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install --create-namespace -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 Ensure the download is fully completed before continuing.
@@ -448,8 +446,8 @@ Ensure the download is fully completed before continuing.
 
 ``` bash
 helm install -n loqate ml loqate/memberlist
-helm install -n loqate sa loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
-helm install -n loqate qc loqate/querycoordinator --set app.memberlistService=ml-memberlist.loqate.svc --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate sa loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc
+helm install -n loqate qc loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc
 ```
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
@@ -460,6 +458,13 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 
 ```bash
 helm upgrade <RELEASE_NAME> <CHART> --install
+```
+
+The example below is an upgrade when you get a new license key with a new data set added.
+
+```bash
+helm upgrade -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
@@ -489,10 +494,8 @@ To get the best performance and flexible scaling, we recommend having spatial-ap
 To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
 
 ``` bash
-helm install -n loqate sa-gb loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
+helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
 ```
-
-NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
 
 ### Certified Datasets (CASS, SERP, AMAS)
 
@@ -501,10 +504,8 @@ To use any of the certified datasets, extra libraries are required.  Given an ap
 Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
 ``` bash
-helm install -n loqate sa-us loqate/spatial-api --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
-
-NOTE: This example requires but does not include passing docker hub credentials, see [Docker Images](#docker-images)
 
 ## Usage
 
