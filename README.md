@@ -16,6 +16,7 @@
       - [Spatial-API](#spatial-api)
       - [QueryCoordinator](#querycoordinator)
   - [Quick Start](#quick-start)
+    - [Download just a subset of the allowed datasets](#download-just-a-subset-of-the-allowed-datasets)
     - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
     - [Testing the Installation](#testing-the-installation)
   - [Helmfile](#helmfile)
@@ -192,6 +193,19 @@ $env:DOCKER_PASSWORD="docker_password"
 
 helmfile sync
 ```
+
+### Download just a subset of the allowed datasets
+
+If you have a license that allows lots of datasets but you only want to download a subset of them.
+In the helmfile under the app section shown below. Add 'products: "KBCOMMON,DSVGBR"' as shown. This will add the datasets KBCOMMON and DSVGBR:
+
+``` yml
+name: installmanager
+    values:
+      - image:
+        app:
+          products: "KBCOMMON,DSVGBR"
+``` 
 
 ### Checking Progress of Data Installation
 
@@ -407,8 +421,16 @@ Setting license key & products for installmanager
 
 ``` yml
 - app:
-  licenseKey: licensekey
+  licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
   products: "ALL"
+```
+
+To download a subset of the datasets on your license. Use a comma separated list of the datasets as follows:
+
+``` yml
+- app:
+  licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
+  products: "KBCOMMON,DSVGBR"
 ```
 
 Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
@@ -446,6 +468,12 @@ kubectl create namespace loqate
 
 ``` bash
 helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+```
+
+To install a subset of the datasets you have in the license key you can add  --set app.products="KBCOMMON,DSVGBR" as follows:
+
+``` bash
+helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
 Ensure the download is fully completed before continuing, see [Checking Progress of Data Installation](#checking-progress-of-data-installation).
