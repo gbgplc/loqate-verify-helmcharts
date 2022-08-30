@@ -59,11 +59,12 @@
       - [Response - Enhance option to return enhanced data set](#response---enhance-option-to-return-enhanced-data-set)
       - [Request - Server Options](#request---server-options)
       - [Response - Server Options](#response---server-options)
-  - [Trouble shooting](#trouble-shooting)
+  - [Trouble Shooting](#trouble-shooting)
+    - [Re-run quick start without data download](#re-run-quick-start-without-data-download)
     - [Full system cleanup](#full-system-cleanup)
       - [Helmfile only cleanup commands](#helmfile-only-cleanup-commands)
     - [Helmfile and Helm cleanup commands](#helmfile-and-helm-cleanup-commands)
-      - [Delete the namespace:](#delete-the-namespace)
+      - [Delete the namespace](#delete-the-namespace)
       - [Delete the persistent volumes](#delete-the-persistent-volumes)
     - [Then Check that the system has cleaned up](#then-check-that-the-system-has-cleaned-up)
   - [TERMS AND CONDITIONS FOR USE](#terms-and-conditions-for-use)
@@ -200,6 +201,8 @@ $env:DOCKER_PASSWORD="docker_password"
 
 helmfile sync
 ```
+
+Note: If you want to run the quick start again without a data download. See [Re-run quick start without data download](#re-run-quick-start-without-data-download).
 
 ### Download just a subset of the allowed datasets
 
@@ -1288,7 +1291,37 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-## Trouble shooting
+## Trouble Shooting
+
+### Re-run quick start without data download
+
+To stop the data getting downloaded again open the helmfile.yaml and comment out:
+
+1. The installmanager section.
+1. Also in the querycoordinator and spatial-api section comment out the "- installmanager" line in the needs section as shown below:
+
+``` yml
+needs:
+    #- installmanager
+```
+
+Delete the helmfile install
+
+```helmfile delete```
+
+Re-sync the helmfile installation
+
+Unix:
+
+``` bash
+helmfile apply
+```
+
+Windows:  
+
+``` powershell
+helmfile sync
+```
 
 ### Full system cleanup
 
@@ -1302,7 +1335,7 @@ helmfile delete -n loqate
 
 ### Helmfile and Helm cleanup commands
 
-#### Delete the namespace:
+#### Delete the namespace
 
 ``` bash
 kubectl delete namespace loqate
