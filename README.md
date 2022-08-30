@@ -116,7 +116,7 @@ For vulnerability disclosure or security findings, please contact your account r
   - Keda [v2.4]
   - Prometheus [v2.34.0]
 
-_Our product is supported with the above versions of pre-requisites, any other versions of these pre-requisites are considered out of scope._
+_Verify has been tested using the version numbers stated above. Please avoid using earlier application versions than those stated._
 
 ### Reference Data Storage
 
