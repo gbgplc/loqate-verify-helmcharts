@@ -59,6 +59,13 @@
       - [Response - Enhance option to return enhanced data set](#response---enhance-option-to-return-enhanced-data-set)
       - [Request - Server Options](#request---server-options)
       - [Response - Server Options](#response---server-options)
+  - [Trouble shooting](#trouble-shooting)
+    - [Full system cleanup](#full-system-cleanup)
+      - [Helmfile only cleanup commands](#helmfile-only-cleanup-commands)
+    - [Helmfile and Helm cleanup commands](#helmfile-and-helm-cleanup-commands)
+      - [Delete the namespace:](#delete-the-namespace)
+      - [Delete the persistent volumes](#delete-the-persistent-volumes)
+    - [Then Check that the system has cleaned up](#then-check-that-the-system-has-cleaned-up)
   - [TERMS AND CONDITIONS FOR USE](#terms-and-conditions-for-use)
     - [1. DEFINITIONS](#1-definitions)
     - [2. LICENCE](#2-licence)
@@ -1279,6 +1286,59 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
         }
     ]
 }
+```
+
+## Trouble shooting
+
+### Full system cleanup
+
+#### Helmfile only cleanup commands
+
+Perform the following:
+
+``` bash
+helmfile delete -n loqate
+```
+
+### Helmfile and Helm cleanup commands
+
+#### Delete the namespace:
+
+``` bash
+kubectl delete namespace loqate
+```
+
+#### Delete the persistent volumes
+
+Get the persistent volumes:
+
+``` bash
+kubectl get pv
+```
+
+If there are any persistent volumes for installmanager or spatial-api. Delete them with:
+
+``` bash
+kubectl delete pv <NAME>
+```
+
+### Then Check that the system has cleaned up
+
+``` bash
+$ kubectl get pods
+No resources found in loqate namespace.
+
+$ kubectl get services -n loqate
+No resources found in loqate namespace.
+
+$ kubectl get deployments
+No resources found in loqate namespace.
+
+$ kubectl get pv
+No resources found
+
+$ kubectl get pvc
+No resources found in loqate namespace.
 ```
 
 ## TERMS AND CONDITIONS FOR USE
