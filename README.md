@@ -15,6 +15,7 @@
       - [Memberlist](#memberlist)
       - [Spatial-API](#spatial-api)
       - [QueryCoordinator](#querycoordinator)
+    - [Important Information](#important-information)
   - [Quick Start](#quick-start)
     - [Download just a subset of the allowed datasets](#download-just-a-subset-of-the-allowed-datasets)
     - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
@@ -61,9 +62,9 @@
       - [Response - Server Options](#response---server-options)
   - [Trouble Shooting](#trouble-shooting)
     - [Re-run quick start without data download](#re-run-quick-start-without-data-download)
-    - [Full system cleanup](#full-system-cleanup)
-      - [Helmfile only cleanup commands](#helmfile-only-cleanup-commands)
-    - [Helmfile and Helm cleanup commands](#helmfile-and-helm-cleanup-commands)
+    - [Full system clean up](#full-system-clean-up)
+      - [Helmfile only clean up commands](#helmfile-only-clean-up-commands)
+    - [Helmfile and Helm clean up commands](#helmfile-and-helm-clean-up-commands)
       - [Delete the namespace](#delete-the-namespace)
       - [Delete the persistent volumes](#delete-the-persistent-volumes)
     - [Then Check that the system has cleaned up](#then-check-that-the-system-has-cleaned-up)
@@ -166,6 +167,13 @@ Searches and caches data for one country or all countries
 
 Forwards requests to the appropriate Spatial-API
 
+### Important Information
+
+Do not mix Helmfile and Helm methods of install
+
+Currently the system does not support using a combination of both Helmfile and Helm. You must pick one and stay with that option for the future of the project.
+If you do want to change from Helmfile to Helm or vice versa then you must first clean up the system as shown in [Full system clean up](#Full-system-clean-up)
+
 ## Quick Start
 
 This quick start uses [helmfile](#helmfile)
@@ -201,6 +209,8 @@ $env:DOCKER_PASSWORD="docker_password"
 
 helmfile sync
 ```
+
+Now check the progress of the installation. [Checking Progress of Data Installation](#Checking-Progress-of-Data-Installation)
 
 Note: If you want to run the quick start again without a data download. See [Re-run quick start without data download](#re-run-quick-start-without-data-download).
 
@@ -1323,17 +1333,17 @@ Windows:
 helmfile sync
 ```
 
-### Full system cleanup
+### Full system clean up
 
-#### Helmfile only cleanup commands
+#### Helmfile only clean up commands
 
 Perform the following:
 
 ``` bash
-helmfile delete -n loqate
+helmfile delete
 ```
 
-### Helmfile and Helm cleanup commands
+### Helmfile and Helm clean up commands
 
 #### Delete the namespace
 
@@ -1346,31 +1356,31 @@ kubectl delete namespace loqate
 Get the persistent volumes:
 
 ``` bash
-kubectl get pv
+kubectl -n loqate get pv
 ```
 
 If there are any persistent volumes for installmanager or spatial-api. Delete them with:
 
 ``` bash
-kubectl delete pv <NAME>
+kubectl -n loqate delete pv <NAME>
 ```
 
 ### Then Check that the system has cleaned up
 
 ``` bash
-$ kubectl get pods
+$ kubectl -n loqate get pods
 No resources found in loqate namespace.
 
-$ kubectl get services -n loqate
+$ kubectl -n loqate get services
 No resources found in loqate namespace.
 
-$ kubectl get deployments
+$ kubectl -n loqate get deployments
 No resources found in loqate namespace.
 
-$ kubectl get pv
+$ kubectl -n loqate get pv
 No resources found
 
-$ kubectl get pvc
+$ kubectl -n loqate get pvc
 No resources found in loqate namespace.
 ```
 
