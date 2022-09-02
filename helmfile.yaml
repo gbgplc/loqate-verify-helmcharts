@@ -78,16 +78,15 @@ releases:
     needs:
     - installmanager
 
-  # Work In Progress
-  # - name: ai-parse
-  #   namespace: loqate
-  #   chart: "loqate/ai-parse"
-  #   version: ^0.1.0
-  #   values:
-  #     - imagePullSecrets:
-  #       - name: "lqtshared"
-  #     - storage:
-  #         path: /run/desktop/mnt/host/c/loqate/models_structured # /run/desktop/mnt/host/c/loqatewindows/data/models_structured
+  - name: ai-parse
+    namespace: loqate
+    chart: "loqate/ai-parse"
+    version: ^0.1.1
+    values:
+      - imagePullSecrets:
+        - name: "lqtshared"
+      - storage:
+          path: /run/desktop/mnt/host/c/loqate/models_structured 
 
   # - name: tfserve
   #   namespace: loqate
