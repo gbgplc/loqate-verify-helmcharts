@@ -15,7 +15,6 @@
       - [Memberlist](#memberlist)
       - [Spatial-API](#spatial-api)
       - [QueryCoordinator](#querycoordinator)
-    - [Important Information](#important-information)
   - [Quick Start](#quick-start)
     - [Download just a subset of the allowed datasets](#download-just-a-subset-of-the-allowed-datasets)
     - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
@@ -60,14 +59,14 @@
       - [Response - Enhance option to return enhanced data set](#response---enhance-option-to-return-enhanced-data-set)
       - [Request - Server Options](#request---server-options)
       - [Response - Server Options](#response---server-options)
-  - [Trouble Shooting](#trouble-shooting)
-    - [Re-run quick start without data download](#re-run-quick-start-without-data-download)
-    - [Full system clean up](#full-system-clean-up)
-      - [Helmfile only clean up commands](#helmfile-only-clean-up-commands)
+  - [Re-run quick start without data download](#re-run-quick-start-without-data-download)
+  - [Full system clean up](#full-system-clean-up)
+    - [Helmfile only clean up commands](#helmfile-only-clean-up-commands)
     - [Helmfile and Helm clean up commands](#helmfile-and-helm-clean-up-commands)
       - [Delete the namespace](#delete-the-namespace)
       - [Delete the persistent volumes](#delete-the-persistent-volumes)
-    - [Then Check that the system has cleaned up](#then-check-that-the-system-has-cleaned-up)
+    - [Check that the system has cleaned up](#check-that-the-system-has-cleaned-up)
+  - [Trouble Shooting](#trouble-shooting)
   - [TERMS AND CONDITIONS FOR USE](#terms-and-conditions-for-use)
     - [1. DEFINITIONS](#1-definitions)
     - [2. LICENCE](#2-licence)
@@ -167,13 +166,6 @@ Searches and caches data for one country or all countries
 
 Forwards requests to the appropriate Spatial-API
 
-### Important Information
-
-Do not mix Helmfile and Helm methods of install
-
-Currently the system does not support using a combination of both Helmfile and Helm. You must pick one and stay with that option for the future of the project.
-If you do want to change from Helmfile to Helm or vice versa then you must first clean up the system as shown in [Full system clean up](#Full-system-clean-up)
-
 ## Quick Start
 
 This quick start uses [helmfile](#helmfile)
@@ -210,7 +202,7 @@ $env:DOCKER_PASSWORD="docker_password"
 helmfile sync
 ```
 
-Now check the progress of the installation. [Checking Progress of Data Installation](#Checking-Progress-of-Data-Installation)
+Now check the progress of the installation. [Checking Progress of Data Installation](#checking-progress-of-data-installation)
 
 Note: If you want to run the quick start again without a data download. See [Re-run quick start without data download](#re-run-quick-start-without-data-download).
 
@@ -487,23 +479,25 @@ kubectl create namespace loqate
 ### Install Data
 
 ``` bash
-helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 To install a subset of the datasets you have in the license key you can add  --set app.products="KBCOMMON,DSVGBR" as follows:
 
 ``` bash
-helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
 Ensure the download is fully completed before continuing, see [Checking Progress of Data Installation](#checking-progress-of-data-installation).
 
 ### Install Charts
 
+Standard helm install
+
 ``` bash
-helm install -n loqate ml loqate/memberlist
-helm install -n loqate sa loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc
-helm install -n loqate qc loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc
+helm install -n loqate memberlist loqate/memberlist
+helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
+helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
@@ -519,7 +513,7 @@ helm upgrade <RELEASE_NAME> <CHART> --install
 The example below is an upgrade when you get a new license key with a new data set added.
 
 ``` bash
-helm upgrade -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+helm upgrade -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
@@ -1301,9 +1295,7 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-## Trouble Shooting
-
-### Re-run quick start without data download
+## Re-run quick start without data download
 
 To stop the data getting downloaded again open the helmfile.yaml and comment out:
 
@@ -1333,9 +1325,9 @@ Windows:
 helmfile sync
 ```
 
-### Full system clean up
+## Full system clean up
 
-#### Helmfile only clean up commands
+### Helmfile only clean up commands
 
 Perform the following:
 
@@ -1365,7 +1357,7 @@ If there are any persistent volumes for installmanager or spatial-api. Delete th
 kubectl -n loqate delete pv <NAME>
 ```
 
-### Then Check that the system has cleaned up
+### Check that the system has cleaned up
 
 ``` bash
 $ kubectl -n loqate get pods
@@ -1383,6 +1375,52 @@ No resources found
 $ kubectl -n loqate get pvc
 No resources found in loqate namespace.
 ```
+
+## Trouble Shooting
+
+Symptoms
+You get one of the following errors from a query.
+"No spatialapi available"
+"Failed to process."
+
+Fix
+Make sure your install manager finished properly as per [Checking Progress of Data Installation](#checking-progress-of-data-installation)
+
+Wait 5 minutes then check if the error is still happening. 
+If the error is still happening:
+
+First find the pods names using:
+
+``` bash
+kubectl get pods -n loqate
+```
+
+1. If any of the pods are not in service i.e. 0/1 then delete the equivalent chart and reinstall as shown below.
+2. If you are still getting the error. Delete each chart and reinstall one at a time. Testing after the chart comes back up, after waiting an extra 3 mins. Do this in the following order: spatial-api, querycoordinator.  
+
+Delete a helm chart and reinstall it
+To delete a chart first get a list of charts.
+
+``` bash
+ helm list -n loqate
+```
+
+Then delete the chart as follows:
+
+``` bash
+helm delete -n loqate <NAME>
+```
+
+Reinstall the chart as show per [Install Charts](#install-charts) or [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
+
+Check the pod is back in service using:
+
+``` bash
+kubectl get pods -n loqate
+```
+
+Wait 3 minutes then try your query again.
+
 
 ## TERMS AND CONDITIONS FOR USE
 
