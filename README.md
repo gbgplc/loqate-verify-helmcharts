@@ -29,7 +29,7 @@
     - [Create namespace](#create-namespace)
     - [Install Data](#install-data)
     - [Install Charts](#install-charts)
-    - [Upgrade Chart](#upgrade-chart)
+      - [Check the spatial-api and querycoordinator have started](#check-the-spatial-api-and-querycoordinator-have-started)
     - [Uninstall Chart](#uninstall-chart)
     - [Delete namespace](#delete-namespace)
   - [Important Configuration Settings](#important-configuration-settings)
@@ -447,11 +447,20 @@ To download a subset of the datasets on your license. Use a comma separated list
 
 Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
 
-Setting dataset for spatial-api
+To set the dataset for spatial-api to Rest Of the World i.e. "row"
 
 ``` yml
 verify:
   dataset: "row"
+```
+
+To set a spatial-api for a specific certified dataset e.g australia (au). Create a new spatial-api section in the yaml file. Copy the current spatia-api and give it a unique name. Then set the libraryPath to where the lib64 libraries are and the dataset to au as shown below
+
+``` yml
+        app:
+          libraryPath: "/lib64:/data/lib64"
+        verify:
+          dataset: "au"
 ```
 
 For more information, see [Important Configuration Settings](#important-configuration-settings)
@@ -499,6 +508,22 @@ helm install -n loqate memberlist loqate/memberlist
 helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
+
+#### Check the spatial-api and querycoordinator have started
+
+``` bash
+kubectl get pods -n loqate
+```
+
+Example output:
+
+``` bash
+NAME                                  READY   STATUS    RESTARTS      AGE
+qc-querycoordinator-ffdc5cfbc-2hj7w   1/1     Running   0             14m
+sa-spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m   
+
+Wait until there is 1/1 in the READY column for spatial-api and querycoordinator. After this wait an extra 1 minute.
+
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
 
@@ -1348,13 +1373,13 @@ kubectl delete namespace loqate
 Get the persistent volumes:
 
 ``` bash
-kubectl -n loqate get pv
+kubectl get pv
 ```
 
 If there are any persistent volumes for installmanager or spatial-api. Delete them with:
 
 ``` bash
-kubectl -n loqate delete pv <NAME>
+kubectl delete pv <NAME>
 ```
 
 ### Check that the system has cleaned up
@@ -1369,7 +1394,7 @@ No resources found in loqate namespace.
 $ kubectl -n loqate get deployments
 No resources found in loqate namespace.
 
-$ kubectl -n loqate get pv
+$ kubectl get pv
 No resources found
 
 $ kubectl -n loqate get pvc
@@ -1379,14 +1404,17 @@ No resources found in loqate namespace.
 ## Trouble Shooting
 
 Symptoms
-You get one of the following errors from a query.
-"No spatialapi available"
-"Failed to process."
+You get one of the following errors from a query:
 
-Fix
+1. "No spatialapi available"
+1. "Failed to process."
+
+Fix:
+
 Make sure your install manager finished properly as per [Checking Progress of Data Installation](#checking-progress-of-data-installation)
 
-Wait 5 minutes then check if the error is still happening. 
+Wait 5 minutes then check if the error is still happening.
+
 If the error is still happening:
 
 First find the pods names using:
@@ -1396,10 +1424,11 @@ kubectl get pods -n loqate
 ```
 
 1. If any of the pods are not in service i.e. 0/1 then delete the equivalent chart and reinstall as shown below.
-2. If you are still getting the error. Delete each chart and reinstall one at a time. Testing after the chart comes back up, after waiting an extra 3 mins. Do this in the following order: spatial-api, querycoordinator.  
+2. If you are still getting the error. Delete each chart and reinstall one at a time. Testing after the chart comes back up, after waiting an extra 3 mins. Do this in the following order: spatial-api, querycoordinator. You may have to repeat this a few times. i.e. spatial-api, querycoordinator, spatial-api ...
 
-Delete a helm chart and reinstall it
-To delete a chart first get a list of charts.
+Delete a helm chart and reinstall it:
+
+To delete a chart first get a list of charts:
 
 ``` bash
  helm list -n loqate
