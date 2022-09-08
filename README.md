@@ -1,111 +1,39 @@
-# Loqate Verify
+# Verify: The Next Generation of Address Verification and Cleansing
 
-- [Loqate Verify](#loqate-verify)
-  - [The Next Generation of Address Verification & Cleansing](#the-next-generation-of-address-verification--cleansing)
-    - [A Quick Overview of Verify’s Capabilities](#a-quick-overview-of-verifys-capabilities)
-    - [What Next Generation Verify offers you](#what-next-generation-verify-offers-you)
-    - [Security](#security)
-  - [Prerequisites](#prerequisites)
-    - [Reference Data Storage](#reference-data-storage)
-    - [Routing](#routing)
-    - [Scaling](#scaling)
-  - [How it Works](#how-it-works)
-    - [Components](#components)
-      - [InstallManager](#installmanager)
-      - [Memberlist](#memberlist)
-      - [Spatial-API](#spatial-api)
-      - [QueryCoordinator](#querycoordinator)
-  - [Quick Start](#quick-start)
-    - [Download just a subset of the allowed datasets](#download-just-a-subset-of-the-allowed-datasets)
-    - [Checking Progress of Data Installation](#checking-progress-of-data-installation)
-    - [Testing the Installation](#testing-the-installation)
-  - [Helmfile](#helmfile)
-    - [Install](#install)
-    - [Uninstall](#uninstall)
-    - [Config Values](#config-values)
-  - [Helm](#helm)
-    - [Docker Images](#docker-images)
-    - [Add Repo](#add-repo)
-    - [Create namespace](#create-namespace)
-    - [Install Data](#install-data)
-    - [Install Charts](#install-charts)
-      - [Check the spatial-api and querycoordinator have started](#check-the-spatial-api-and-querycoordinator-have-started)
-    - [Uninstall Chart](#uninstall-chart)
-    - [Delete namespace](#delete-namespace)
-  - [Important Configuration Settings](#important-configuration-settings)
-    - [Adding Country Specific Deployments](#adding-country-specific-deployments)
-    - [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
-  - [Usage](#usage)
-    - [Functions](#functions)
-    - [Verify Request](#verify-request)
-      - [Request Parameters](#request-parameters)
-      - [Response Fields](#response-fields)
-    - [Request and Response Format](#request-and-response-format)
-      - [Request - Geocode as true](#request---geocode-as-true)
-      - [Response - Geocode as true](#response---geocode-as-true)
-      - [Request - Process option as ‘Verify’](#request---process-option-as-verify)
-      - [Response - Process option as ‘Verify’](#response---process-option-as-verify)
-      - [Request - Process option as ‘Search’](#request---process-option-as-search)
-      - [Response - Process option as ‘Search’](#response---process-option-as-search)
-      - [Request - Process option as ‘ReverseGeocode’](#request---process-option-as-reversegeocode)
-      - [Response - Process option as ‘ReverseGeocode’](#response---process-option-as-reversegeocode)
-      - [Request - Certify option - Certified data set AMAS (AU)](#request---certify-option---certified-data-set-amas-au)
-      - [Response - Certify option - Certified data set AMAS (AU)](#response---certify-option---certified-data-set-amas-au)
-      - [Request - Certify option - Certified data set CASS (US)](#request---certify-option---certified-data-set-cass-us)
-      - [Response - Certify option - Certified data set CASS (US)](#response---certify-option---certified-data-set-cass-us)
-      - [Request - Certify option - Certified data set SERP (CA)](#request---certify-option---certified-data-set-serp-ca)
-      - [Response - Certify option - Certified data set SERP (CA)](#response---certify-option---certified-data-set-serp-ca)
-      - [Request - Enhance option to return enhanced data set](#request---enhance-option-to-return-enhanced-data-set)
-      - [Response - Enhance option to return enhanced data set](#response---enhance-option-to-return-enhanced-data-set)
-      - [Request - Server Options](#request---server-options)
-      - [Response - Server Options](#response---server-options)
-  - [Re-run quick start without data download](#re-run-quick-start-without-data-download)
-  - [Full system clean up](#full-system-clean-up)
-    - [Helmfile only clean up commands](#helmfile-only-clean-up-commands)
-    - [Helmfile and Helm clean up commands](#helmfile-and-helm-clean-up-commands)
-      - [Delete the namespace](#delete-the-namespace)
-      - [Delete the persistent volumes](#delete-the-persistent-volumes)
-    - [Check that the system has cleaned up](#check-that-the-system-has-cleaned-up)
-  - [Trouble Shooting](#trouble-shooting)
-  - [TERMS AND CONDITIONS FOR USE](#terms-and-conditions-for-use)
-    - [1. DEFINITIONS](#1-definitions)
-    - [2. LICENCE](#2-licence)
-    - [3. DISCLAIMER OF WARRANTY](#3-disclaimer-of-warranty)
-    - [4. LIMITATION OF LIABILITY](#4-limitation-of-liability)
+Businesses of every size are increasingly managing the growth of, and demand for, cloud and SaaS technologies. Meanwhile customers expect their trusted partners to provide services that are hosted on the most capable, secure, scalable, and reliable platforms.
 
-[Jump to quickstart Installation](#quick-start)
+Verify uses cutting-edge products and services, and delivers them on a platform that offers the highest levels of security, scalability, and reliability. Not only that, but Verify also drives product innovation through the use of best-of-breed componentisation and modularisation, allowing for hands-free updates, simplified roll-out of feature enhancements, and on-demand scaling.
 
-## The Next Generation of Address Verification & Cleansing
+## Verify’s Capabilities
 
-Combining the trusted power of Loqate’s leading Global Address Knowledge Base and simple to use APIs with modern web-scale architectural approaches; Next Gen Verify is the enterprise ready solution for global address parsing, standardising, cleansing, and enhancing.
+Verify has a proven track record in providing customers with global data coupled with our superior parsing and matching engine. More than 80 of the world’s leading software companies have chosen to integrate their applications or resell our addressing solutions worldwide.
 
-### A Quick Overview of Verify’s Capabilities
+Here are a few key points regarding the services and functionality you have access to when using Verify:
 
-The Loqate solution will parse, standardise, verify, cleanse and format address data via a single, easy to integrate API for over 245 countries and territories. Our solution has a proven track record in providing customers with global data coupled powered by our superior parsing and matching engine.
-
-- The Global Knowledge Repository (GKR) is Loqate’s proprietary main database which combines our Knowledge Base data and parsing rules with our location reference datasets for over 245 countries and territories.
-
-- Loqate’s Global Parsing Engine consists of proprietary lexicon and context parsing rules created specifically for each country and territory around the world. The parsing engine standardises and cleanses addresses from unstructured and semi-structured data, automatically placing elements into the correct fields and eliminating erroneous non-address data.
-
-- Our address cleansing engine is capable of processing millions of records per hour and beyond. You’ll see an indication of the validity of each address value included in the input address, reducing costly errors. This solution can validate both partial and full address inputs.
-
-- Loqate’s solution transliterates words or letters from different global character sets into either native or Roman characters across 8 scripts including: Cyrillic, Hellenic, Hebrew, Kanji, Simplified Chinese, Arabic, Thai, Hangul.
+- **The Global Knowledge Repository (GKR):** our proprietary main address database, which combines our Knowledge Base data and parsing rules with our location reference datasets for over 245 countries and territories
+- **Global parsing engine:** our proprietary lexicon and context parsing rules created specifically for each country and territory around the world. The parsing engine standardises and cleanses addresses from unstructured and semi-structured data, automatically placing elements into the correct fields and eliminating erroneous non-address data
+- **Address cleansing engine:** Verify is capable of processing millions of records per hour and beyond, and can validate both partial and full address inputs. It can provide an indication of the validity of each address value included with the output address, reducing costly errors
+- **Transliteration:** Verify can transliterate words or letters from different global character sets into either native or Roman characters across 8 scripts: Cyrillic, Hellenic, Hebrew, Kanji, Simplified Chinese, Arabic, Thai, Hangul
 
 _See [loqate.com](https://www.loqate.com/resources/support/cleanse-api/international-batch-cleanse/) for field descriptions and server options._
 
-### What Next Generation Verify offers you
+## What Verify Offers You
 
-We recognise that our partners need solutions which enable them to manage their cloud estate seamlessly, using modern container orchestration to keep cost under control whilst scaling to meet demand.
+We recognise that our partners need solutions which enable you to manage your cloud estate seamlessly, using modern container orchestration to keep cost under control whilst scaling to meet demand.
 
-With Next Generation Verify (NGV) we provide you with the same implementation we run. Providing out of the box helm charts which allow you to deploy and run in your own cloud infrastructure with ease.
+With Verify we provide you with the same implementation we run, including out of the box Helm charts which allow you to deploy and run in your own cloud infrastructure with ease.
 
-Observability is provided using Open Telemetry traces, stdout logging, and prometheus metrics, enabling you to gain insights into the NGV cluster.
+Observability is provided using Open Telemetry traces, stdout logging, and prometheus metrics, enabling you to gain insights into the Verify cluster.
 
 ### Security
 
 For vulnerability disclosure or security findings, please contact your account representative.
 
 ## Prerequisites
+
+Please see below for details of the tools and requirements we recommend for any Verify installation.
+
+### Tools
 
 - Mandatory
   - Kubernetes [v1.19+]
@@ -120,96 +48,133 @@ _Verify has been tested using the version numbers stated above. Please avoid usi
 
 ### Reference Data Storage
 
-The reference data is accessed using a Persistent Volume (PV).  It is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart.  The provided yaml files mount a local volume and will need updating/replacing with the details of your PV.  The `values.yaml` files for both charts have `storage` properties for configuring the PV.
+The reference data is accessed using a Persistent Volume (PV); it is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
 Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours.
 
 These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faster storage will produce better response times.
 
-_[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) about k8s Persistent Volumes and their Access Modes_
+_[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) about k8s Persistent Volumes and their Access Modes._
 
 ### Routing
 
-Is handled by either Istio or a Kubernetes Ingress.  The default is Ingress.
+Routing is handled by either Istio or a Kubernetes Ingress - the default is Ingress.
 
-If you want to use Ingress, you will need an Ingress controller.  The ingress resource only configures the controller, it does not install it.
+If you want to use Ingress, you will need an Ingress controller. Note that the Ingress resource only _configures_ the controller, it does not install it.
 
 _[Read more](https://kubernetes.io/docs/concepts/services-networking/ingress/#prerequisites) about the pre-requisites for getting Ingress to work._
 
+As Verify takes advantage of new and developing technologies, best practices for routing are always evolving. For a detailed discussion on routing best practice, please get in touch with your account representative to arrange a technical conversation.
+
 ### Scaling
 
-Each of the querycoordinator and spatial-api components can be scaled with either HPA or KEDA.  By default they both use HPA but they can be set independently.
+Each of the `querycoordinator` and `spatial-api` components can be scaled with either HPA or KEDA. By default they both use HPA, but they can be set independently.
 
-_[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [Learn more](https://keda.sh/resources/) about KEDA_
+_[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [learn more](https://keda.sh/resources/) about KEDA._
 
-## How it Works
+As Verify takes advantage of new and developing technologies, best practices for managing the environment at scale are always evolving. For a detailed discussion on scaling best practice, please get in touch with your account representative to arrange a technical conversation.
+
+## How to Use This Guide
+
+This guide is split up into the following sections:
+
+- [**How a Verify Installation Works:**](#how-a-verify-installation-works) an overview of the components that make up a Verify installation
+- [**Quick Start Installation:**](#quick-start-installation) step by step instructions for getting up and running quickly with Verify
+- [**Full Installation:**](#full-installation) further instructions for tailoring your installation
+- [**Usage:**](#usage) details of how to test and use your Verify installation
+- [**Example Requests:**](request-and-response-format) a range of example requests and responses
+- [**Troubleshooting:**](#troubleshooting) some suggestions for how to troubleshoot your installation
+
+We recommend you complete the Quick Start Installation section before moving on to the Full Installation section.
+
+## How a Verify Installation Works
 
 By having a Spatial-API deployment for the most searched countries, plus a catch-all deployment for the rest of the world (ROW), you can provision and scale each deployment according to expected traffic.
 
-See the `values.yaml` files for resourcing spatialapi and querycoordinator.  The commented out values in these files are able to serve requests for the whole world but are likely to change.
+See the `values.yaml` files for resourcing `spatialapi` and `querycoordinator`.  The commented out values in these files are able to serve requests for the whole world but are likely to change.
 
 ### Components
 
-#### InstallManager
+- **InstallManager:** downloads and installs the data on a Persistent Volume (PV)
+- **Memberlist:** used to co-ordinate communication between components
+- **Spatial-API:** searches and caches data for one country or all countries
+- **QueryCoordinator:** forwards requests to the appropriate Spatial-API
 
-Downloads and installs the data on a Persistent Volume (PV).
+## Quick Start Installation
 
-#### Memberlist
+To get you up and running with Verify as quickly as possible, we've provided this quick start method which uses [Helmfile](#helmfile) and, on Unix, the Helm plugin **helm-diff**. This will allow you to quickly get to a point where you can test your basic installation, before moving on to a more detailed setup afterwards.
 
-Used to co-ordinate communication between components
+- When you're ready to customise your installation of Verify in more detail, please see the [Helmfile](#helmfile) section below
+- If you do not or cannot use Helmfile, see the section for [Helm](#helm) below
 
-#### Spatial-API
+### Installing Helmfile
 
-Searches and caches data for one country or all countries
+To begin with, you'll need to install Verify using Helmfile - we've provided the instructions for how to do this in both Unix and Windows.
 
-#### QueryCoordinator
+**Unix:**
 
-Forwards requests to the appropriate Spatial-API
-
-## Quick Start
-
-This quick start uses [helmfile](#helmfile)
- and, on Unix, the helm plugin _helm-diff_.  If you do not or cannot use helmfile, see the section for [helm](#helm).
-
-Note: Whether you are using helm or helmfile, please pay particular attention to the [important configuration settings](#important-configuration-settings).
-
-Unix:
+- First create and go to the required directory:
 
 ``` bash
 mkdir lqtcharts && cd lqtcharts/
+```
 
+- Next download the default helmfile.yaml:
+
+``` bash
 wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
+```
 
+- Enter your license key and github account information:
+
+``` bash
 export LICENSE_KEY="<API_KEY>"
 export DOCKER_USERNAME="docker_username"
 export DOCKER_PASSWORD="docker_password"
+```
 
+- Finally run the Helmfile install:
+
+``` bash
 helmfile apply
 ```
 
-Windows:
+**Windows:**
+
+- First create and go to the required directory:
 
 ``` powershell
 mkdir lqtcharts
 cd lqtcharts
+```
 
+- Next download the default helmfile.yaml:
+
+``` powershell
 Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
+```
 
+- Enter your license key and github account information:
+
+``` powershell
 $env:LICENSE_KEY="<API_KEY>"
 $env:DOCKER_USERNAME="docker_username"
 $env:DOCKER_PASSWORD="docker_password"
+```
 
+- Finally run the Helmfile install:
+
+``` powershell
 helmfile sync
 ```
 
-Now check the progress of the installation. [Checking Progress of Data Installation](#checking-progress-of-data-installation)
+Note: If you want to run the quick start again without a data download, see [Re-run quick start without data download](#re-run-quick-start-without-data-download).
 
-Note: If you want to run the quick start again without a data download. See [Re-run quick start without data download](#re-run-quick-start-without-data-download).
+### Download Just a Subset of the Allowed Datasets
 
-### Download just a subset of the allowed datasets
+If you have a license that allows lots of datasets but you only want to download a subset of them, you can choose which datasets to download.
 
-If you have a license that allows lots of datasets but you only want to download a subset of them.
-In the helmfile under the app section shown below. Add 'products: "KBCOMMON,DSVGBR"' as shown. This will add the datasets KBCOMMON and DSVGBR:
+In the Helmfile under the **app** section shown below, you can specify which products to include:
 
 ``` yml
 name: installmanager
@@ -217,17 +182,19 @@ name: installmanager
       - image:
         app:
           products: "KBCOMMON,DSVGBR"
-``` 
+```
 
-### Checking Progress of Data Installation
+In this example, adding "KBCOMMON,DSVGBR"' will include just the datasets KBCOMMON and DSVGBR.
 
-To check the progress of the data installation, first get the name of the installmanager pod:
+### Checking the Progress of the Data Installation
+
+The next step is to check the progress of the data installation - to do this, first get the name of the installmanager pod:
 
 ``` bash
 kubectl get pods -n loqate
 ```
 
-Example output:
+Here's an example output:
 
 ``` bash
 NAME                                READY   STATUS             RESTARTS      AGE
@@ -291,15 +258,17 @@ The data installation has finished when you see the `Edit complete` line.
 
 ### Testing the Installation
 
-The NGV installation can be tested by sending requests through the system.  First, open a port to receive requests.  You may want to do this in a new shell because the command does not terminate.
+You can test the Verify installation by sending requests through the system. We recommend you test both a GET request and a POST request, so we've included examples of both.
+
+First open a port to receive requests (you may want to do this in a new shell because the command does not terminate):
 
 ``` bash
 kubectl port-forward -n loqate svc/querycoordinator 8900:8900
 ```
 
-A version request will determine if the software and data was successfully installed:
+Then send a version request (GET) to determine if the software and data was successfully installed.
 
-Unix:
+**Unix:**
 
 ``` bash
 curl -X GET http://localhost:8900/api/version
@@ -311,7 +280,7 @@ Successful response:
 {"version":"2.44.0.16383-1f51bc7"}
 ```
 
-Windows:
+**Windows:**
 
 ``` powershell
 Invoke-WebRequest -Method GET http://localhost:8900/api/version
@@ -338,9 +307,9 @@ ParsedHtml        : mshtml.HTMLDocumentClass
 RawContentLength  : 34
 ```
 
-Although the version request is sufficient to prove the installation worked, here is a verify request for confirmation.
+Now send a Verify request (POST).
 
-Unix:
+**Unix:**
 
 ``` bash
 curl -X POST http://localhost:8900/verify -d '{"input":[{"Address1":"TheFoundation","Locality":"Chester","Country":"GB"}]}'
@@ -353,7 +322,7 @@ Successful output:
 Way","Address3":"Chester Business Park","Address4":"Chester","AdministrativeArea":"Cheshire","Building":"The Foundation","Country":"GB","CountryName":"United Kingdom","DeliveryAddress":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park","DeliveryAddress1":"The Foundation","DeliveryAddress2":"Herons Way","DeliveryAddress3":"Chester Business Park","DependentLocality":"Chester Business Park","HyphenClass":"B","ISO3166-2":"GB","ISO3166-3":"GBR","ISO3166-N":"826","Locality":"Chester","MatchRuleLabel":"1","Sequence":"1","Thoroughfare":"Herons Way"}]}
 ```
 
-Windows:
+**Windows:**
 
 ``` powershell
 Invoke-WebRequest http://localhost:8900/verify -Method POST -Body "{`"input`":[{`"Address1`":`"TheFoundation`",`"Locality`":`"Chester`",`"Country`":`"GB`"}]}"
@@ -381,19 +350,94 @@ ParsedHtml        : mshtml.HTMLDocumentClass
 RawContentLength  : 773
 ```
 
-## Helmfile
+If one or both of the tests are unsuccessful, first check the Troubleshooting section below for information about the most likely error.
 
-Helmfile can be used to easily install all components in a simple K8s environment. It will automatically pull from the Loqate charts repository.
+If you can't find the error, check the logs for each pod
 
-helm diff is a plugin used by helmfile and will need to be installed to helm.  This appears to not work on Windows.
+Once you've successfully tested your quick start install, you can move onto the next section to further tailor your installation.
 
-```helm plugin install https://github.com/databus23/helm-diff```
+### Re-run Quick Start Without Data Download
 
-More information on helmfile as well as how to use it can be found here: <https://github.com/helmfile/helmfile>
+You may find that you want to re-run the Quick Start process, but don't need to re-download all of the data. To stop the data getting downloaded again, open the helmfile.yaml and do the following:
 
-An example helmfile can be downloaded from <https://charts.loqate.com/helmfile.yaml>
+- Comment out the **installmanager** section
+- In the **querycoordinator and spatial-api** section comment out the "- installmanager" line in the **needs** section as shown below:
 
-### Install
+``` yml
+needs:
+    #- installmanager
+```
+
+- Delete the Helmfile install
+
+```bash
+helmfile delete
+```
+
+- Re-sync the Helmfile installation
+
+Unix:
+
+``` bash
+helmfile apply
+```
+
+Windows:  
+
+``` powershell
+helmfile sync
+```
+
+## Full Installation
+
+With a Quick Start install completed, you can build on this by adding country-specific deployments and certified countries. We've included information on completing a full install using both Helmfile and Helm, allowing you to choose which option you would prefer.
+
+- [Click here for the Helmfile installation instructions](#helmfile)
+- [Click here for the Helm installation instructions](#helm)
+
+Note: whether you are using Helm or Helmfile, please pay particular attention to the configuration settings below.
+
+### Important Configuration Settings
+
+#### Adding Country Specific Deployments
+
+To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving large numbers of requests.
+
+If you decide you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
+
+``` bash
+helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
+```
+
+#### Certified Datasets (CASS, SERP, AMAS)
+
+To use any of the certified datasets, you will need to access extra libraries.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
+
+Here's an example of how (in Helm) to create a US spatial-api deployment that can use the CASS certified engine, given that data is stored at `/data/`:
+
+``` bash
+helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+```
+
+For examples of how to change config values using Helmfile, see [this section below](#config-values).
+
+### Helmfile
+
+Helmfile can be used to easily install all components in a simple Kubernetes environment. It will automatically pull from the Loqate charts repository.
+
+> Note: Helmfile uses the helm-diff plugin for the `helmfile apply` command, you can install it with the command below.  This plugin does not work on Windows, so we use `helmfile sync` instead.
+
+``` bash
+helm plugin install https://github.com/databus23/helm-diff
+```
+
+More information on Helmfile as well as how to use it can be found here: <https://github.com/helmfile/helmfile>
+
+An example Helmfile can be downloaded from <https://charts.loqate.com/helmfile.yaml>
+
+#### Install
+
+The installation process for Helmfile is very simple, requiring the following commands.
 
 Unix:
 
@@ -407,13 +451,19 @@ Windows:
 helmfile sync
 ```
 
-### Uninstall
+#### Uninstall
+
+The command to uninstall Helmfile in either Unix or Windows is:
 
 ```helmfile delete```
 
-### Config Values
+#### Config Values
 
-Location of locally available GKR data to mount.  This needs to be set the same for both installmanager and spatial-api.
+There are various values you can configure within the Helmfile - in this section we will provide some examples of what you can configure and how.
+
+**Location of locally available GKR data to mount:**
+
+This needs to be set the same for both installmanager and spatial-api (and also uses slightly different paths in Unix and Windows)
 
 Unix:
 
@@ -422,39 +472,41 @@ storage:
   path: /opt/loqate/data
 ```
 
-Windows using docker desktop:
+Windows using Docker desktop:
 
 ``` yml
 storage:
   path: /run/desktop/mnt/host/c/loqate/data
 ```
 
-Setting license key & products for installmanager
+**Setting license key and products for installmanager:**
 
 ``` yml
 - app:
-  licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
+  licenseKey: 
   products: "ALL"
 ```
 
-To download a subset of the datasets on your license. Use a comma separated list of the datasets as follows:
+To download a subset of the datasets on your license, use a comma separated list of the datasets as follows:
 
 ``` yml
 - app:
-  licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
+  licenseKey: 
   products: "KBCOMMON,DSVGBR"
 ```
 
-Also see [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
+**Setting dataset for spatial-api:**
 
-To set the dataset for spatial-api to Rest Of the World i.e. "row"
+Here's how to set a specific dataset for spatial-api, using ROW (i.e. 'Rest of the World') as an example:
 
 ``` yml
 verify:
   dataset: "row"
 ```
 
-To set a spatial-api for a specific certified dataset e.g australia (au). Create a new spatial-api section in the yaml file. Copy the current spatia-api and give it a unique name. Then set the libraryPath to where the lib64 libraries are and the dataset to au as shown below
+To set a spatial-api for a specific _certified_ dataset (for example Australia - 'au'), you'll need to create a new spatial-api section in the yaml file.
+
+Copy the current spatial-api and give it a unique name, then set the `libraryPath` to where the _lib64_ libraries are and the dataset to _au_ as shown below:
 
 ``` yml
         app:
@@ -463,32 +515,34 @@ To set a spatial-api for a specific certified dataset e.g australia (au). Create
           dataset: "au"
 ```
 
-For more information, see [Important Configuration Settings](#important-configuration-settings)
+For more information about certified data sets see the earlier [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section.
 
-## Helm
+### Helm
 
-### Docker Images
+Follow the instructions below to install Verify using Helm (you can use all of the instructions below in both Unix and Windows).
 
-The components installmanager, spatial-api, and querycoordinator have associated docker images.  These docker images are hosted in private repositories on docker hub, so you will need a docker hub account for us to grant access to the repositories.
+#### Docker Images
 
-### Add Repo
+The components `installmanager`, `spatial-api` and `querycoordinator` all have associated Docker images.  These Docker images are hosted in private repositories on Docker Hub, so you will need a Docker Hub account in order to be granted access.
+
+#### Add Repo
 
 ``` bash
 helm repo add loqate https://charts.loqate.com
 ```
 
-_See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
+_See [Helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation._
 
-### Create namespace
+#### Create Namespace
 
 ``` bash
 kubectl create namespace loqate
 ```
 
-### Install Data
+#### Install Data
 
 ``` bash
-helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 To install a subset of the datasets you have in the license key you can add  --set app.products="KBCOMMON,DSVGBR" as follows:
@@ -497,11 +551,11 @@ To install a subset of the datasets you have in the license key you can add  --s
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
-Ensure the download is fully completed before continuing, see [Checking Progress of Data Installation](#checking-progress-of-data-installation).
+It's important to make sure the download is fully completed before continuing. See the section on [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) earlier for details of how to do this.
 
-### Install Charts
+#### Install Charts
 
-Standard helm install
+Use these commands for a standard install:
 
 ``` bash
 helm install -n loqate memberlist loqate/memberlist
@@ -509,49 +563,51 @@ helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.use
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
-#### Check the spatial-api and querycoordinator have started
+> NOTE: if you want to add certified datasets to a standard install, you will need to set the additional library path for those datasets, as described in the [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section (specifically, you will need to append `app.libraryPath="/lib64:/data/lib64` to the spatial-api line shown above).
 
-``` bash
+Check the spatial-api and querycoordinator have started:
+
+```bash
 kubectl get pods -n loqate
 ```
 
 Example output:
 
-``` bash
+```bash
 NAME                                  READY   STATUS    RESTARTS      AGE
 qc-querycoordinator-ffdc5cfbc-2hj7w   1/1     Running   0             14m
 sa-spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m   
+```
 
 Wait until there is 1/1 in the READY column for spatial-api and querycoordinator. After this wait an extra 1 minute.
 
-
-The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`, changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
+The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`. Changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
-### Upgrade Chart
+#### Upgrade Chart
 
 ``` bash
 helm upgrade <RELEASE_NAME> <CHART> --install
 ```
 
-The example below is an upgrade when you get a new license key with a new data set added.
+The example below is an upgrade when you get a new license key with a new data set added:
 
-``` bash
+```bash
 helm upgrade -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
-### Uninstall Chart
+#### Uninstall Chart
 
 ``` bash
 helm uninstall -n loqate <RELEASE_NAME>
 ```
 
-### Delete namespace
+#### Delete namespace
 
-This removes all the Kubernetes components associated with the chart and deletes the release.
+This removes all the Kubernetes components associated with the chart and deletes the release:
 
 ``` bash
 kubectl delete namespace loqate
@@ -559,35 +615,66 @@ kubectl delete namespace loqate
 
 This deletes the kubernetes namespace that was created for the Helm release.
 
-_See [helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
+_See [Helm uninstall](https://helm.sh/docs/helm/helm_uninstall/) for command documentation._
 
-## Important Configuration Settings
+### Full System Clean Up
 
-### Adding Country Specific Deployments
+If you ever need to do a full system clean up, here are the steps to take.
 
-To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving a large number of requests.
+#### Helmfile-only Clean Up Commands
 
-To create a country specific deployment, set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
+Perform the following:
 
 ``` bash
-helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
+helmfile delete
 ```
 
-### Certified Datasets (CASS, SERP, AMAS)
+#### Helmfile and Helm Clean Up Commands
 
-To use any of the certified datasets, extra libraries are required.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
-
-Example, to create a US deployment that can use the CASS certified engine, given that data is stored at `/data/`:
+**Delete the namespace:**
 
 ``` bash
-helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+kubectl delete namespace loqate
+```
+
+**Delete the Persistent Volumes:**
+
+Get the persistent volumes:
+
+``` bash
+kubectl get pv
+```
+
+If there are any persistent volumes for installmanager or spatial-api you can delete them with:
+
+``` bash
+kubectl delete pv <NAME>
+```
+
+#### Check That the System Has Cleaned Up
+
+``` bash
+$ kubectl -n loqate get pods
+No resources found in loqate namespace.
+
+$ kubectl -n loqate get services
+No resources found in loqate namespace.
+
+$ kubectl -n loqate get deployments
+No resources found in loqate namespace.
+
+$ kubectl get pv
+No resources found
+
+$ kubectl -n loqate get pvc
+No resources found in loqate namespace.
 ```
 
 ## Usage
 
 ### Functions
 
-The querycoordinator chart contains templates for a kubernetes ingress and an istio gateway but both are disabled by default. To test the installation, forward port 8900 of the querycoordinator service and use the following urls.
+The `querycoordinator` chart contains templates for a Kubernetes ingress and an Istio gateway, but both are disabled by default. To test the installation, forward port 8900 of the `querycoordinator` service and use the following URLs.
 
 | Function | Method | URL |
 | -------- | ------ | --- |
@@ -601,16 +688,16 @@ The querycoordinator chart contains templates for a kubernetes ingress and an is
 
 | Name | Description |
 | ---- | --- |
-| input | An array of addresses that you want to verify. For optimal processing, the country field should contain a valid ISO2 or ISO3 country code.  Without a country code, requests will be routed to the `row` deployment, please see [How it Works](#how-it-works) and [Important Configuration Settings](#important-configuration-settings). |
+| input | An array of addresses that you want to verify. For optimal processing, the country field should contain a valid ISO2 or ISO3 country code.  Without a country code, requests will be routed to the `ROW` deployment. Please see [How a Verify Installation Works](#how-a-verify-installation-works) and [Important Configuration Settings](#important-configuration-settings). |
 | options | Used to specify various options and override processes. |
 
 **Options** comprised of the following:
 
-1. Geocode (boolean as string) - If you want geo-coordinates to be appended to your results (if available)
-2. Processes (array of string) - Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied.
-3. Certify (boolean as string) - Use certified dataset. AMAS (AU), CASS (US) or SERP (CA).
-4. Enhance (boolean as string) - Use enhanced datasets. Returns enhance fields if applicable.
-5. ServerOptions (object) - Properties are OptionName and value is OptionValue.
+- **Geocode (boolean as string):** if you want geo-coordinates to be appended to your results (if available)
+- **Processes (array of string):** Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied.
+- **Certify (boolean as string):** use certified dataset. AMAS (AU), CASS (US) or SERP (CA).
+- **Enhance (boolean as string):** use enhanced datasets. Returns enhance fields if applicable.
+- **ServerOptions (object):** properties are OptionName and value is OptionValue.
 
 More information about [server options](https://support.loqate.com/server-options/).
 
@@ -622,16 +709,19 @@ More information about [server options](https://support.loqate.com/server-option
 
 **Output** comprised of the following:
 
-1. AVC – Address verification code
-2. AQI – Address Quality Index
-3. Address Elements – The cleansed address elements
-4. Latitude/Longitude – The latitude and longitude of the address(if Geocode is used)
+- **AVC:** Address verification code
+- **AQI:** Address Quality Index
+- **Address Elements:** the cleansed address elements
+- **Latitude/Longitude:** the latitude and longitude of the address (if Geocode is used)
 
 See this complete list of [field descriptions](https://support.loqate.com/documentation/fielddescrip/).
 
 ### Request and Response Format
 
-#### Request - Geocode as true
+We've provided a selection of the most useful examples below for both sample requests and returns. Click on the expanding sections to see the details of each.
+
+<details>
+	<summary>Request - Geocode as True (click to expand)</summary>
 
 ``` json
 {
@@ -649,7 +739,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Geocode as true
+</details>
+
+<details>
+	<summary>Response - Geocode as True</summary>
 
 ``` json
 {
@@ -699,7 +792,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Process option as ‘Verify’
+</details>
+
+<details>
+	<summary>Request - Process Option as ‘Verify’</summary>
 
 ``` json
 {
@@ -718,7 +814,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Process option as ‘Verify’
+</details>
+
+<details>
+	<summary>Response - Process Option as ‘Verify’</summary>
 
 ``` json
 {
@@ -753,7 +852,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Process option as ‘Search’
+</details>
+
+<details>
+	<summary>Request - Process Option as ‘Search’</summary>
 
 ``` json
 {
@@ -772,7 +874,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Process option as ‘Search’
+</details>
+
+<details>
+	<summary>Response - Process Option as ‘Search’</summary>
 
 ``` json
 {
@@ -858,7 +963,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Process option as ‘ReverseGeocode’
+</details>
+
+<details>
+	<summary>Request - Process Option as ‘ReverseGeocode’</summary>
 
 ``` json
 {
@@ -878,7 +986,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Process option as ‘ReverseGeocode’
+</details>
+
+<details>
+	<summary>Response - Process Option as ‘ReverseGeocode’</summary>
 
 ``` json
 {
@@ -961,7 +1072,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Certify option - Certified data set AMAS (AU)
+</details>
+
+<details>
+	<summary>Request - Certify Option - Certified Data Set AMAS (AU)</summary>
 
 ``` json
 {
@@ -979,7 +1093,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Certify option - Certified data set AMAS (AU)
+</details>
+
+<details>
+	<summary>Response - Certify Option - Certified Data Set AMAS (AU)</summary>
 
 ``` json
 {
@@ -1029,7 +1146,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Certify option - Certified data set CASS (US)
+</details>
+
+<details>
+	<summary>Request - Certify Option - Certified Data Set CASS (US)</summary>
 
 ``` json
 {
@@ -1048,7 +1168,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Certify option - Certified data set CASS (US)
+</details>
+
+<details>
+	<summary>Response - Certify Option - Certified Data Set CASS (US)</summary>
 
 ``` json
 {
@@ -1138,7 +1261,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Certify option - Certified data set SERP (CA)
+</details>
+
+<details>
+	<summary>Request - Certify Option - Certified Data Set SERP (CA)</summary>
 
 ``` json
 {
@@ -1154,7 +1280,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Certify option - Certified data set SERP (CA)
+</details>
+
+<details>
+	<summary>Response - Certify Option - Certified Data Set SERP (CA)</summary>
 
 ``` json
 {
@@ -1196,7 +1325,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Enhance option to return enhanced data set
+</details>
+
+<details>
+	<summary>Request - Enhance Option to Return Enhanced Data Set</summary>
 
 ``` json
 {
@@ -1215,7 +1347,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Enhance option to return enhanced data set
+</details>
+
+<details>
+	<summary>Response - Enhance Option to Return Enhanced Data Set</summary>
 
 ``` json
 {
@@ -1266,7 +1401,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Request - Server Options
+</details>
+
+<details>
+	<summary>Request - Server Options</summary>
 
 ``` json
 {
@@ -1285,7 +1423,10 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-#### Response - Server Options
+</details>
+
+<details>
+	<summary>Response - Server Options</summary>
 
 ``` json
 {
@@ -1320,143 +1461,71 @@ See this complete list of [field descriptions](https://support.loqate.com/docume
 }
 ```
 
-## Re-run quick start without data download
+</details>
 
-To stop the data getting downloaded again open the helmfile.yaml and comment out:
+<br />
 
-1. The installmanager section.
-1. Also in the querycoordinator and spatial-api section comment out the "- installmanager" line in the needs section as shown below:
+## Troubleshooting
 
-``` yml
-needs:
-    #- installmanager
-```
+In this section we've put together some suggestions for how to handle commonly-found errors or problems.
 
-Delete the helmfile install
+The instructions below should apply if you get one of the following errors from a query:
 
-```helmfile delete```
+- “No spatialapi available”
+- “Failed to process.”
 
-Re-sync the helmfile installation
+### Suggested Fix
 
-Unix:
+First, make sure your install manager finished properly as per the [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) section.
 
-``` bash
-helmfile apply
-```
-
-Windows:  
-
-``` powershell
-helmfile sync
-```
-
-## Full system clean up
-
-### Helmfile only clean up commands
-
-Perform the following:
-
-``` bash
-helmfile delete
-```
-
-### Helmfile and Helm clean up commands
-
-#### Delete the namespace
-
-``` bash
-kubectl delete namespace loqate
-```
-
-#### Delete the persistent volumes
-
-Get the persistent volumes:
-
-``` bash
-kubectl get pv
-```
-
-If there are any persistent volumes for installmanager or spatial-api. Delete them with:
-
-``` bash
-kubectl delete pv <NAME>
-```
-
-### Check that the system has cleaned up
-
-``` bash
-$ kubectl -n loqate get pods
-No resources found in loqate namespace.
-
-$ kubectl -n loqate get services
-No resources found in loqate namespace.
-
-$ kubectl -n loqate get deployments
-No resources found in loqate namespace.
-
-$ kubectl get pv
-No resources found
-
-$ kubectl -n loqate get pvc
-No resources found in loqate namespace.
-```
-
-## Trouble Shooting
-
-Symptoms
-You get one of the following errors from a query:
-
-1. "No spatialapi available"
-1. "Failed to process."
-
-Fix:
-
-Make sure your install manager finished properly as per [Checking Progress of Data Installation](#checking-progress-of-data-installation)
-
-Wait 5 minutes then check if the error is still happening.
+Then wait three minutes before checking whether the error is still happening.
 
 If the error is still happening:
 
-First find the pods names using:
+- First find the pods names using:
 
-``` bash
+```bash
 kubectl get pods -n loqate
 ```
 
-1. If any of the pods are not in service i.e. 0/1 then delete the equivalent chart and reinstall as shown below.
-2. If you are still getting the error. Delete each chart and reinstall one at a time. Testing after the chart comes back up, after waiting an extra 3 mins. Do this in the following order: spatial-api, querycoordinator. You may have to repeat this a few times. i.e. spatial-api, querycoordinator, spatial-api ...
+- If any of the pods are not in service (i.e. 0/1) then delete the equivalent chart and reinstall as shown below
+- If you are still getting the error, delete each release and reinstall one at a time
+- Test after the release comes back up, after waiting an extra 3 mins. Do this in the following order:
+  - First spatial-api, then querycoordinator.
+  - You may have to repeat this a few times () i.e. spatial-api, querycoordinator, spatial-api …)
 
-Delete a helm chart and reinstall it:
+Next, delete a helm release and reinstall it.
 
-To delete a chart first get a list of charts:
+To delete a release, first get a list of charts:
 
-``` bash
- helm list -n loqate
+```bash
+helm list -n loqate
 ```
 
-Then delete the chart as follows:
+Then delete the release as follows:
 
-``` bash
+```bash
 helm delete -n loqate <NAME>
 ```
 
-Reinstall the chart as show per [Install Charts](#install-charts) or [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas)
+Reinstall the chart as shown in the [Install Charts](#install-charts) or [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section.
 
 Check the pod is back in service using:
 
-``` bash
+```bash
 kubectl get pods -n loqate
 ```
 
-Wait 3 minutes then try your query again.
+Wait three minutes then try your query again.
 
+If the error has not been resolved, please contact your account representative to arrange a further discussion.
 
 ## TERMS AND CONDITIONS FOR USE
 
 ### 1. DEFINITIONS
 
-- **“Licence”** shall mean the Terms and Conditions for use of the Loqate NGV Software as defined by Clauses 1 – 4 (inclusive) below.
-- **“Customer Entity”** means any Customer Group Company that receives or benefits from the Loqate NGV Software provided by GBG.
+- **“Licence”** shall mean the Terms and Conditions for use of the Loqate Verify Software as defined by Clauses 1 – 4 (inclusive) below.
+- **“Customer Entity”** means any Customer Group Company that receives or benefits from the Loqate Verify Software provided by GBG.
 - **“Datasets”** means an individual data service included or delivered as part of the Software and/or Service and selected by the Customer and referenced on the Order Form. Where applicable, this may incorporate Supplier Data or Supplier Technology or utilise information derived from Supplier Data or Supplier Technology.
 - **“Service”** means the service provided by GBG, including any and all Datasets, provided to the Customer in accordance with an agreement together with any other ancillary services provided by GBG to a customer pursuant to an agreement.
 - **“Software”** means the GBG product or solution, including any and all Datasets, provided to the Customer in accordance with an Agreement together with any other ancillary services provided by GBG to the Customer pursuant to an agreement.
@@ -1464,21 +1533,21 @@ Wait 3 minutes then try your query again.
 
 ### 2. LICENCE
 
-2.1 Subject to the terms and conditions of this Licence, GBG hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, revocable licence to use the Loqate NGV Software provided always that such use of the Loqate NGV Software is with a GBG Service and / or Software only.
+2.1 Subject to the terms and conditions of this Licence, GBG hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, revocable licence to use the Loqate Verify Software provided always that such use of the Loqate Verify Software is with a GBG Service and / or Software only.
 
-2.2 By using the  Loqate NGV Software You agree that:
+2.2 By using the  Loqate Verify Software You agree that:
 
-2.2.1 You will not use or exploit the Intellectual Property Rights in the Loqate NGV Software or permit others to use or exploit the Intellectual Property Rights in the Loqate NGV Software outside of the terms of the Licence;  
+2.2.1 You will not use or exploit the Intellectual Property Rights in the Loqate Verify Software or permit others to use or exploit the Intellectual Property Rights in the Loqate Verify Software outside of the terms of the Licence;  
 
-2.2.2 Your use of the Loqate NGV Software through any software, equipment, materials or services not provided by GBG will not infringe the rights of any third party.
+2.2.2 Your use of the Loqate Verify Software through any software, equipment, materials or services not provided by GBG will not infringe the rights of any third party.
 
 ### 3. DISCLAIMER OF WARRANTY
 
-Unless required by applicable law or agreed to in writing, GBG provides the NGV Software on an "as is" basis. Any and all warranties, conditions and other terms relating to the NGV Software whether express or implied by law, custom or otherwise are, to the fullest extent permitted by law, excluded from the Licence. GBG shall not be responsible for the decisions that You make as a result of the information, NGV Software or data that GBG provides to the You. You are solely responsible for determining the appropriateness of using the Loqate NGV Software and assume any risk associated with Your exercise of permissions under this Licence.
+Unless required by applicable law or agreed to in writing, GBG provides the Verify Software on an "as is" basis. Any and all warranties, conditions and other terms relating to the Verify Software whether express or implied by law, custom or otherwise are, to the fullest extent permitted by law, excluded from the Licence. GBG shall not be responsible for the decisions that You make as a result of the information, Verify Software or data that GBG provides to the You. You are solely responsible for determining the appropriateness of using the Loqate Verify Software and assume any risk associated with Your exercise of permissions under this Licence.
 
 ### 4. LIMITATION OF LIABILITY
 
-In no event shall GBG be liable to You , whether such liability arises in contract, tort (including, without limitation, negligence) misrepresentation or otherwise for damages, including any direct, indirect, special, incidental, or consequential damages whatsoever arising as a result of this Licence or out of the use or inability to use the Loqate NGV Software (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if GBG has been advised of the possibility of such damages.
+In no event shall GBG be liable to You , whether such liability arises in contract, tort (including, without limitation, negligence) misrepresentation or otherwise for damages, including any direct, indirect, special, incidental, or consequential damages whatsoever arising as a result of this Licence or out of the use or inability to use the Loqate Verify Software (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if GBG has been advised of the possibility of such damages.
 
 # Application Version Information 
 
