@@ -352,7 +352,7 @@ RawContentLength  : 773
 
 If one or both of the tests are unsuccessful, first check the Troubleshooting section below for information about the most likely error.
 
-If you can't find the error, check the logs for each pod
+If you can't find the error, check the logs for each pod [How to check the logs](#how-to-check-the-logs)
 
 Once you've successfully tested your quick start install, you can move onto the next section to further tailor your installation.
 
@@ -414,6 +414,8 @@ helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=
 To use any of the certified datasets, you will need to access extra libraries.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
 
 Here's an example of how (in Helm) to create a US spatial-api deployment that can use the CASS certified engine, given that data is stored at `/data/`:
+
+Warning: If you are outside the USA you will not get certified USA data downloaded. This is a legal requirement.
 
 ``` bash
 helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
@@ -668,6 +670,23 @@ No resources found
 
 $ kubectl -n loqate get pvc
 No resources found in loqate namespace.
+```
+
+### How to check the logs
+
+First get the pods:
+
+``` bash
+$ kubectl get pods
+NAME                                   READY   STATUS             RESTARTS      AGE
+qc-querycoordinator-76c78c997c-qx2mb   1/1     Running            2 (18h ago)   18h
+sa-spatial-api-79c4f874c8-rrb45        0/1     ImagePullBackOff   0             18h
+```
+
+Then run the following on the pod you wish to check the logs for:
+
+``` bash
+kubectl logs <NAME>
 ```
 
 ## Usage
