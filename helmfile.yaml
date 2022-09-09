@@ -63,7 +63,7 @@ releases:
         verify:
           dataset: "row"
     set:
-      - name: app.modelsPath
+      - name: app.loqateDataPath
         value: {{ env "LOQATE_DATA_FOLDER" | default "" | quote }}
       - name: image.tag
         value: {{ env "LOQATE_SPATIAL_API_VERSION" | default "latest" | quote }}
