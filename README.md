@@ -406,7 +406,7 @@ To get the best performance and flexible scaling, we recommend having spatial-ap
 If you decide you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
 
 ``` bash
-helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=gb
+helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
 ```
 
 #### Certified Datasets (CASS, SERP, AMAS)
@@ -418,7 +418,7 @@ Here's an example of how (in Helm) to create a US spatial-api deployment that ca
 Warning: If you are outside the USA you will not get certified USA data downloaded. This is a legal requirement.
 
 ``` bash
-helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=ml-memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
 
 For examples of how to change config values using Helmfile, see [this section below](#config-values).
@@ -577,8 +577,8 @@ Example output:
 
 ```bash
 NAME                                  READY   STATUS    RESTARTS      AGE
-qc-querycoordinator-ffdc5cfbc-2hj7w   1/1     Running   0             14m
-sa-spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m   
+querycoordinator-ffdc5cfbc-2hj7w   1/1     Running   0             14m
+spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m   
 ```
 
 Wait until there is 1/1 in the READY column for spatial-api and querycoordinator. After this wait an extra 1 minute.
@@ -679,8 +679,8 @@ First get the pods:
 ``` bash
 $ kubectl get pods
 NAME                                   READY   STATUS             RESTARTS      AGE
-qc-querycoordinator-76c78c997c-qx2mb   1/1     Running            2 (18h ago)   18h
-sa-spatial-api-79c4f874c8-rrb45        0/1     ImagePullBackOff   0             18h
+querycoordinator-76c78c997c-qx2mb   1/1     Running            2 (18h ago)   18h
+spatial-api-79c4f874c8-rrb45        0/1     ImagePullBackOff   0             18h
 ```
 
 Then run the following on the pod you wish to check the logs for:
