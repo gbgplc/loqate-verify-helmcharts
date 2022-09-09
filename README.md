@@ -357,7 +357,26 @@ RawContentLength  : 773
 
 If one or both of the tests are unsuccessful, first check the Troubleshooting section below for information about the most likely error.
 
-If you can't find the error, check the logs for each pod [How to check the logs](#how-to-check-the-logs)
+If you can't find the error, check the logs for each pod.
+
+**How to Check the Logs**
+
+First get the pods:
+
+```bash
+$ kubectl get pods
+NAME                                   READY   STATUS             RESTARTS      AGE
+qc-querycoordinator-76c78c997c-qx2mb   1/1     Running            2 (18h ago)   18h
+sa-spatial-api-79c4f874c8-rrb45        0/1     ImagePullBackOff   0             18h
+```
+
+Then run the following on the pod you wish to check the logs for:
+
+```bash
+kubectl logs <NAME>
+```
+
+If you still can't find or resolve the error, please contact your account representative to arrange a further discussion.
 
 Once you've successfully tested your quick start install, you can move onto the next section to further tailor your installation.
 
@@ -420,7 +439,7 @@ To use any of the certified datasets, you will need to access extra libraries.  
 
 Here's an example of how (in Helm) to create a US spatial-api deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
-Warning: If you are outside the USA you will not get certified USA data downloaded. This is a legal requirement.
+> Please note that for legal reasons, if you are located outside of the USA you will not be able to download the certified US (i.e. CASS) data.
 
 ``` bash
 helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
@@ -675,23 +694,6 @@ No resources found
 
 $ kubectl -n loqate get pvc
 No resources found in loqate namespace.
-```
-
-### How to check the logs
-
-First get the pods:
-
-``` bash
-$ kubectl get pods
-NAME                                   READY   STATUS             RESTARTS      AGE
-querycoordinator-76c78c997c-qx2mb   1/1     Running            2 (18h ago)   18h
-spatial-api-79c4f874c8-rrb45        0/1     ImagePullBackOff   0             18h
-```
-
-Then run the following on the pod you wish to check the logs for:
-
-``` bash
-kubectl logs <NAME>
 ```
 
 ## Usage
@@ -1513,36 +1515,36 @@ kubectl get pods -n loqate
 ```
 
 - If any of the pods are not in service (i.e. 0/1) then delete the equivalent chart and reinstall as shown below
-- If you are still getting the error, delete each release and reinstall one at a time
-- Test after the release comes back up, after waiting an extra 3 mins. Do this in the following order:
-  - First spatial-api, then querycoordinator.
-  - You may have to repeat this a few times () i.e. spatial-api, querycoordinator, spatial-api …)
 
-Next, delete a helm release and reinstall it.
-
-To delete a release, first get a list of charts:
+- To delete a release, first get a list of charts:
 
 ```bash
 helm list -n loqate
 ```
 
-Then delete the release as follows:
+- Then delete the release as follows:
 
 ```bash
 helm delete -n loqate <NAME>
 ```
 
-Reinstall the chart as shown in the [Install Charts](#install-charts) or [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section.
+- Reinstall the chart as shown in the [Install Charts](#install-charts) or [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section.
 
-Check the pod is back in service using:
+- Check the pod is back in service using:
 
 ```bash
 kubectl get pods -n loqate
 ```
 
-Wait three minutes then try your query again.
+- Wait three minutes then try your query again.
 
-If the error has not been resolved, please contact your account representative to arrange a further discussion.
+If you are still getting the error, delete each release and reinstall one at a time
+
+- Test after the release comes back up, after waiting an extra three minutes. Do this in the following order:
+  - First spatial-api, then querycoordinator.
+  - You may have to repeat this a few times (i.e. spatial-api, querycoordinator, spatial-api …)
+
+If the error has still not been resolved, please contact your account representative to arrange a further discussion.
 
 ## TERMS AND CONDITIONS FOR USE
 
