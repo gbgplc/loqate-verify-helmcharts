@@ -56,6 +56,8 @@ These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faste
 
 _[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) about k8s Persistent Volumes and their Access Modes._
 
+You will need to create data storage folders for `install manager` and AI-Parser.  These should be seperate folders.
+
 ### Routing
 
 Routing is handled by either Istio or a Kubernetes Ingress - the default is Ingress.
@@ -115,7 +117,9 @@ To begin with, you'll need to install Verify using Helmfile - we've provided the
 
 - First create and go to the required directory:
 
-``` bash
+```bash
+mkdir /loqate
+mkdir /models_structured
 mkdir lqtcharts && cd lqtcharts/
 ```
 
@@ -143,12 +147,12 @@ helmfile apply
 
 - First create and go to the required directory:
 
-``` powershell
-mkdir lqtcharts
-cd lqtcharts
+```powershell
+New-Item /loqate -ItemType Directory
+New-Item /models_structured -ItemType Directory
+New-Item lqtcharts -ItemType Directory
+Set-Location lqtcharts
 ```
-
-- Next download the default helmfile.yaml:
 
 ``` powershell
 Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
@@ -161,6 +165,7 @@ $env:LICENSE_KEY="<API_KEY>"
 $env:DOCKER_USERNAME="docker_username"
 $env:DOCKER_PASSWORD="docker_password"
 ```
+
 
 - Finally run the Helmfile install:
 

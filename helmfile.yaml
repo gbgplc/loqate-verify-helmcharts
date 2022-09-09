@@ -14,6 +14,8 @@ releases:
     namespace: loqate
     chart: "loqate/memberlist"
     version: ^0.1.0
+    needs:
+    - lqtshared
 
   - name: lqtshared
     namespace: loqate
@@ -32,14 +34,16 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-install-manager
-          tag: "0.1.22799"
         app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
-        storage:
-          path: /run/desktop/mnt/host/c/loqate/data
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+    set:
+      - name: image.tag
+        value: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
+      - name: storage.path
+        value: {{ env "LOQATE_DATA_FOLDER"  | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
     waitForJobs: true
     needs:
     - lqtshared
@@ -51,9 +55,6 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-spatial-api
-          tag: "0.1.23512"
-        storage:
-          path: /run/desktop/mnt/host/c/loqate/data
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
@@ -61,8 +62,19 @@ releases:
           libraryPath: "/lib64"
         verify:
           dataset: "row"
+    set:
+      - name: app.modelsPath
+        value: {{ env "LOQATE_DATA_FOLDER" | default "" | quote }}
+      - name: image.tag
+        value: {{ env "LOQATE_SPATIAL_API_VERSION" | default "latest" | quote }}
+      - name: storage.path
+        value: {{ env "LOQATE_NFS_SHARE" | default "" | quote }}
+      - name: storage.server
+        value: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }} 
+      - name: storage.type
+        value: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }} 
     needs:
-    - installmanager
+    - lqtshared
 
   - name: querycoordinator
     namespace: loqate
@@ -71,12 +83,14 @@ releases:
     values:
       - image:
           repository: gbgroup/loqate-verify-query-coordinator
-          tag: "0.1.23669"
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+    set:
+      - name: image.tag
+        value: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}
     needs:
-    - installmanager
+    - lqtshared
 
   - name: ai-parse
     namespace: loqate
@@ -85,15 +99,32 @@ releases:
     values:
       - imagePullSecrets:
         - name: "lqtshared"
-      - storage:
-          path: /run/desktop/mnt/host/c/loqate/models_structured 
 
-  # - name: tfserve
-  #   namespace: loqate
-  #   chart: "loqate/tfserve"
-  #   version: ^0.1.0
-  #   values:
-  #     - imagePullSecrets:
-  #       - name: "lqtshared"
-  #     - storage:
-  #         path: /run/desktop/mnt/host/c/loqate/models_structured  #/run/desktop/mnt/host/c/loqatewindows/data/models_structured
+    set:
+      - name: app.modelsPath
+        value: {{ env "AIPARSER_DATA_FOLDER" | default "" | quote }}
+      - name: image.tag
+        value: {{ env "LOQATE_AIPARSER_VERSION" | default "latest" | quote }}
+      - name: storage.path
+        value: {{ env "AIPARSER_NFS_SHARE" | default "" | quote }}
+      - name: storage.server
+        value: {{ env "AIPARSER_NFS_SHARE_IP" | default "" | quote }} 
+      - name: storage.type
+        value: {{ env "AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
+    needs:
+    - lqtshared
+
+  - name: tfserve
+    namespace: loqate
+    chart: "loqate/tfserve"
+    version: ^0.1.0
+    values:
+      - imagePullSecrets:
+        - name: "lqtshared"
+      - storage:
+          path: {{ env "LOQATE_TFSERVE_FOLDER" | default "./models" | quote }}
+    set:
+      - name: image.tag
+        value: {{ env "LOQATE_TFSERVE_VERSION" | default "latest" | quote }}
+    needs:
+    - lqtshared
