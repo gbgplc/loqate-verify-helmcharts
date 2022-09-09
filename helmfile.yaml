@@ -43,7 +43,7 @@ releases:
       - name: image.tag
         value: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
       - name: storage.path
-        value: {{ env "LOQATE_DATA_FOLDER"  | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
+        value: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
     waitForJobs: true
     needs:
     - lqtshared
