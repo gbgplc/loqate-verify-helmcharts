@@ -568,7 +568,7 @@ kubectl create namespace loqate
 #### Install Data
 
 ``` bash
-helm install -n loqate im loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
 To install a subset of the datasets you have in the license key you can add  --set app.products="KBCOMMON,DSVGBR" as follows:
