@@ -115,11 +115,11 @@ To begin with, you'll need to install Verify using Helmfile - we've provided the
 
 **Unix:**
 
-- First create and go to the required directory:
+- First create and go to the required directory. The lqtcharts directory can be wherever you want:
 
 ```bash
 mkdir /loqate
-mkdir /models_structured
+mkdir /loqate/models_structured
 mkdir lqtcharts && cd lqtcharts/
 ```
 
@@ -129,7 +129,7 @@ mkdir lqtcharts && cd lqtcharts/
 wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
 ```
 
-- Enter your license key and github account information:
+- Enter your license key and docker hub account information:
 
 ``` bash
 export LICENSE_KEY="<API_KEY>"
@@ -149,7 +149,7 @@ helmfile apply
 
 ```powershell
 New-Item /loqate -ItemType Directory
-New-Item /models_structured -ItemType Directory
+New-Item /loqate/models_structured -ItemType Directory
 New-Item lqtcharts -ItemType Directory
 Set-Location lqtcharts
 ```
@@ -589,7 +589,7 @@ helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.use
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
-> NOTE: if you want to add certified datasets to a standard install, you will need to set the additional library path for those datasets, as described in the [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section (specifically, you will need to append `app.libraryPath="/lib64:/data/lib64` to the spatial-api line shown above).
+> NOTE: if you want to add certified datasets to a standard install, you will need to set the additional library path for those datasets, as described in the [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section (specifically, you will need to append `app.libraryPath="/lib64:/data/lib64"` to the spatial-api line shown above).
 
 Check the spatial-api and querycoordinator have started:
 
