@@ -129,7 +129,7 @@ mkdir lqtcharts && cd lqtcharts/
 wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
 ```
 
-- Enter your license key and docker hub account information:
+- Enter your license key and Docker Hub account information:
 
 ``` bash
 export LICENSE_KEY="<API_KEY>"
@@ -158,7 +158,7 @@ Set-Location lqtcharts
 Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
 ```
 
-- Enter your license key and github account information:
+- Enter your license key and Docker Hub account information:
 
 ``` powershell
 $env:LICENSE_KEY="<API_KEY>"
