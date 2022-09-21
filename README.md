@@ -102,6 +102,42 @@ See the `values.yaml` files for resourcing `spatialapi` and `querycoordinator`. 
 - **Spatial-API:** searches and caches data for one country or all countries
 - **QueryCoordinator:** forwards requests to the appropriate Spatial-API
 
+## Initial Setup
+
+You need to set up the following directories:
+
+### Unix
+
+- Create and go to the required directory. The lqtcharts directory can be wherever you want:
+
+```bash
+mkdir /opt/loqate
+cd /opt/loqate
+mkdir lqtcharts && cd lqtcharts/
+```
+
+#### Unix settings
+
+Unix requires some environment variables for data download and installation. These are set as follows:
+
+```bash
+export LOQATE_MOUNT_PATH=/opt
+export LOQATE_DOWNLOAD_FOLDER=/opt/loqate/data/im/dl
+export LOQATE_DATA_FOLDER=/opt/loqate/data
+export LOQATE_NFS_SHARE=/opt
+```
+
+### Windows
+
+- Create and go to the required directory:
+
+```powershell
+New-Item /loqate -ItemType Directory
+New-Item /loqate/models_structured -ItemType Directory
+New-Item lqtcharts -ItemType Directory
+Set-Location lqtcharts
+```
+
 ## Quick Start Installation
 
 To get you up and running with Verify as quickly as possible, we've provided this quick start method which uses [Helmfile](#helmfile) and, on Unix, the Helm plugin **helm-diff**. This will allow you to quickly get to a point where you can test your basic installation, before moving on to a more detailed setup afterwards.
@@ -113,21 +149,13 @@ To get you up and running with Verify as quickly as possible, we've provided thi
 
 To begin with, you'll need to install Verify using Helmfile - we've provided the instructions for how to do this in both Unix and Windows.
 
-**Unix:**
-
-- First create and go to the required directory. The lqtcharts directory can be wherever you want:
+If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable (in the example below the PVC is called "verify-onprem-claim"):
 
 ```bash
-mkdir /loqate
-mkdir /loqate/models_structured
-mkdir lqtcharts && cd lqtcharts/
+$env:CLAIM_OVERRIDE="verify-onprem-claim"
 ```
 
-- Next download the default helmfile.yaml:
-
-``` bash
-wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
-```
+**Unix:**
 
 - Enter your license key and Docker Hub account information:
 
@@ -135,6 +163,12 @@ wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
 export LICENSE_KEY="<API_KEY>"
 export DOCKER_USERNAME="docker_username"
 export DOCKER_PASSWORD="docker_password"
+```
+
+- Next download the default helmfile.yaml:
+
+``` bash
+wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
 ```
 
 - Finally run the Helmfile install:
@@ -145,19 +179,6 @@ helmfile apply
 
 **Windows:**
 
-- First create and go to the required directory:
-
-```powershell
-New-Item /loqate -ItemType Directory
-New-Item /loqate/models_structured -ItemType Directory
-New-Item lqtcharts -ItemType Directory
-Set-Location lqtcharts
-```
-
-``` powershell
-Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
-```
-
 - Enter your license key and Docker Hub account information:
 
 ``` powershell
@@ -166,6 +187,11 @@ $env:DOCKER_USERNAME="docker_username"
 $env:DOCKER_PASSWORD="docker_password"
 ```
 
+- Next download the default helmfile.yaml:
+
+``` powershell
+Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
+```
 
 - Finally run the Helmfile install:
 
@@ -429,8 +455,17 @@ To get the best performance and flexible scaling, we recommend having spatial-ap
 
 If you decide you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with:
 
-``` bash
+Windows:
+
+``` powershell
 helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
+```
+
+Unix:
+Note the extra arguments in the commands below. As per [Unix settings](#unix-settings)
+
+``` bash
+helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>--set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
 ```
 
 #### Certified Datasets (CASS, SERP, AMAS)
@@ -441,8 +476,19 @@ Here's an example of how (in Helm) to create a US spatial-api deployment that ca
 
 > Please note that for legal reasons, if you are located outside of the USA you will not be able to download the certified US (i.e. CASS) data.
 
-``` bash
+Windows:
+
+``` powershell
 helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+```
+
+Unix:
+Note the extra arguments in the commands below. As per [Unix settings](#unix-settings)
+
+For Unix the data will probably be at the enviroment variable LOQATE_DATA_FOLDER (`/opt/loqate/data/`) as per [Unix settings](#unix-settings). Hence the setting of `/lib64:/opt/loqate/data/lib64` below.
+
+``` bash
+helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/opt/loqate/data/lib64"
 ```
 
 For examples of how to change config values using Helmfile, see [this section below](#config-values).
@@ -547,6 +593,13 @@ For more information about certified data sets see the earlier [Certified Datase
 
 Follow the instructions below to install Verify using Helm (you can use all of the instructions below in both Unix and Windows).
 
+Note:
+If you are using your own custom Persistent Volume Claim (PVC) you need to set the claim override for both the installmanager and spatial-api installs:
+
+```bash
+--set storage.claimOverride=<PVC NAME>
+```
+
 #### Docker Images
 
 The components `installmanager`, `spatial-api` and `querycoordinator` all have associated Docker images.  These Docker images are hosted in private repositories on Docker Hub, so you will need a Docker Hub account in order to be granted access.
@@ -567,14 +620,32 @@ kubectl create namespace loqate
 
 #### Install Data
 
-``` bash
+Windows:
+
+``` powershell
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
+```
+
+Unix:
+Note the extra arguments in the commands below. As per [Unix settings](#unix-settings)
+
+``` bash
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER>
 ```
 
 To install a subset of the datasets you have in the license key you can add  --set app.products="KBCOMMON,DSVGBR" as follows:
 
-``` bash
+Windows:
+
+``` powershell
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
+```
+
+Unix:
+Note the extra arguments in the commands below. As per [Unix settings](#unix-settings)
+
+``` bash
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
 It's important to make sure the download is fully completed before continuing. See the section on [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) earlier for details of how to do this.
@@ -583,11 +654,29 @@ It's important to make sure the download is fully completed before continuing. S
 
 Use these commands for a standard install:
 
-``` bash
+Windows:
+
+``` powershell
 helm install -n loqate memberlist loqate/memberlist
 helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
+
+Unix:
+
+Install memberlist:
+
+``` bash
+helm install -n loqate memberlist loqate/memberlist
+```
+
+Note the extra arguments in the commands below. As per [Unix settings](#unix-settings)
+
+``` bash
+helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc
+helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
+```
+
 
 > NOTE: if you want to add certified datasets to a standard install, you will need to set the additional library path for those datasets, as described in the [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section (specifically, you will need to append `app.libraryPath="/lib64:/data/lib64"` to the spatial-api line shown above).
 
