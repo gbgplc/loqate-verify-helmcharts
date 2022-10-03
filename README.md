@@ -1603,6 +1603,20 @@ If the error is still happening:
 kubectl get pods -n loqate
 ```
 
+- If any of the pods are not in service (i.e. 0/1) then delete the pod as shown below. Wait 3 minutes. If the pods is in service test again. Try this a couple times if it does not work at first.
+  
+```bash
+ kubectl delete pods <NAME>
+```
+
+If all pods are in service (i.e. 1/1) but you are still getting the “No spatialapi available” or “Failed to process.” then:
+
+- Delete the spatial-api pod. Wait 3 minutes and test again.
+- If it does not work then do the same for the querycoordinator pod.
+- If you are still getting the errors then delete the spatial-api pod once more and wait three mins then test again.  
+
+If the above has still not fixed the issue then try the following:
+
 - If any of the pods are not in service (i.e. 0/1) then delete the equivalent chart and reinstall as shown below
 
 - To delete a release, first get a list of charts:
