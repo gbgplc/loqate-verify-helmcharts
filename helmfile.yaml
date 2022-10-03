@@ -89,6 +89,7 @@ releases:
       - name: storage.claimOverride
         value: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
     needs:
+    - installmanager
     - lqtshared
 
   - name: querycoordinator
