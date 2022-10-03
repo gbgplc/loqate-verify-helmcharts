@@ -27,7 +27,7 @@ Observability is provided using Open Telemetry traces, stdout logging, and prome
 
 ### Security
 
-For vulnerability disclosure or security findings, please contact your account representative.
+For vulnerability disclosure or security findings, please contact support@loqate.com.
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ If you want to use Ingress, you will need an Ingress controller. Note that the I
 
 _[Read more](https://kubernetes.io/docs/concepts/services-networking/ingress/#prerequisites) about the pre-requisites for getting Ingress to work._
 
-As Verify takes advantage of new and developing technologies, best practices for routing are always evolving. For a detailed discussion on routing best practice, please get in touch with your account representative to arrange a technical conversation.
+As Verify takes advantage of new and developing technologies, best practices for routing are always evolving. For a detailed discussion on routing best practice, please get in touch with support@loqate.com to arrange a technical conversation.
 
 ### Scaling
 
@@ -74,7 +74,7 @@ Each of the `querycoordinator` and `spatial-api` components can be scaled with e
 
 _[Read more](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) about HPA and [learn more](https://keda.sh/resources/) about KEDA._
 
-As Verify takes advantage of new and developing technologies, best practices for managing the environment at scale are always evolving. For a detailed discussion on scaling best practice, please get in touch with your account representative to arrange a technical conversation.
+As Verify takes advantage of new and developing technologies, best practices for managing the environment at scale are always evolving. For a detailed discussion on scaling best practice, please get in touch with support@loqate.com to arrange a technical conversation.
 
 ## How to Use This Guide
 
@@ -402,7 +402,7 @@ Then run the following on the pod you wish to check the logs for:
 kubectl logs <NAME>
 ```
 
-If you still can't find or resolve the error, please contact your account representative to arrange a further discussion.
+If you still can't find or resolve the error, please contact support@loqate.com to arrange a further discussion.
 
 Once you've successfully tested your quick start install, you can move onto the next section to further tailor your installation.
 
@@ -1633,7 +1633,7 @@ If you are still getting the error, delete each release and reinstall one at a t
   - First spatial-api, then querycoordinator.
   - You may have to repeat this a few times (i.e. spatial-api, querycoordinator, spatial-api …)
 
-If the error has still not been resolved, please contact your account representative to arrange a further discussion.
+If the error has still not been resolved, please contact support@loqate.com to arrange a further discussion.
 
 ## TERMS AND CONDITIONS FOR USE
 
