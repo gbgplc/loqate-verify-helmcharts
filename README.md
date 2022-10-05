@@ -123,7 +123,7 @@ The defaults create a Persistent Volume (PV) and a Persistent Volume Claim (PVC)
 
 ### Unix
 
-- Create and go to the required directory. The lqtcharts directory can be wherever you want:
+- Create and go to the required directory. The lqtcharts directory can be wherever you want. You do not need the /opt/loqate folder on your local pc if you are using a claim override as the data will get downloaded to the remote PV:
 
 ```bash
 mkdir /opt/loqate
