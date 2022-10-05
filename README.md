@@ -1653,7 +1653,7 @@ kubectl get pods -n loqate
 - If any of the pods are not in service (i.e. 0/1) then delete the pod as shown below. Wait 3 minutes. If the pods is in service test again. Try this a couple times if it does not work at first.
   
 ```bash
- kubectl delete pods <NAME>
+ kubectl delete pods <NAME> -n loqate
 ```
 
 If all pods are in service (i.e. 1/1) but you are still getting the “No spatialapi available” or “Failed to process.” then:
