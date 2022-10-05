@@ -102,14 +102,24 @@ See the `values.yaml` files for resourcing `spatialapi` and `querycoordinator`. 
 - **Spatial-API:** searches and caches data for one country or all countries
 - **QueryCoordinator:** forwards requests to the appropriate Spatial-API
 
-## Initial Setup
+## Initial Setup and important environment variables
 
-WARNING: You may need to change the default directories for the data download and installation. This is explained later in this section below. The default values are as follows:
+WARNING: You may need to change the default directories for the data download and installation. How to change these paths is explained later in this section below. The default values are as follows:
 
+These two paths are used to configure the PV for the host filesystem:
+
+- **LOQATE_NFS_SHARE**  is set to "/run/desktop/mnt/host/c/
 - **LOQATE_MOUNT_PATH**   is set to "/data"
+
+These two paths are used by the installmanager app as places to download and unpack the data. The data folder will be used again by the spatialapi:
+
 - **LOQATE_DOWNLOAD_FOLDER**  is set to "/data/im/dl"
 - **LOQATE_DATA_FOLDER**  is set to "/data"
-- **LOQATE_NFS_SHARE**  is set to "/run/desktop/mnt/host/c/loqate/data"
+loqate/data"
+
+Claim Override:
+
+The defaults create a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
 
 ### Unix
 
@@ -181,13 +191,13 @@ To get you up and running with Verify as quickly as possible, we've provided thi
 
 To begin with, you'll need to install Verify using Helmfile - we've provided the instructions for how to do this in both Unix and Windows.
 
-If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable (in the example below the PVC is called "verify-onprem-claim"):
+**Unix:**
+
+If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable:
 
 ```bash
-$env:CLAIM_OVERRIDE="verify-onprem-claim"
+export CLAIM_OVERRIDE="<Claim_Name>"
 ```
-
-**Unix:**
 
 - Enter your license key and Docker Hub account information:
 
@@ -210,6 +220,12 @@ helmfile apply
 ```
 
 **Windows:**
+
+If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable:
+
+```powershell
+$env:CLAIM_OVERRIDE="<Claim_Name>"
+```
 
 - Enter your license key and Docker Hub account information (“Please note the $ sign below is part of the command for setting environment variable on power shell.”):
 
