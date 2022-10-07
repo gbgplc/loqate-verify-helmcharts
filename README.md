@@ -253,7 +253,7 @@ Note: If you want to run the quick start again without a data download, see [Re-
 
 If you have a license that allows lots of datasets but you only want to download a subset of them, you can choose which datasets to download.
 
-In the Helmfile under the **app** section shown below, you can specify which products to include:
+In the Helmfile under the **app** section shown below, you can specify which products to include (you can get the product names from your license email):
 
 ``` yml
 name: installmanager
