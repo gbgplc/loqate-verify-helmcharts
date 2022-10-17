@@ -157,7 +157,6 @@ export LOQATE_NFS_SHARE=/opt
 
 ```powershell
 New-Item /loqate -ItemType Directory
-New-Item /loqate/models_structured -ItemType Directory
 New-Item lqtcharts -ItemType Directory
 Set-Location lqtcharts
 ```
