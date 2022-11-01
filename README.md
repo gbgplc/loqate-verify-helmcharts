@@ -50,13 +50,13 @@ _Verify has been tested using the version numbers stated above. Please avoid usi
 
 The reference data is accessed using a Persistent Volume (PV); it is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
-Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours.
+You will need to create data storage folders for `install manager` and AI-Parser.  These should be seperate folders.
+
+Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours. If you're not using all datasets however, you will need less storage and the download will be quicker.
 
 These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faster storage will produce better response times.
 
 _[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) about k8s Persistent Volumes and their Access Modes._
-
-You will need to create data storage folders for `install manager` and AI-Parser.  These should be seperate folders.
 
 ### Routing
 
@@ -81,6 +81,7 @@ As Verify takes advantage of new and developing technologies, best practices for
 This guide is split up into the following sections:
 
 - [**How a Verify Installation Works:**](#how-a-verify-installation-works) an overview of the components that make up a Verify installation
+- [**Initial Setup:**](#initial-setup) some important environment variables to consider before setting anything up
 - [**Quick Start Installation:**](#quick-start-installation) step by step instructions for getting up and running quickly with Verify
 - [**Full Installation:**](#full-installation) further instructions for tailoring your installation
 - [**Usage:**](#usage) details of how to test and use your Verify installation
@@ -102,9 +103,9 @@ See the `values.yaml` files for resourcing `spatialapi` and `querycoordinator`. 
 - **Spatial-API:** searches and caches data for one country or all countries
 - **QueryCoordinator:** forwards requests to the appropriate Spatial-API
 
-## Initial Setup and important environment variables
+## Initial Setup
 
-WARNING: You may need to change the default directories for the data download and installation. How to change these paths is explained later in this section below. The default values are as follows:
+Before you do anything, it's worth noting that you may need to change the default directories for the **data download** and **installation**. We'll explain how to change these paths later in this section, but first we will look at the default values for both.
 
 These two paths are used to configure the PV for the host filesystem:
 
@@ -115,15 +116,14 @@ These two paths are used by the installmanager app as places to download and unp
 
 - **LOQATE_DOWNLOAD_FOLDER**  is set to "/data/im/dl"
 - **LOQATE_DATA_FOLDER**  is set to "/data"
-loqate/data"
 
-Claim Override:
+**Claim Override:** the defaults create a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
 
-The defaults create a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
+Next we'll take you through how to make changes to those directories.
 
 ### Unix
 
-- Create and go to the required directory. The lqtcharts directory can be wherever you want. You do not need the /opt/loqate folder on your local pc if you are using a claim override as the data will get downloaded to the remote PV:
+- Create and go to the required directory. The lqtcharts directory can be wherever you want (you do not need the /opt/loqate folder on your local PC if you are using a claim override as the data will get downloaded to the remote PV):
 
 ```bash
 mkdir /opt/loqate
@@ -131,7 +131,7 @@ cd /opt/loqate
 mkdir lqtcharts && cd lqtcharts/
 ```
 
-#### Unix settings
+**Unix settings**
 
 Unix will almost certainly require one or more of the default paths for data download and installation to be changed. To allow the helmfile to pick up your new paths you need to change the environment variables for these paths as follows:
 
@@ -190,9 +190,11 @@ To get you up and running with Verify as quickly as possible, we've provided thi
 
 To begin with, you'll need to install Verify using Helmfile - we've provided the instructions for how to do this in both Unix and Windows.
 
+Whether using Unix or Windows, first make sure you're in the directory that you created earlier (in the Initial Setup section)
+
 **Unix:**
 
-If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable:
+If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
 ```bash
 export CLAIM_OVERRIDE="<Claim_Name>"
@@ -220,7 +222,7 @@ helmfile apply
 
 **Windows:**
 
-If you are using your own custom Persistent Volume Claim (PVC) you need to set the following environment variable:
+If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
 ```powershell
 $env:CLAIM_OVERRIDE="<Claim_Name>"
@@ -500,13 +502,13 @@ Note: whether you are using Helm or Helmfile, please pay particular attention to
 
 To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving large numbers of requests.
 
-If you decide you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country.  For example, a GB deployment is created with the command below. Note that the command below uses the default data download and installation paths. (This will mainly apply to windows installations):
+If you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country. We've included an example below for a GB deployment, using the *default* data download and installation paths. (This will mainly apply to Windows installations).
 
 ``` powershell
 helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
 ```
 
-The following command uses the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+Here's an example using the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths, however you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
 
 ``` bash
 helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>--set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
@@ -520,19 +522,19 @@ Here's an example of how (in Helm) to create a US spatial-api deployment that ca
 
 > Please note that for legal reasons, if you are located outside of the USA you will not be able to download the certified US (i.e. CASS) data.
 
-The command below uses the default data download and installation paths. (This will mainly apply to windows installations):
-
 ``` powershell
 helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
 ```
 
-The following command uses the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+The example above uses the default data download and installation paths (this mainly applies to Windows installations).
 
-For Unix the data will probably be at the enviroment variable LOQATE_DATA_FOLDER (`/opt/loqate/data/`) as per [Unix settings](#unix-settings). Hence the setting of `/lib64:/opt/loqate/data/lib64` below.
+Alternatively, here is an example using the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
 
 ``` bash
 helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/opt/loqate/data/lib64"
 ```
+
+Note: for Unix the data will probably be at the enviroment variable LOQATE_DATA_FOLDER (`/opt/loqate/data/`) as per [Unix settings](#unix-settings), hence the setting of `/lib64:/opt/loqate/data/lib64` above.
 
 For examples of how to change config values using Helmfile, see [this section below](#config-values).
 
@@ -540,7 +542,7 @@ For examples of how to change config values using Helmfile, see [this section be
 
 Helmfile can be used to easily install all components in a simple Kubernetes environment. It will automatically pull from the Loqate charts repository.
 
-> Note: Helmfile uses the helm-diff plugin for the `helmfile apply` command, you can install it with the command below.  This plugin does not work on Windows, so we use `helmfile sync` instead.
+> Note: Helmfile uses the helm-diff plugin for the `helmfile apply` command, which you can install with the command below. This plugin does not work on Windows, so we use `helmfile sync` instead.
 
 ``` bash
 helm plugin install https://github.com/databus23/helm-diff
@@ -636,8 +638,7 @@ For more information about certified data sets see the earlier [Certified Datase
 
 Follow the instructions below to install Verify using Helm (you can use all of the instructions below in both Unix and Windows).
 
-Note:
-If you are using your own custom Persistent Volume Claim (PVC) you need to set the claim override for both the installmanager and spatial-api installs:
+Note: if you are using your own custom Persistent Volume Claim (PVC) you need to set the claim override for both the installmanager and spatial-api installs:
 
 ```bash
 --set storage.claimOverride=<PVC NAME>
@@ -663,7 +664,7 @@ kubectl create namespace loqate
 
 #### Install Data
 
-If you changed the default directories for the data download and installation, then you will need to add the appopriate paths to some helm commands. The lines to add are as follows:
+If you changed the default directories for the data download and installation, you will need to add the appopriate paths to some Helm commands. The lines to add are as follows:
 
 ``` bash
 --set storage.mountPath=<LOQATE MOUNT PATH> 
@@ -672,27 +673,31 @@ If you changed the default directories for the data download and installation, t
 --set app.dataFolder=<LOQATE DATA FOLDER>
 ```
 
-The command below uses the default data download and installation paths. (This will mainly apply to windows installations):
+**Install All Data**
+
+The command below uses the default data download and installation paths (this will mainly apply to Windows installations):
 
 ``` powershell
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
-The following command uses the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
 
 ``` bash
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER>
 ```
 
-To install a subset of the datasets you have in the license key you can add --set app.products="KBCOMMON,DSVGBR" as follows:
+**Install Specific Datasets**
 
-The command below uses the default data download and installation paths. (This will mainly apply to windows installations):
+To install a subset of the datasets you have in the license key you can add --set app.products="KBCOMMON,DSVGBR" as below.
+
+The command below uses the default data download and installation paths (this will mainly apply to Windows installations):
 
 ``` powershell
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
-The following command uses the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
 
 ``` bash
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER> --set app.products="KBCOMMON,DSVGBR" 
@@ -710,14 +715,14 @@ helm install -n loqate memberlist loqate/memberlist
 
 Install spatial-api and querycoordinator:
 
-The command below uses the default data download and installation paths. (This will mainly apply to windows installations):
+The command below uses the default data download and installation paths (this will mainly apply to Windows installations):
 
 ``` powershell
 helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
-The following command uses the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
 
 ``` bash
 helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc
@@ -744,7 +749,7 @@ Wait until there is 1/1 in the READY column for spatial-api and querycoordinator
 
 The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE_NAME>-<MEMBERLIST.CHART_NAME>.<NAMESPACE>.svc`. Changing any of these will require changing the set arguments to _spatial-api_ and _querycoordinator_.
 
-_See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
+_See [Helm Install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
 #### Upgrade Chart
 
@@ -758,7 +763,7 @@ The example below is an upgrade when you get a new license key with a new data s
 helm upgrade -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>
 ```
 
-_See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
+_See [Helm Upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documentation._
 
 #### Uninstall Chart
 
@@ -855,10 +860,10 @@ The `querycoordinator` chart contains templates for a Kubernetes ingress and an 
 **Options** comprised of the following:
 
 - **Geocode (boolean as string):** if you want geo-coordinates to be appended to your results (if available)
-- **Processes (array of string):** Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied.
-- **Certify (boolean as string):** use certified dataset. AMAS (AU), CASS (US) or SERP (CA).
-- **Enhance (boolean as string):** use enhanced datasets. Returns enhance fields if applicable.
-- **ServerOptions (object):** properties are OptionName and value is OptionValue.
+- **Processes (array of string):** Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied
+- **Certify (boolean as string):** use certified dataset. AMAS (AU), CASS (US) or SERP (CA)
+- **Enhance (boolean as string):** use enhanced datasets. Returns enhance fields if applicable
+- **ServerOptions (object):** properties are OptionName and value is OptionValue
 
 More information about [server options](https://support.loqate.com/server-options/).
 
@@ -1633,7 +1638,7 @@ In this section we've put together some suggestions for how to handle commonly-f
 The instructions below should apply if you get one of the following errors from a query:
 
 - “No spatialapi available”
-- “Failed to process.”
+- “Failed to process”
 
 ### Suggested Fix
 
@@ -1655,11 +1660,11 @@ kubectl get pods -n loqate
  kubectl delete pods <NAME> -n loqate
 ```
 
-If all pods are in service (i.e. 1/1) but you are still getting the “No spatialapi available” or “Failed to process.” then:
+If all pods are in service (i.e. 1/1) but you are still getting the “No spatialapi available” or “Failed to process” then:
 
-- Delete the spatial-api pod. Wait 3 minutes and test again.
-- If it does not work then do the same for the querycoordinator pod.
-- If you are still getting the errors then delete the spatial-api pod once more and wait three mins then test again.  
+- Delete the spatial-api pod. Wait three minutes and test again
+- If it does not work then do the same for the querycoordinator pod
+- If you are still getting the errors then delete the spatial-api pod once more and wait three minutes then test again  
 
 If the above has still not fixed the issue then try the following:
 
