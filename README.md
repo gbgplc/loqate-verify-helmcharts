@@ -109,7 +109,7 @@ Before you do anything, it's worth noting that you may need to change the defaul
 
 These two paths are used to configure the PV for the host filesystem:
 
-- **LOQATE_NFS_SHARE**  is set to "/run/desktop/mnt/host/c/
+- **LOQATE_NFS_SHARE**  is set to "/run/desktop/mnt/host/c/loqate/data"
 - **LOQATE_MOUNT_PATH**   is set to "/data"
 
 These two paths are used by the installmanager app as places to download and unpack the data. The data folder will be used again by the spatialapi:
