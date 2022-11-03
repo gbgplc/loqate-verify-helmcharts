@@ -54,7 +54,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.2.1
+    version: ^0.3.0
     values:
       - app:
           loqateDataPath: {{ env "LOQATE_DATA_FOLDER" | default "/data" | quote }}
@@ -80,7 +80,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.2.1
+    version: ^0.3.0
     values:
       - image:
           tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}
@@ -94,7 +94,7 @@ releases:
   # - name: tfserve
   #   namespace: loqate
   #   chart: "loqate/tfserve"
-  #   version: ^0.1.0
+  #   version: ^0.2.0
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_TFSERVE_STORAGE_TYPE" | default "local" | quote }} 
@@ -112,7 +112,7 @@ releases:
   # - name: ai-parse
   #   namespace: loqate
   #   chart: "loqate/ai-parse"
-  #   version: ^0.1.1
+  #   version: ^0.2.0
   #   values:
   #     - app:
   #         modelsPath: {{ env "LOQATE_AIPARSER_DATA_FOLDER" | default "/data/models_structured" | quote }}
