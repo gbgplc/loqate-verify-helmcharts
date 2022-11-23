@@ -50,7 +50,7 @@ _Verify has been tested using the version numbers stated above. Please avoid usi
 
 The reference data is accessed using a Persistent Volume (PV); it is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
-You will need to create data storage folders for `install manager` and AI-Parser.  These should be seperate folders.
+You will need to create data storage folders for `install manager` and AI-Parser.  These should be separate folders.
 
 Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours. If you're not using all datasets however, you will need less storage and the download will be quicker.
 
@@ -664,7 +664,7 @@ kubectl create namespace loqate
 
 #### Install Data
 
-If you changed the default directories for the data download and installation, you will need to add the appopriate paths to some Helm commands. The lines to add are as follows:
+If you changed the default directories for the data download and installation, you will need to add the appropriate paths to some Helm commands. The lines to add are as follows:
 
 ``` bash
 --set storage.mountPath=<LOQATE MOUNT PATH> 
@@ -889,7 +889,7 @@ We've provided a selection of the most useful examples below for both sample req
 <details>
 	<summary>Request - Geocode as True (click to expand)</summary>
 
-``` json
+<pre>
 {
     "Options": {
         "Geocode": "true"
@@ -903,20 +903,20 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Geocode as True</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "A",
             "AVC": "V44-I55-P6-100",
-            "Address": "Gb Group<BR>The Foundation<BR>Herons Way<BR>Chester Business Park<BR>Chester<BR>CH4 9GB",
+            "Address": "Gb Group&lt;BR&gt;The Foundation&lt;BR&gt;Herons Way&lt;BR&gt;Chester Business Park&lt;BR&gt;Chester&lt;BR&gt;CH4 9GB",
             "Address1": "Gb Group",
             "Address2": "The Foundation",
             "Address3": "Herons Way",
@@ -930,7 +930,7 @@ We've provided a selection of the most useful examples below for both sample req
             "BuildingType": "Foundation",
             "Country": "GB",
             "CountryName": "United Kingdom",
-            "DeliveryAddress": "The Foundation<BR>Herons Way<BR>Chester Business Park",
+            "DeliveryAddress": "The Foundation&lt;BR&gt;Herons Way&lt;BR&gt;Chester Business Park",
             "DeliveryAddress1": "The Foundation",
             "DeliveryAddress2": "Herons Way",
             "DeliveryAddress3": "Chester Business Park",
@@ -956,14 +956,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Process Option as ‘Verify’</summary>
 
-``` json
+<pre>
 {
     "options": {
         "Processes":["Verify"]
@@ -978,20 +978,20 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Process Option as ‘Verify’</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "A",
             "AVC": "V44-I44-P7-100",
-            "Address": "7511 Oakvale Ct<BR>North Highlands CA 95660-2733",
+            "Address": "7511 Oakvale Ct&lt;BR&gt;North Highlands CA 95660-2733",
             "Address1": "7511 Oakvale Ct",
             "Address2": "North Highlands CA 95660-2733",
             "AdministrativeArea": "CA",
@@ -1016,14 +1016,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Process Option as ‘Search’</summary>
 
-``` json
+<pre>
 {
     "input": [
         {
@@ -1038,21 +1038,21 @@ We've provided a selection of the most useful examples below for both sample req
         }
     }
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Process Option as ‘Search’</summary>
 
-``` json
+<pre>
 {
     "output": [
         [
             {
                 "AQI": "A",
                 "AVC": "A42-I44-P6-100",
-                "Address": "1290 Mukawachoyanagisawa<BR>Hokuto-Shi Yamanashi 408-0307",
+                "Address": "1290 Mukawachoyanagisawa&lt;BR&gt;Hokuto-Shi Yamanashi 408-0307",
                 "Address1": "1290 Mukawachoyanagisawa",
                 "Address2": "Hokuto-Shi Yamanashi 408-0307",
                 "AdministrativeArea": "Yamanashi",
@@ -1077,7 +1077,7 @@ We've provided a selection of the most useful examples below for both sample req
             {
                 "AQI": "A",
                 "AVC": "A42-I44-P6-100",
-                "Address": "1490 Mukawachoyanagisawa<BR>Hokuto-Shi Yamanashi 408-0307",
+                "Address": "1490 Mukawachoyanagisawa&lt;BR&gt;Hokuto-Shi Yamanashi 408-0307",
                 "Address1": "1490 Mukawachoyanagisawa",
                 "Address2": "Hokuto-Shi Yamanashi 408-0307",
                 "AdministrativeArea": "Yamanashi",
@@ -1102,7 +1102,7 @@ We've provided a selection of the most useful examples below for both sample req
             {
                 "AQI": "A",
                 "AVC": "A42-I44-P6-100",
-                "Address": "1492 Mukawachoyanagisawa<BR>Hokuto-Shi Yamanashi 408-0307",
+                "Address": "1492 Mukawachoyanagisawa&lt;BR&gt;Hokuto-Shi Yamanashi 408-0307",
                 "Address1": "1492 Mukawachoyanagisawa",
                 "Address2": "Hokuto-Shi Yamanashi 408-0307",
                 "AdministrativeArea": "Yamanashi",
@@ -1127,14 +1127,14 @@ We've provided a selection of the most useful examples below for both sample req
         ]
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Process Option as ‘ReverseGeocode’</summary>
 
-``` json
+<pre>
 {
     "options": {
         "Processes": ["ReverseGeocode"],
@@ -1150,19 +1150,19 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Process Option as ‘ReverseGeocode’</summary>
 
-``` json
+<pre>
 {
     "output": [
         [
             {
-                "Address": "999 Baker Way<BR>San Mateo Ca 94404",
+                "Address": "999 Baker Way&lt;BR&gt;San Mateo Ca 94404",
                 "Address1": "999 Baker Way",
                 "Address2": "San Mateo Ca 94404",
                 "AdministrativeArea": "Ca",
@@ -1186,7 +1186,7 @@ We've provided a selection of the most useful examples below for both sample req
                 "Thoroughfare": "Baker Way"
             },
             {
-                "Address": "2210 Bridgepointe Pkwy<BR>San Mateo Ca 94404",
+                "Address": "2210 Bridgepointe Pkwy&lt;BR&gt;San Mateo Ca 94404",
                 "Address1": "2210 Bridgepointe Pkwy",
                 "Address2": "San Mateo Ca 94404",
                 "AdministrativeArea": "Ca",
@@ -1210,7 +1210,7 @@ We've provided a selection of the most useful examples below for both sample req
                 "Thoroughfare": "Bridgepointe Pkwy"
             },
             {
-                "Address": "1661 Fashion Island Blvd<BR>San Mateo Ca 94404",
+                "Address": "1661 Fashion Island Blvd&lt;BR&gt;San Mateo Ca 94404",
                 "Address1": "1661 Fashion Island Blvd",
                 "Address2": "San Mateo Ca 94404",
                 "AdministrativeArea": "Ca",
@@ -1236,14 +1236,14 @@ We've provided a selection of the most useful examples below for both sample req
         ]
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Certify Option - Certified Data Set AMAS (AU)</summary>
 
-``` json
+<pre>
 {
    "options": {
         "certify": "true"
@@ -1257,20 +1257,20 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Certify Option - Certified Data Set AMAS (AU)</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "A",
             "AVC": "V44-I44-P3-100",
-            "Address": "5 HIGHVIEW CRES<BR>MODANVILLE NSW 2480",
+            "Address": "5 HIGHVIEW CRES&lt;BR&gt;MODANVILLE NSW 2480",
             "Address1": "5 HIGHVIEW CRES",
             "Address2": "MODANVILLE NSW 2480",
             "AdministrativeArea": "NSW",
@@ -1310,14 +1310,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Certify Option - Certified Data Set CASS (US)</summary>
 
-``` json
+<pre>
 {
     "options": {
         "certify": "true"
@@ -1332,20 +1332,20 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Certify Option - Certified Data Set CASS (US)</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "A",
             "AVC": "V55-I55-P7-100",
-            "Address": "999 BAKER WAY STE 320<BR>SAN MATEO CA 94404-1566",
+            "Address": "999 BAKER WAY STE 320&lt;BR&gt;SAN MATEO CA 94404-1566",
             "Address1": "999 BAKER WAY STE 320",
             "Address2": "SAN MATEO CA 94404-1566",
             "AdministrativeArea": "CA",
@@ -1425,14 +1425,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Certify Option - Certified Data Set SERP (CA)</summary>
 
-``` json
+<pre>
 {
     "options": {
         "certify": "true"
@@ -1444,21 +1444,21 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Certify Option - Certified Data Set SERP (CA)</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "C",
             "AVC": "V55-I55-P6-091",
             "AddInfo": "",
-            "Address": "8-8 CHARLOTTE ST<BR>TORONTO ON  M5V 0K4",
+            "Address": "8-8 CHARLOTTE ST&lt;BR&gt;TORONTO ON  M5V 0K4",
             "Address1": "8-8 CHARLOTTE ST",
             "Address2": "TORONTO ON  M5V 0K4",
             "AdministrativeArea": "ON",
@@ -1489,14 +1489,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Enhance Option to Return Enhanced Data Set</summary>
 
-``` json
+<pre>
 {
     "options": {
         "Enhance": "true"
@@ -1511,20 +1511,20 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Enhance Option to Return Enhanced Data Set</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "C",
             "AVC": "V42-I44-P3-092",
-            "Address": "805 Veterans Blvd<BR>Redwood City CA 94063-1734",
+            "Address": "805 Veterans Blvd&lt;BR&gt;Redwood City CA 94063-1734",
             "Address1": "805 Veterans Blvd",
             "Address2": "Redwood City CA 94063-1734",
             "AdministrativeArea": "CA",
@@ -1565,14 +1565,14 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Request - Server Options</summary>
 
-``` json
+<pre>
 {
     "Options": {
         "ServerOptions": {
@@ -1587,23 +1587,23 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
 <details>
 	<summary>Response - Server Options</summary>
 
-``` json
+<pre>
 {
     "output": [
         {
             "AQI": "A",
             "AVC": "V44-I44-P6-100",
-            "Address": "４０８－０３０７<BR>山梨県北杜市武川町柳澤１２９０",
+            "Address": "４０８－０３０７&lt;BR&gt;山梨県北杜市武川町柳澤１２９０",
             "Address1": "４０８－０３０７",
             "Address2": "山梨県北杜市武川町柳澤１２９０",
-            "AddressFormat": "PostalCode<BR>AdministrativeAreaLocalityThoroughfarePremise",
+            "AddressFormat": "PostalCode&lt;BR&gt;AdministrativeAreaLocalityThoroughfarePremise",
             "AdministrativeArea": "山梨県",
             "Country": "JP",
             "CountryName": "Japan",
@@ -1625,7 +1625,7 @@ We've provided a selection of the most useful examples below for both sample req
         }
     ]
 }
-```
+</pre>
 
 </details>
 
