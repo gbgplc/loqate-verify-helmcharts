@@ -112,13 +112,13 @@ releases:
   # - name: ai-parse
   #   namespace: loqate
   #   chart: "loqate/ai-parse"
-  #   version: ^0.2.0
+  #   version: ^0.2.2
   #   values:
   #     - app:
   #         modelsPath: {{ env "LOQATE_AIPARSER_DATA_FOLDER" | default "/data/models_structured" | quote }}
   #       storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
-  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate" | quote }}
+  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
   #         claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
   #       image:
