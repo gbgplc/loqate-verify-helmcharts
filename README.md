@@ -6,7 +6,7 @@ Verify uses cutting-edge products and services, and delivers them on a platform 
 
 ## Verify’s Capabilities
 
-Verify has a proven track record in providing customers with global data coupled with our superior parsing and matching engine. More than 80 of the world’s leading software companies have chosen to integrate their applications or resell our addressing solutions worldwide.
+Verify has a proven track record in providing customers with global data coupled with our superior parsing and matching engine. 
 
 Here are a few key points regarding the services and functionality you have access to when using Verify:
 
