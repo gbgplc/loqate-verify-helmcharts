@@ -107,17 +107,11 @@ See the `values.yaml` files for resourcing `spatialapi` and `querycoordinator`. 
 
 Before you do anything, it's worth noting that you may need to change the default directories for the **data download** and **installation**. We'll explain how to change these paths later in this section, but first we will look at the default values for both.
 
-These two paths are used to configure the PV for the host filesystem:
+This path is used to configure the PV for the host filesystem:
 
 - **LOQATE_NFS_SHARE**  is set to "/run/desktop/mnt/host/c/loqate/data"
-- **LOQATE_MOUNT_PATH**   is set to "/data"
 
-These two paths are used by the installmanager app as places to download and unpack the data. The data folder will be used again by the spatialapi:
-
-- **LOQATE_DOWNLOAD_FOLDER**  is set to "/data/im/dl"
-- **LOQATE_DATA_FOLDER**  is set to "/data"
-
-**Claim Override:** the defaults create a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
+**Claim Override:** the default creates a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
 
 Next we'll take you through how to make changes to those directories.
 
@@ -133,22 +127,16 @@ mkdir lqtcharts && cd lqtcharts/
 
 **Unix settings**
 
-Unix will almost certainly require one or more of the default paths for data download and installation to be changed. To allow the helmfile to pick up your new paths you need to change the environment variables for these paths as follows:
+Unix will almost certainly require the default path for data download and installation to be changed. To allow the helmfile to pick up your new path you need to change the environment variable for this path as follows:
 
 ```bash
-export LOQATE_MOUNT_PATH=<PATH>
-export LOQATE_DOWNLOAD_FOLDER=<PATH>
-export LOQATE_DATA_FOLDER=<PATH>
 export LOQATE_NFS_SHARE=<PATH>
 ```
 
 Example:
 
 ```bash
-export LOQATE_MOUNT_PATH=/opt
-export LOQATE_DOWNLOAD_FOLDER=/opt/loqate/data/im/dl
-export LOQATE_DATA_FOLDER=/opt/loqate/data
-export LOQATE_NFS_SHARE=/opt
+export LOQATE_NFS_SHARE=/opt/loqate/data
 ```
 
 ### Windows
@@ -161,21 +149,15 @@ New-Item lqtcharts -ItemType Directory
 Set-Location lqtcharts
 ```
 
-Depending on your setup you may need to change one or more of the default paths for data download and installation. To allow the helmfile to pick up your new paths you need to change the environment variables for these paths as follows. (“Please note the $ sign below is part of the command for setting environment variable on power shell.”):
+Depending on your setup you may need to change the default path for data download and installation. To allow the helmfile to pick up your new path you need to change the environment variable for this path as follows. (“Please note the $ sign below is part of the command for setting environment variable on powershell.”):
 
 ```powershell
-$env:LOQATE_MOUNT_PATH=<PATH>
-$env:LOQATE_DOWNLOAD_FOLDER=<PATH>
-$env:LOQATE_DATA_FOLDER=<PATH>
 $env:LOQATE_NFS_SHARE=<PATH>
 ```
 
 Example:
 
 ```powershell
-$env:LOQATE_MOUNT_PATH="/data"
-$env:LOQATE_DOWNLOAD_FOLDER="/data/im/dl"
-$env:LOQATE_DATA_FOLDER="/data"
 $env:LOQATE_NFS_SHARE="/run/desktop/mnt/host/c/loqate/data"
 ```
 
@@ -502,39 +484,29 @@ Note: whether you are using Helm or Helmfile, please pay particular attention to
 
 To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving large numbers of requests.
 
-If you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country. We've included an example below for a GB deployment, using the *default* data download and installation paths. (This will mainly apply to Windows installations).
+If you want to create a country specific deployment, you'll need to set the `verify.dataset` value to the ISO3166-2 code for that country. We've included an example below for a GB deployment, using the *default* data path. (This will mainly apply to Windows installations).
 
 ``` powershell
 helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
 ```
 
-Here's an example using the changed paths for data download and installation. Note the extra arguments in the commands below set multiple paths, however you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup):
+Here's an example using the changed path for data download and installation. Note the extra argument in the commands below set the path. As per [Initial Setup](#initial-setup):
 
 ``` bash
-helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>--set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
+helm install -n loqate sa-gb loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=gb
 ```
 
 #### Certified Datasets (CASS, SERP, AMAS)
 
-To use any of the certified datasets, you will need to access extra libraries.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.  For spatial-api deployments to know where these libraries are, you will need to set the `app.libraryPath` value accordingly.  The default value is `/lib64`, which needs to remain in the path list.
+To use any of the certified datasets, you will need to access extra libraries.  Given an appropriate license key, these will be downloaded and installed alongside the data, in sub-folder `lib64`.
 
 Here's an example of how (in Helm) to create a US spatial-api deployment that can use the CASS certified engine, given that data is stored at `/data/`:
 
 > Please note that for legal reasons, if you are located outside of the USA you will not be able to download the certified US (i.e. CASS) data.
 
 ``` powershell
-helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/data/lib64"
+helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us
 ```
-
-The example above uses the default data download and installation paths (this mainly applies to Windows installations).
-
-Alternatively, here is an example using the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
-
-``` bash
-helm install -n loqate sa-us loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc --set verify.dataset=us --set app.libraryPath="/lib64:/opt/loqate/data/lib64"
-```
-
-Note: for Unix the data will probably be at the enviroment variable LOQATE_DATA_FOLDER (`/opt/loqate/data/`) as per [Unix settings](#unix-settings), hence the setting of `/lib64:/opt/loqate/data/lib64` above.
 
 For examples of how to change config values using Helmfile, see [this section below](#config-values).
 
@@ -623,11 +595,9 @@ verify:
 
 To set a spatial-api for a specific _certified_ dataset (for example Australia - 'au'), you'll need to create a new spatial-api section in the yaml file.
 
-Copy the current spatial-api and give it a unique name, then set the `libraryPath` to where the _lib64_ libraries are and the dataset to _au_ as shown below:
+Copy the current spatial-api and give it a unique name, then the dataset to _au_ as shown below:
 
 ``` yml
-        app:
-          libraryPath: "/lib64:/data/lib64"
         verify:
           dataset: "au"
 ```
@@ -667,10 +637,7 @@ kubectl create namespace loqate
 If you changed the default directories for the data download and installation, you will need to add the appropriate paths to some Helm commands. The lines to add are as follows:
 
 ``` bash
---set storage.mountPath=<LOQATE MOUNT PATH> 
 --set storage.path=<LOQATE NFS SHARE> 
---set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> 
---set app.dataFolder=<LOQATE DATA FOLDER>
 ```
 
 **Install All Data**
@@ -684,7 +651,7 @@ helm install -n loqate installmanager loqate/installmanager --set imageCredentia
 The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
 
 ``` bash
-helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER>
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.path=<LOQATE NFS SHARE>
 ```
 
 **Install Specific Datasets**
@@ -697,10 +664,10 @@ The command below uses the default data download and installation paths (this wi
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
-The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths, but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
+The following command uses the changed path for data download and installation. As per [Initial Setup](#initial-setup)):
 
 ``` bash
-helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY> --set storage.mountPath=<LOQATE MOUNT PATH> --set storage.path=<LOQATE NFS SHARE> --set app.downloadFolder=<LOQATE DOWNLOAD FOLDER> --set app.dataFolder=<LOQATE DATA FOLDER> --set app.products="KBCOMMON,DSVGBR" 
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<LICENSE KEY>--set storage.path=<LOQATE NFS SHARE> --set app.products="KBCOMMON,DSVGBR" 
 ```
 
 It's important to make sure the download is fully completed before continuing. See the section on [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) earlier for details of how to do this.
@@ -722,14 +689,12 @@ helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.use
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
-The following command uses the changed paths for data download and installation (note the extra arguments in the commands below set multiple paths but you only need to add the ones you wish to overwrite. As per [Initial Setup](#initial-setup)):
+The following command uses the changed path for data download and installation. As per [Initial Setup](#initial-setup)):
 
 ``` bash
-helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.loqateDataPath=<LOQATE DATA FOLDER> --set storage.mountPath=<LOQATE MOUNT PATH> --set app.memberlistService=memberlist.loqate.svc
+helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA PATH> --set app.memberlistService=memberlist.loqate.svc
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
-
-> NOTE: if you want to add certified datasets to a standard install, you will need to set the additional library path for those datasets, as described in the [Certified Datasets (CASS, SERP, AMAS)](#certified-datasets-cass-serp-amas) section (specifically, you will need to append `app.libraryPath="/lib64:/data/lib64"` to the spatial-api line shown above).
 
 Check the spatial-api and querycoordinator have started:
 
