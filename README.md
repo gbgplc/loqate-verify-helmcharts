@@ -176,7 +176,7 @@ Whether using Unix or Windows, first make sure you're in the directory that you 
 
 **Unix:**
 
-If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
+- If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
 ```bash
 export CLAIM_OVERRIDE="<CLAIM NAME>"
@@ -204,7 +204,7 @@ helmfile apply
 
 **Windows:**
 
-If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
+- If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
 ```powershell
 $env:CLAIM_OVERRIDE="<CLAIM NAME>"
@@ -607,19 +607,19 @@ export LOQATE_PRODUCTS=<PRODUCT LIST>
 Example:
 
 ```bash
-export LOQATE_NFS_SHARE="KBCOMMON,DSVGBR"
+export LOQATE_PRODUCTS="KBCOMMON,DSVGBR"
 ```
 
 **Windows:**
 
 ```powershell
-$env:LOQATE_NFS_SHARE=<PRODUCT LIST>
+$env:LOQATE_PRODUCTS=<PRODUCT LIST>
 ```
 
 Example:
 
 ```powershell
-$env:LOQATE_NFS_SHARE="KBCOMMON,DSVGBR"
+$env:LOQATE_PRODUCTS="KBCOMMON,DSVGBR"
 ```
 
 **Setting dataset for spatial-api:**
@@ -633,7 +633,7 @@ Here's how to set a specific dataset for spatial-api, using ROW (i.e. 'Rest of t
 
 To set a spatial-api for a specific _certified_ dataset (for example Australia - 'au'), you'll need to create a new spatial-api section in the yaml file.
 
-Copy the current spatial-api and give it a unique name, then the dataset to _au_ as shown below:
+Copy the current spatial-api and give it a unique name, then set the dataset to _au_ as shown below:
 
 ``` yml
   verify:
