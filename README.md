@@ -484,6 +484,42 @@ Note: whether you are using Helm or Helmfile, please pay particular attention to
 
 ### Important Configuration Settings
 
+#### Docker Images
+
+The components `installmanager`, `spatial-api` and `querycoordinator` all have associated Docker images.  These Docker images are hosted in private repositories on Docker Hub, so you will need a Docker Hub account in order to be granted access.
+
+If you want to pull specific images from docker hub for installmanager, spatial-api and querycoordinator use the following settings:
+
+**Helmfile Unix**
+
+For Unix helmfile set the following environment variables:
+
+``` bash
+export LOQATE_INSTALLMANAGER_VERSION="<IMAGE TAG>"
+export LOQATE_QUERY_COORDINATOR_VERSION="<IMAGE TAG>"
+export LOQATE_SPATIAL_API_VERSION="<IMAGE TAG>"
+```
+  
+**Helmfile Windows**
+
+For Windows helmfile set the following environment variables:
+
+``` powershell
+$env:LOQATE_INSTALLMANAGER_VERSION="<IMAGE TAG>"
+$env:LOQATE_QUERY_COORDINATOR_VERSION="<IMAGE TAG>"
+$env:LOQATE_SPATIAL_API_VERSION="<IMAGE TAG>"
+```
+
+**Helm**
+
+For helm installations add one of the following to your command line:
+
+``` bash
+--set image.tag=<LOQATE INSTALLMANAGER IMAGE TAG>
+--set image.tag=<LOQATE QUERY COORDINATOR IMAGE TAG>
+--set image.tag=<LOQATE SPATIAL API IMAGE TAG>
+```
+
 #### Adding Country Specific Deployments
 
 To get the best performance and flexible scaling, we recommend having spatial-api deployments dedicated to countries you anticipate will be serving large numbers of requests.
@@ -523,6 +559,8 @@ Helmfile can be used to easily install all components in a simple Kubernetes env
 ``` bash
 helm plugin install https://github.com/databus23/helm-diff
 ```
+
+To pull specific images from docker hub for installmanager, spatial-api and querycoordinator add to your command line as per [**Docker Images:**](#docker-images)
 
 More information on Helmfile as well as how to use it can be found here: <https://github.com/helmfile/helmfile>
 
@@ -646,15 +684,13 @@ For more information about certified data sets see the earlier [Certified Datase
 
 Follow the instructions below to install Verify using Helm (you can use all of the instructions below in both Unix and Windows).
 
+To pull specific images from docker hub for installmanager, spatial-api and querycoordinator add to your command line as per [**Docker Images:**](#docker-images)
+
 Note: if you are using your own custom Persistent Volume Claim (PVC) you need to set the claim override for both the installmanager and spatial-api installs:
 
 ```bash
 --set storage.claimOverride=<PVC NAME>
 ```
-
-#### Docker Images
-
-The components `installmanager`, `spatial-api` and `querycoordinator` all have associated Docker images.  These Docker images are hosted in private repositories on Docker Hub, so you will need a Docker Hub account in order to be granted access.
 
 #### Add Repo
 
@@ -757,6 +793,8 @@ The _memberlistService_ name is composed of `<MEMBERLIST.RELEASE NAME>-<MEMBERLI
 _See [Helm Install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
 #### Upgrade Chart
+
+To pull specific images from docker hub for installmanager, spatial-api and querycoordinator add to your command line as per [**Docker Images:**](#docker-images)
 
 ``` bash
 helm upgrade <RELEASE NAME> <CHART> --install
