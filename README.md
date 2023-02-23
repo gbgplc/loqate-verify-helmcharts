@@ -443,20 +443,22 @@ Once you've successfully tested your quick start install, you can move onto the 
 
 ### Re-run Quick Start Without Data Download
 
-You may find that you want to re-run the Quick Start process, but don't need to re-download all of the data. To stop the data getting downloaded again, open the helmfile.yaml and do the following:
-
-- Comment out the **installmanager** section
-- In the **spatial-api** section comment out the "- installmanager" line in the **needs** section as shown below:
-
-``` yml
-needs:
-    #- installmanager
-```
+You may find that you want to re-run the Quick Start process, but don't need to re-download all of the data.  To stop the data getting downloaded again, delete your current installation and remove the **installmanager** section of the helmfile.yaml.
 
 - Delete the Helmfile install
 
 ```bash
 helmfile delete
+```
+
+In helmfile.yaml:
+
+- Delete the **installmanager** section
+- In the **spatial-api** section comment out or remove the "- installmanager" line in the **needs** section as shown below:
+
+``` yml
+needs:
+    #- installmanager
 ```
 
 - Re-sync the Helmfile installation
@@ -728,6 +730,12 @@ The following command uses the changed paths for data download and installation 
 helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY> --set storage.path=<DATA FOLDER>
 ```
 
+Or, if you are using a PVC, you need to specify a claimOverride:
+
+``` bash
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY> --set storage.claimOverride=<PVC NAME>
+```
+
 **Install Specific Datasets**
 
 To install a subset of the datasets you have in the license key you can add --set app.products="KBCOMMON\\,DSVGBR" as below.
@@ -769,6 +777,13 @@ The following command uses a changed path for data installation. As per [Initial
 
 ``` bash
 helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER> --set app.memberlistService=memberlist.loqate.svc
+helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
+```
+
+Alternatively, if you are using a PVC you need to specify the claimOverride for spatial-api:
+
+``` bash
+helm install -n loqate spatial-api loqate/spatial-api --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<PVC NAME> --set app.memberlistService=memberlist.loqate.svc
 helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc
 ```
 
