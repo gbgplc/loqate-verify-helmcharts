@@ -84,6 +84,28 @@ releases:
     needs:
       - lqtshared
 
+  # - name: installaidata
+  #   namespace: loqate
+  #   chart: "loqate/installaidata"
+  #   version: ^0.0.1
+  #   values:
+  #     - app:
+  #         dataFolder: {{ env "LOQATE_AI_INSTALL_FOLDER" | default "/data/models_structured" | quote }}
+  #       storage:
+  #         type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }} 
+  #         path: {{ env "LOQATE_AI_DATA_SHARE" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
+  #         server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
+  #         claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+  #       createSecret: false
+  #       imagePullSecrets:
+  #         - name: "lqtshared"
+  #       image:
+  #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "latest" | quote }}
+  #         repository: gbgroup/loqate-verify-install-ai-data
+  #   waitForJobs: true
+  #   needs:
+  #   - lqtshared
+
   # - name: tfserve
   #   namespace: loqate
   #   chart: "loqate/tfserve"
