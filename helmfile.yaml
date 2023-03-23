@@ -87,7 +87,7 @@ releases:
   # - name: installaidata
   #   namespace: loqate
   #   chart: "loqate/installaidata"
-  #   version: ^0.0.1
+  #   version: ^0.0.2
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 

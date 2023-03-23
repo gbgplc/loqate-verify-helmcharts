@@ -3,9 +3,9 @@ entries:
   ai-parse:
   - apiVersion: v2
     appVersion: 0.1.35099
-    created: "2023-03-23T13:20:31.414049126Z"
+    created: "2023-03-23T13:29:50.791966363Z"
     description: loqate-verify-ai-parse-service
-    digest: d60f2cfab44fc59a47504864fc3d07ed4ea6825ec8d0c895f4e5c3642932cbb5
+    digest: ecda26d741c73e7d31f7fc079b3849113c6d05c5c78d0148f1a30f2bfb0cd809
     name: ai-parse
     type: application
     urls:
@@ -14,9 +14,9 @@ entries:
   installaidata:
   - apiVersion: v2
     appVersion: 0.1.22799
-    created: "2023-03-23T13:20:31.414508126Z"
+    created: "2023-03-23T13:29:50.792804167Z"
     description: Download and setup loqate data using installaidata job
-    digest: 49fd032b827b3f8d25ec123ea579cc6506c594349e7aa2f50d2bab87977ff3b0
+    digest: f8112c8d9a75c7ec29e77aab85ea23ef5b441730ae2d0678b7575d24ba0014af
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -29,14 +29,14 @@ entries:
     name: installaidata
     type: application
     urls:
-    - https://charts.loqate.com/installaidata-0.0.1.tgz
-    version: 0.0.1
+    - https://charts.loqate.com/installaidata-0.0.2.tgz
+    version: 0.0.2
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.22799
-    created: "2023-03-23T13:20:31.414930625Z"
+    created: "2023-03-23T13:29:50.79332047Z"
     description: Download and setup loqate data using installmanager job
-    digest: e35b1fc9223fc75ec65a6fb7437034e4e9de4d43a63dbd3c9572d2a3708b24b0
+    digest: 5a783914c3da94a3ae2a32ef59418f76710f34fdb9fac975c5354b813131059f
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -54,9 +54,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-03-23T13:20:31.415130725Z"
+    created: "2023-03-23T13:29:50.793640871Z"
     description: A Helm chart for Kubernetes
-    digest: 1a48682410db8863824a769ae216d6d754b80180cc81dbbee60f7326244a856d
+    digest: d0aded3f3e8e3a86bd9f493167d2575049ce78a44e6b5c4382f20b7626856bc3
     name: memberlist
     type: application
     urls:
@@ -65,9 +65,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.23669
-    created: "2023-03-23T13:20:31.416007824Z"
+    created: "2023-03-23T13:29:50.794580576Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: 1f94b62bc1771eb9fe4e9c5804be30a38fc503e4fdd2541dccca993a4211a809
+    digest: ffc3a50d2a3b7a299d6c04c3cfeb52be454df5db576705568cb680f81307f580
     name: querycoordinator
     type: application
     urls:
@@ -76,9 +76,9 @@ entries:
   secret:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-03-23T13:20:31.416260224Z"
+    created: "2023-03-23T13:29:50.794870577Z"
     description: A Helm chart for Kubernetes
-    digest: 5298adcc9db0a09632cd3f2e9d8e25feb9c3a67c6e3f656851b65ebd2905ec3d
+    digest: eaf5936495ef23da512faca00ab79eb7e7de5bbb49927b9d4f53367d7b9f5036
     name: secret
     type: application
     urls:
@@ -87,9 +87,9 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.23512
-    created: "2023-03-23T13:20:31.417498823Z"
+    created: "2023-03-23T13:29:50.796282384Z"
     description: A Helm chart for Kubernetes
-    digest: fdcae597f0ab075a5029a36c8670051a7fc598a29d594d6cafb4f06343204041
+    digest: 6477742680eee7c0d1704a88bf6b6cbf33338e2c3ab1e6c1f16a148155aba35c
     name: spatial-api
     type: application
     urls:
@@ -98,12 +98,12 @@ entries:
   tfserve:
   - apiVersion: v2
     appVersion: 0.1.35128
-    created: "2023-03-23T13:20:31.418353422Z"
+    created: "2023-03-23T13:29:50.797462889Z"
     description: A Helm chart for Kubernetes
-    digest: db7a1d8e6386ad4e78647ef9b77b0734561a5275b1ae9a52bd8224b0850ccfc0
+    digest: b1725f7813ef5828ae0d4ec4ca3e1a6de7e8bccd3ecf1254aafe1f85f2c462b7
     name: tfserve
     type: application
     urls:
     - https://charts.loqate.com/tfserve-0.2.0.tgz
     version: 0.2.0
-generated: "2023-03-23T13:20:31.41021863Z"
+generated: "2023-03-23T13:29:50.790023254Z"
