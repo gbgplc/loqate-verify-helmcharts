@@ -50,7 +50,7 @@ _Verify has been tested using the version numbers stated above. Please avoid usi
 
 The reference data is accessed using a Persistent Volume (PV); it is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
-You will need to create data storage folders for `install manager` and AI-Parser.  These should be separate folders.
+You will need to create a data storage folder for `install manager`.
 
 Currently, to store all the data you will need at least 250Gi of storage and downloading it will take several hours. If you're not using all datasets however, you will need less storage and the download will be quicker.
 
@@ -1688,6 +1688,276 @@ We've provided a selection of the most useful examples below for both sample req
 </details>
 
 <br />
+
+## Using the AI Parser
+
+### AI Data Storage
+
+The AI Parser requires a Persistent Volume, ideally different from the main data storage. The data is downloaded using `installaidata` chart and accessed by the `ai-parse` and `tfserve` charts. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
+
+Currently, to store all the data you will need at least 4Gi of storage.
+
+These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faster storage will produce better response times.
+
+_[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) about k8s Persistent Volumes and their Access Modes._
+
+### AI Parser Components
+
+- **Install AI Data:** installs the data models on a Persistent Volume (PV)
+- **AI Parser:** prepares address data for TensorFlow and collates the results
+- **TFServe:** TensorFlow server that uses the data models to identify address elements
+
+### AI Parser Helmfile
+
+The helmfile contains releases for using the AI Parser.  Not everyone will want to use the AI parser, so they are commented out by default.
+If you want to use the AI Parser, it is recommended that you get the base Verify installation working first, then uncomment the AI Parser sections.
+
+The helmfile uses environment variables to enable you to override the default storage options.  These are:
+
+- LOQATE_AIPARSER_STORAGE_TYPE - use to define a PV, accepted values 'local' and 'nfs', default 'local'
+- LOQATE_AIPARSER_STORAGE_PATH - use to define a PV, describes the path where the data is stored, default "/run/desktop/mnt/host/c/loqate/models_structured"
+- LOQATE_AIPARSER_STORAGE_SERVER - use to define a PV, the IP address of your NFS server, default is empty
+- LOQATE_AIPARSER_CLAIM_OVERRIDE - use to connect to a pre-existing PVC, default is empty
+
+To use the default path, which is configured for use on Windows using docker-desktop, do not set the environment variables.
+
+To use a different local path, i.e. a host path accessible from all pods:
+
+**Unix:**
+
+``` bash
+export LOQATE_AIPARSER_STORAGE_PATH="<HOST PATH>"
+```
+
+**Windows:**
+
+``` powershell
+$env:LOQATE_AIPARSER_STORAGE_PATH="<HOST PATH>"
+```
+
+To use an NFS share and have the PV and PVC created for you:
+
+**Unix:**
+
+``` bash
+export LOQATE_AIPARSER_STORAGE_TYPE="nfs"
+export LOQATE_AIPARSER_STORAGE_SERVER="<NFS SERVER IP ADDRESS>"
+export LOQATE_AIPARSER_STORAGE_PATH="<NFS PATH>"
+```
+
+**Windows:**
+
+``` powershell
+$env:LOQATE_AIPARSER_STORAGE_TYPE="nfs"
+$env:LOQATE_AIPARSER_STORAGE_SERVER="<NFS SERVER IP ADDRESS>"
+$env:LOQATE_AIPARSER_STORAGE_PATH="<NFS PATH>"
+```
+
+To use a PVC you have already created:
+
+**Unix:**
+
+``` bash
+export LOQATE_AIPARSER_CLAIM_OVERRIDE="<CLAIM NAME>"
+```
+
+**Windows:**
+
+``` powershell
+$env:LOQATE_AIPARSER_CLAIM_OVERRIDE="<CLAIM NAME>"
+```
+
+Once the storage is configured, simply uncomment the AI Parser sections and apply/sync the helmfile as usual.
+
+**Unix:**
+
+``` bash
+helmfile apply
+```
+
+**Windows:**
+
+``` powershell
+helmfile sync
+```
+
+### AI Parser Helm
+
+#### Installing the Data Models
+
+The helm charts use a number of values to enable you to override the default storage options.  These are:
+
+- storage.type - use to define a PV, accepted values 'local' and 'nfs', default 'local'
+- storage.path - use to define a PV, describes the path where the data is stored, default "/run/desktop/mnt/host/c/loqate/models_structured"
+- storage.server - use to define a PV, the IP address of your NFS server, default is empty
+- storage.claimOverride - use to connect to a pre-existing PVC, default is empty
+
+To use the default path:
+
+``` shell
+helm install -n loqate installaidata loqate/installaidata --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+```
+
+To use a different local path, i.e. a host path accessible from all pods:
+
+``` shell
+helm install -n loqate installaidata loqate/installaidata --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
+```
+
+You can provide details to an NFS share using the first three values, in which case the PV and PVC will be created for you:
+
+``` shell
+helm install -n loqate installaidata loqate/installaidata --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
+```
+
+Alternatively, you can create your own PV & PVC and use the name of the claim:
+
+``` shell
+helm install -n loqate installaidata loqate/installaidata --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
+```
+
+#### Installing the AI Parser Components
+
+Both the `aiparser` and `tfserve` components need access to the data installed above.  Similarly, you need to specify the storage options used above.
+
+To use the default paths:
+
+``` shell
+helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+
+helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+```
+
+To use a different local path:
+
+``` shell
+helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
+
+helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
+```
+
+To use an NFS share:
+
+``` shell
+helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
+
+helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
+```
+
+To use an existing PVC:
+
+``` shell
+helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
+
+helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
+```
+
+### AI Parser Requests
+
+For requests to use AI Parsing, they need to have an extra option set:
+
+<details>
+	<summary>Request - AI Parse Option</summary>
+
+<pre>
+{
+    "options": {
+        "aiparse": "true"
+    },
+    "input": [
+        {
+            "Address": "Commander Naval Air Force Box 357051 Nasni San Diego CA 92135",
+            "Country": "US"
+        }
+    ]
+}
+</pre>
+</details>
+
+<details>
+	<summary>Response - AI Parse Option</summary>
+
+<pre>
+{
+    "output": [
+        {
+            "AQI": "C",
+            "AVC": "V55-I55-P7-092",
+            "Address": "Air Commander Naval Nasni San<BR>Box 357051<BR>San Diego CA 92135-7051",
+            "Address1": "Air Commander Naval Nasni San",
+            "Address2": "Box 357051",
+            "Address3": "San Diego CA 92135-7051",
+            "AdministrativeArea": "CA",
+            "BoxType": "Box",
+            "Country": "US",
+            "CountryName": "United States",
+            "DeliveryAddress": "Box 357051",
+            "DeliveryAddress1": "Box 357051",
+            "HyphenClass": "C",
+            "ISO3166-2": "US",
+            "ISO3166-3": "USA",
+            "ISO3166-N": "840",
+            "ISO31662": "Ca",
+            "ISO31663": "Can",
+            "Locality": "San Diego",
+            "MatchRuleLabel": "C1a",
+            "Organization": "Air Commander Naval Nasni San",
+            "OrganizationName": "Air Commander Naval Nasni San",
+            "PostBox": "Box 357051",
+            "PostBoxNumber": "357051",
+            "PostBoxType": "Box",
+            "PostalCode": "92135-7051",
+            "PostalCodePrimary": "92135",
+            "PostalCodeSecondary": "7051",
+            "Sequence": "1",
+            "SubAdministrativeArea": "San Diego"
+        }
+    ]
+}
+</pre>
+</details>
+
+<details>
+	<summary>Response - Without AI Parse Option</summary>
+
+<pre>
+{
+    "output": [
+        {
+            "AQI": "C",
+            "AVC": "P22-I25-P6-100",
+            "Address": "Commander Naval Air Force<BR>Nasni Box 357051<BR>San Diego CA 92135",
+            "Address1": "Commander Naval Air Force",
+            "Address2": "Nasni Box 357051",
+            "Address3": "San Diego CA 92135",
+            "AdministrativeArea": "CA",
+            "BoxNumber": "357051",
+            "BoxType": "Box",
+            "Country": "US",
+            "CountryName": "United States",
+            "DeliveryAddress": "Nasni Box 357051",
+            "DeliveryAddress1": "Nasni Box 357051",
+            "HyphenClass": "C",
+            "ISO3166-2": "US",
+            "ISO3166-3": "USA",
+            "ISO3166-N": "840",
+            "Locality": "San Diego",
+            "MatchRuleLabel": "C6",
+            "Organization": "Commander Naval Air Force",
+            "OrganizationName": "Commander Naval Air Force",
+            "PostalCode": "92135",
+            "PostalCodePrimary": "92135",
+            "Premise": "Box 357051",
+            "PremiseNumber": "Box 357051",
+            "Sequence": "1",
+            "SubAdministrativeArea": "San Diego",
+            "Thoroughfare": "Nasni",
+            "ThoroughfareName": "Nasni"
+        }
+    ]
+}
+</pre>
+</details>
 
 ## Troubleshooting
 

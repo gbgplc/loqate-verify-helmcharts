@@ -89,13 +89,11 @@ releases:
   #   chart: "loqate/installaidata"
   #   version: ^0.0.1
   #   values:
-  #     - app:
-  #         dataFolder: {{ env "LOQATE_AI_INSTALL_FOLDER" | default "/data/models_structured" | quote }}
-  #       storage:
-  #         type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }} 
-  #         path: {{ env "LOQATE_AI_DATA_SHARE" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
-  #         server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
-  #         claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+  #     - storage:
+  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
+  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
+  #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
+  #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
   #       createSecret: false
   #       imagePullSecrets:
   #         - name: "lqtshared"
@@ -112,10 +110,10 @@ releases:
   #   version: ^0.2.0
   #   values:
   #     - storage:
-  #         type: {{ env "LOQATE_TFSERVE_STORAGE_TYPE" | default "local" | quote }} 
-  #         path: {{ env "LOQATE_TFSERVE_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
-  #         server: {{ env "LOQATE_TFSERVE_STORAGE_SERVER" | default "" | quote }}
-  #         claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
+  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
+  #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
+  #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
   #       image:
   #         tag: {{ env "LOQATE_TFSERVE_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-tfserve
@@ -133,7 +131,7 @@ releases:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
   #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
-  #         claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+  #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
   #       image:
   #         tag: {{ env "LOQATE_AIPARSER_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-ai-parse-service
