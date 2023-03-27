@@ -1823,7 +1823,7 @@ Both the `aiparser` and `tfserve` components need access to the data installed a
 To use the default paths:
 
 ``` shell
-helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
+helm install -n loqate ai-parse loqate/ai-parse --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 
 helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD>
 ```
@@ -1831,7 +1831,7 @@ helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<D
 To use a different local path:
 
 ``` shell
-helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
+helm install -n loqate ai-parse loqate/ai-parse --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
 
 helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.path=<DATA FOLDER>
 ```
@@ -1839,7 +1839,7 @@ helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<D
 To use an NFS share:
 
 ``` shell
-helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
+helm install -n loqate ai-parse loqate/ai-parse --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
 
 helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.type=nfs --set storage.path=<NFS FOLDER> --set storage.server=<NFS IP ADDR>
 ```
@@ -1847,7 +1847,7 @@ helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<D
 To use an existing PVC:
 
 ``` shell
-helm install -n loqate aiparser loqate/aiparser --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
+helm install -n loqate ai-parse loqate/ai-parse --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
 
 helm install -n loqate tfserve loqate/tfserve --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set storage.claimOverride=<CLAIM NAME>
 ```
