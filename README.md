@@ -2070,5 +2070,5 @@ QueryCoordinatorAppVersion: 0.1.23669
 
 InstallManagerAppVersion: 0.1.22799 
 
-InstallAIDataAppVersion: 0.1.22799 
+InstallAIDataAppVersion: 0.1.37868 
 

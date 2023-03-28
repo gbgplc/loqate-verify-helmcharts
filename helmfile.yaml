@@ -87,19 +87,19 @@ releases:
   # - name: installaidata
   #   namespace: loqate
   #   chart: "loqate/installaidata"
-  #   version: ^0.0.2
+  #   version: ^0.0.3
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
   #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
   #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
-  #       createSecret: false
-  #       imagePullSecrets:
-  #         - name: "lqtshared"
   #       image:
   #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-install-ai-data
+  #       createSecret: false
+  #       imagePullSecrets:
+  #         - name: "lqtshared"
   #   waitForJobs: true
   #   needs:
   #   - lqtshared
@@ -107,7 +107,7 @@ releases:
   # - name: tfserve
   #   namespace: loqate
   #   chart: "loqate/tfserve"
-  #   version: ^0.2.0
+  #   version: ^0.2.1
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
@@ -117,6 +117,7 @@ releases:
   #       image:
   #         tag: {{ env "LOQATE_TFSERVE_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-tfserve
+  #       createSecret: false
   #       imagePullSecrets:
   #         - name: "lqtshared"
   #   needs:
@@ -125,7 +126,7 @@ releases:
   # - name: ai-parse
   #   namespace: loqate
   #   chart: "loqate/ai-parse"
-  #   version: ^0.2.2
+  #   version: ^0.2.3
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
@@ -135,6 +136,7 @@ releases:
   #       image:
   #         tag: {{ env "LOQATE_AIPARSER_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-ai-parse-service
+  #       createSecret: false
   #       imagePullSecrets:
   #         - name: "lqtshared"
   #   needs:
