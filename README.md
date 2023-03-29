@@ -36,7 +36,7 @@ Please see below for details of the tools and requirements we recommend for any 
 ### Tools
 
 - Mandatory
-  - Kubernetes [v1.19+]
+  - Kubernetes [v1.23+]
   - Helm [v3.7.0]
 - Recommended
   - Helmfile [v0.144.0]
