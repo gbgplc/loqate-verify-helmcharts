@@ -120,9 +120,8 @@ Next we'll take you through how to make changes to those directories.
 - Create and go to the required directory. The lqtcharts directory can be wherever you want (you do not need the /opt/loqate folder on your local PC if you are using a claim override as the data will get downloaded to the remote PV):
 
 ```bash
-mkdir /opt/loqate
-cd /opt/loqate
-mkdir lqtcharts && cd lqtcharts/
+mkdir -p /opt/loqate/lqtcharts
+cd /opt/loqate/lqtcharts
 ```
 
 **Unix settings**
@@ -144,9 +143,8 @@ export LOQATE_NFS_SHARE=/opt/loqate/data
 - Create and go to the required directory:
 
 ```powershell
-New-Item /loqate -ItemType Directory
-New-Item lqtcharts -ItemType Directory
-Set-Location lqtcharts
+New-Item -Path "\loqate\lqtcharts" -ItemType "Directory"
+Set-Location "\loqate\lqtcharts"
 ```
 
 Depending on your setup you may need to change the default path for data download and installation. To allow the helmfile to pick up your new path you need to change the environment variable for this path as follows. (“Please note the $ sign below is part of the command for setting environment variable on powershell.”):
