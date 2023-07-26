@@ -81,6 +81,13 @@ releases:
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+
+  # Example of Induced Delay For Debugging
+
+  #     livenessProbe:
+  #       periodSeconds: 120
+  #     readinessProbe:
+  #       periodSeconds: 120
     needs:
       - lqtshared
 
