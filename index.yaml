@@ -3,9 +3,9 @@ entries:
   ai-parse:
   - apiVersion: v2
     appVersion: 0.1.35195
-    created: "2023-07-26T13:53:32.544157186Z"
+    created: "2023-08-21T08:52:21.220393848Z"
     description: loqate-verify-ai-parse-service
-    digest: 79e2223b5ab61de65e802b8676782873cd5f7f460f6ca841b5d35f2364b24f5d
+    digest: babbd4a9dddc1aaafbeee40b448091f6f3f692914c6957ba9f606d8da3bd6431
     name: ai-parse
     type: application
     urls:
@@ -14,9 +14,9 @@ entries:
   installaidata:
   - apiVersion: v2
     appVersion: 0.1.37868
-    created: "2023-07-26T13:53:32.544711893Z"
+    created: "2023-08-21T08:52:21.221192666Z"
     description: Download and setup loqate data using installaidata job
-    digest: 2c6d8691a6f9a65f09332627b19ea791a155107867a6c882d4c4e291f3eb79fa
+    digest: 580048a9d66b2dfa59ca0416b2f0be32f313a917afddfe017029f2b48cfe88be
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -34,9 +34,9 @@ entries:
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.22799
-    created: "2023-07-26T13:53:32.5453147Z"
+    created: "2023-08-21T08:52:21.221638277Z"
     description: Download and setup loqate data using installmanager job
-    digest: 24934fb6b4fe068f45ff817e2c4d17ee96a42bc8dce8902fc048a611b1d18000
+    digest: a63670185a1c7247dd4f8ffc51d480693600c035bd463a5fc4672c178cbf9c1c
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -54,9 +54,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-07-26T13:53:32.545710205Z"
+    created: "2023-08-21T08:52:21.221884082Z"
     description: A Helm chart for Kubernetes
-    digest: 5c790bc85c8c9489475a69cea2a563fcbb9ac837f412640d7bdf7ebdaab881ae
+    digest: 1d2d5a3f40ddfb4941e8a7614c6cee5351c5916a0ffe5e6734191e421058c399
     name: memberlist
     type: application
     urls:
@@ -65,9 +65,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.23669
-    created: "2023-07-26T13:53:32.547023821Z"
+    created: "2023-08-21T08:52:21.222804604Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: 9c633855c49cda23dd341c829318f6d5f392574151d671116b7595a701b70e39
+    digest: 986657ebe99c3c2de90d098ae572daaf2a23ca7a3df1590bcbb7dc486dda13e9
     name: querycoordinator
     type: application
     urls:
@@ -76,9 +76,9 @@ entries:
   secret:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-07-26T13:53:32.547434726Z"
+    created: "2023-08-21T08:52:21.22307681Z"
     description: A Helm chart for Kubernetes
-    digest: 593754df2c148a38769e2928025c3f0fe8f23b3bb5a927c2d0315ffb55bb0271
+    digest: 8239882be2063f2218805672685e5ee27a3252942dd245f2830cd8451e90003b
     name: secret
     type: application
     urls:
@@ -87,9 +87,9 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.23512
-    created: "2023-07-26T13:53:32.549026646Z"
+    created: "2023-08-21T08:52:21.224473342Z"
     description: A Helm chart for Kubernetes
-    digest: 3f2e7f93c5ee7356519caff081e2dd27422e1015c82c1f55f0c25cf63e2ee909
+    digest: ae872ec16cffb0a1c91aab0d9fa38cb920f6acfb6dacf9bd3cc8c05a6fd63b42
     name: spatial-api
     type: application
     urls:
@@ -98,12 +98,12 @@ entries:
   tfserve:
   - apiVersion: v2
     appVersion: 0.1.37867
-    created: "2023-07-26T13:53:32.550401662Z"
+    created: "2023-08-21T08:52:21.225633269Z"
     description: A Helm chart for Kubernetes
-    digest: c1be834055469be08ae08ad0e4f7c915fa81b5f6f3704da1d539328236a8eba1
+    digest: f7f98a0a5b66558ddf3fde3bcba1828c06182574f7547de1f9c956179ac7b16a
     name: tfserve
     type: application
     urls:
     - https://charts.loqate.com/tfserve-0.2.1.tgz
     version: 0.2.1
-generated: "2023-07-26T13:53:32.542750669Z"
+generated: "2023-08-21T08:52:21.218875113Z"
