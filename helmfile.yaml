@@ -34,7 +34,7 @@ releases:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
           products: {{ env "LOQATE_PRODUCTS" | default "ALL" | quote }}
         storage:
-          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }} 
+          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
           path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
           server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
           claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
@@ -51,12 +51,13 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.3.0
+    version: ^0.4.0
     values:
       - verify:
           dataset: "row"
+          premium: false
         storage:
-          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }} 
+          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
           path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
           server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
           claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
@@ -97,7 +98,7 @@ releases:
   #   version: ^0.0.3
   #   values:
   #     - storage:
-  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
+  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
   #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
   #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
@@ -117,7 +118,7 @@ releases:
   #   version: ^0.2.1
   #   values:
   #     - storage:
-  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }} 
+  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
   #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
   #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}

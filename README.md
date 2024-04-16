@@ -6,7 +6,7 @@ Verify uses cutting-edge products and services, and delivers them on a platform 
 
 ## Verify’s Capabilities
 
-Verify has a proven track record in providing customers with global data coupled with our superior parsing and matching engine. 
+Verify has a proven track record in providing customers with global data coupled with our superior parsing and matching engine.
 
 Here are a few key points regarding the services and functionality you have access to when using Verify:
 
@@ -32,6 +32,10 @@ For vulnerability disclosure or security findings, please contact support@loqate
 ## Prerequisites
 
 Please see below for details of the tools and requirements we recommend for any Verify installation.
+
+### Docker Hub
+
+A Docker Hub ID and password will be required for installation. You can create a free account at [https://hub.docker.com/]. Once created, please share your Docker Hub ID with your Loqate representative so you are given the ability to download the set of Verify containers.
 
 ### Tools
 
@@ -85,7 +89,7 @@ This guide is split up into the following sections:
 - [**Quick Start Installation:**](#quick-start-installation) step by step instructions for getting up and running quickly with Verify
 - [**Full Installation:**](#full-installation) further instructions for tailoring your installation
 - [**Usage:**](#usage) details of how to test and use your Verify installation
-- [**Example Requests:**](request-and-response-format) a range of example requests and responses
+- [**Example Requests:**](#request-and-response-format) a range of example requests and responses
 - [**Troubleshooting:**](#troubleshooting) some suggestions for how to troubleshoot your installation
 
 We recommend you complete the Quick Start Installation section before moving on to the Full Installation section.
@@ -382,8 +386,7 @@ curl -X POST http://localhost:8900/verify -d '{"input":[{"Address1":"TheFoundati
 Successful output:
 
 ``` json
-{"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park\u003cBR\u003eChester","Address1":"The Foundation","Address2":"Herons 
-Way","Address3":"Chester Business Park","Address4":"Chester","AdministrativeArea":"Cheshire","Building":"The Foundation","Country":"GB","CountryName":"United Kingdom","DeliveryAddress":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park","DeliveryAddress1":"The Foundation","DeliveryAddress2":"Herons Way","DeliveryAddress3":"Chester Business Park","DependentLocality":"Chester Business Park","HyphenClass":"B","ISO3166-2":"GB","ISO3166-3":"GBR","ISO3166-N":"826","Locality":"Chester","MatchRuleLabel":"1","Sequence":"1","Thoroughfare":"Herons Way"}]}
+{"output":[{"AQI":"A","AVC":"P44-I44-P0-100","Address":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park\u003cBR\u003eChester","Address1":"The Foundation","Address2":"Herons Way","Address3":"Chester Business Park","Address4":"Chester","AdministrativeArea":"Cheshire","Building":"The Foundation","Country":"GB","CountryName":"United Kingdom","DeliveryAddress":"The Foundation\u003cBR\u003eHerons Way\u003cBR\u003eChester Business Park","DeliveryAddress1":"The Foundation","DeliveryAddress2":"Herons Way","DeliveryAddress3":"Chester Business Park","DependentLocality":"Chester Business Park","HyphenClass":"B","ISO3166-2":"GB","ISO3166-3":"GBR","ISO3166-N":"826","Locality":"Chester","MatchRuleLabel":"1","Sequence":"1","Thoroughfare":"Herons Way"}]}
 ```
 
 **Windows:**
@@ -443,10 +446,10 @@ Once you've successfully tested your quick start install, you can move onto the 
 
 You may find that you want to re-run the Quick Start process, but don't need to re-download all of the data.  To stop the data getting downloaded again, delete your current installation and remove the **installmanager** section of the helmfile.yaml.
 
-- Delete the Helmfile install
+- Remove the previous Helmfile install
 
 ```bash
-helmfile delete
+helmfile purge
 ```
 
 In helmfile.yaml:
@@ -467,7 +470,7 @@ Unix:
 helmfile apply
 ```
 
-Windows:  
+Windows:
 
 ``` powershell
 helmfile sync
@@ -499,7 +502,7 @@ export LOQATE_INSTALLMANAGER_VERSION="<IMAGE TAG>"
 export LOQATE_QUERY_COORDINATOR_VERSION="<IMAGE TAG>"
 export LOQATE_SPATIAL_API_VERSION="<IMAGE TAG>"
 ```
-  
+
 **Helmfile Windows**
 
 For Windows helmfile set the following environment variables:
@@ -550,6 +553,40 @@ helm install -n loqate spatial-api-au loqate/spatial-api --set imageCredentials.
 
 For examples of how to change config values using Helmfile, see [this section below](#config-values).
 
+#### Premium Datasets
+
+This section explains how to manage installations that include both premium and standard versions of a dataset.  These steps are unnecessary if you only use the premium version.
+
+First, you will need two Loqate license keys, one for the standard dataset and the other for the premium dataset.
+
+Note: Certify datasets are considered `standard` therefore should be included in the standard license and installed in the `standard` folder.  Requests that include both the `certify` and `premium` options will have the `premium` option turned off internally.
+
+Download each set of data using their own InstallManager job to different folders, `standard` and `premium`, by changing `storage.path`.
+
+Create a Spatial API deployment for each dataset.  For those serving premium data, change the `verify.premium` value to `true` and set `storage.path` to the `premium` folder.  The standard deployments should keep `verify.premium` as `false` and set `storage.path` to the `standard` folder.
+
+The new InstallManager job and Spatial API deployment will need new names, be sure to update the name of the Spatial API `needs` to match the new InstallManager name.  See `helmfile-premium.yml` as an example.
+
+You can have one deployment for all premium requests by setting `verify.dataset` to `row` or have country specific deployments in the same way as standard datasets, described in [Adding Country Specific Deployments](#adding-country-specific-deployments)
+
+Requests for premium data sets need to contain the `premium` option:
+
+``` json
+{
+    "options": {
+        "premium": "true"
+    },
+    "input": [
+        {
+            "Address1": "59 Parklands Court",
+            "Address2": "Dublin",
+            "PostalCode": "D24 CA39",
+            "Country": "IE"
+        }
+    ]
+}
+```
+
 ### Helmfile
 
 Helmfile can be used to easily install all components in a simple Kubernetes environment. It will automatically pull from the Loqate charts repository.
@@ -586,7 +623,7 @@ helmfile sync
 
 The command to uninstall Helmfile in either Unix or Windows is:
 
-```helmfile delete```
+```helmfile purge```
 
 #### Config Values
 
@@ -743,13 +780,13 @@ To install a subset of the datasets you have in the license key you can add --se
 The command below uses the default data path (this will mainly apply to Windows installations):
 
 ``` powershell
-helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY> --set app.products="KBCOMMON\,DSVGBR" 
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY> --set app.products="KBCOMMON\,DSVGBR"
 ```
 
 The following command uses the changed path for data installation. As per [Initial Setup](#initial-setup)):
 
 ``` bash
-helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY>--set storage.path=<DATA FOLDER> --set app.products="KBCOMMON\,DSVGBR" 
+helm install -n loqate installmanager loqate/installmanager --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.licenseKey=<API KEY>--set storage.path=<DATA FOLDER> --set app.products="KBCOMMON\,DSVGBR"
 ```
 
 It's important to make sure the download is fully completed before continuing. See the section on [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) earlier for details of how to do this.
@@ -796,7 +833,7 @@ Example output:
 ```bash
 NAME                                  READY   STATUS    RESTARTS      AGE
 querycoordinator-ffdc5cfbc-2hj7w   1/1     Running   0             14m
-spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m   
+spatial-api-6dbfbb7f88-pqqgj       1/1     Running   1 (14m ago)   15m
 ```
 
 Wait until there is 1/1 in the READY column for spatial-api and querycoordinator. After this wait an extra 1 minute.
@@ -848,7 +885,7 @@ If you ever need to do a full system clean up, here are the steps to take.
 Perform the following:
 
 ``` bash
-helmfile delete
+helmfile purge
 ```
 
 #### Helmfile and Helm Clean Up Commands
@@ -1981,7 +2018,7 @@ kubectl get pods -n loqate
 ```
 
 - If any of the pods are not in service (i.e. 0/1) then delete the pod as shown below. Wait 3 minutes. If the pods is in service test again. Try this a couple times if it does not work at first.
-  
+
 ```bash
  kubectl delete pods <NAME> -n loqate
 ```
@@ -1990,7 +2027,7 @@ If all pods are in service (i.e. 1/1) but you are still getting the “No spatia
 
 - Delete the spatial-api pod. Wait three minutes and test again
 - If it does not work then do the same for the querycoordinator pod
-- If you are still getting the errors then delete the spatial-api pod once more and wait three minutes then test again  
+- If you are still getting the errors then delete the spatial-api pod once more and wait three minutes then test again
 
 If the above has still not fixed the issue then try the following:
 
@@ -2043,7 +2080,7 @@ If the error has still not been resolved, please contact support@loqate.com to a
 
 2.2 By using the  Loqate Verify Software You agree that:
 
-2.2.1 You will not use or exploit the Intellectual Property Rights in the Loqate Verify Software or permit others to use or exploit the Intellectual Property Rights in the Loqate Verify Software outside of the terms of the Licence;  
+2.2.1 You will not use or exploit the Intellectual Property Rights in the Loqate Verify Software or permit others to use or exploit the Intellectual Property Rights in the Loqate Verify Software outside of the terms of the Licence;
 
 2.2.2 Your use of the Loqate Verify Software through any software, equipment, materials or services not provided by GBG will not infringe the rights of any third party.
 
