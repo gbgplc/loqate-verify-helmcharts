@@ -1,0 +1,139 @@
+helmDefaults:
+  # time in seconds to wait for any individual Kubernetes operation
+  # (like Jobs for hooks, and waits on pod/pvc/svc/deployment readiness)
+  # (default 300)
+  timeout: 600
+
+repositories:
+  - name: loqate
+    url: https://charts.loqate.com
+
+# chart url can be local or remote
+releases:
+  - name: memberlist
+    namespace: loqate
+    chart: "loqate/memberlist"
+    version: ^0.1.0
+
+  - name: lqtshared
+    namespace: loqate
+    chart: "loqate/secret"
+    version: ^0.1.0
+    values:
+      - nameOverride: lqtshared
+        imageCredentials:
+          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
+          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
+
+  - name: installmanager
+    namespace: loqate
+    chart: "loqate/installmanager"
+    version: ^0.2.1
+    values:
+      - app:
+          licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
+          products: {{ env "LOQATE_PRODUCTS" | default "ALL" | quote }} # "KBCOMMON,DSVIRL"
+        storage:
+          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
+          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/standard" | quote }}
+          server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
+          claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+        image:
+          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-install-manager
+    waitForJobs: true
+    needs:
+    - lqtshared
+
+  - name: installmanager-premium
+    namespace: loqate
+    chart: "loqate/installmanager"
+    version: ^0.2.1
+    values:
+      - app:
+          licenseKey: {{ requiredEnv "PREMIUM_LICENSE_KEY" | quote }}
+          products: {{ env "PREMIUM_LOQATE_PRODUCTS" | default "ALL" | quote }} # "KBCOMMON,DSVIRLP"
+        storage:
+          type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
+          path: {{ env "PREMIUM_LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/premium" | quote }}
+          server: {{ env "PREMIUM_LOQATE_NFS_SHARE_IP" | default "" | quote }}
+          claimOverride: {{ env "PREMIUM_CLAIM_OVERRIDE" | default "" | quote }}
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+        image:
+          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-install-manager
+    waitForJobs: true
+    needs:
+    - lqtshared
+
+  - name: spatial-api
+    namespace: loqate
+    chart: "loqate/spatial-api"
+    version: ^0.4.0
+    values:
+      - verify:
+          dataset: "row"
+          premium: false
+        storage:
+          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
+          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/standard" | quote }}
+          server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
+          claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+        image:
+          tag: {{ env "LOQATE_SPATIAL_API_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-spatial-api
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+    needs:
+      - installmanager
+      - lqtshared
+
+  - name: spatial-api-premium
+    namespace: loqate
+    chart: "loqate/spatial-api"
+    version: ^0.4.0
+    values:
+      - verify:
+          dataset: "row"
+          premium: true
+        storage:
+          type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
+          path: {{ env "PREMIUM_LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/premium" | quote }}
+          server: {{ env "PREMIUM_LOQATE_NFS_SHARE_IP" | default "" | quote }}
+          claimOverride: {{ env "PREMIUM_CLAIM_OVERRIDE" | default "" | quote }}
+        image:
+          tag: {{ env "LOQATE_SPATIAL_API_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-spatial-api
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+    needs:
+      - installmanager-premium
+      - lqtshared
+
+  - name: querycoordinator
+    namespace: loqate
+    chart: "loqate/querycoordinator"
+    version: ^0.3.0
+    values:
+      - image:
+          tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-query-coordinator
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+
+  # Example of Induced Delay For Debugging
+
+  #     livenessProbe:
+  #       periodSeconds: 120
+  #     readinessProbe:
+  #       periodSeconds: 120
+    needs:
+      - lqtshared

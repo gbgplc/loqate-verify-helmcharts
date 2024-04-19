@@ -565,7 +565,20 @@ Download each set of data using their own InstallManager job to different folder
 
 Create a Spatial API deployment for each dataset.  For those serving premium data, change the `verify.premium` value to `true` and set `storage.path` to the `premium` folder.  The standard deployments should keep `verify.premium` as `false` and set `storage.path` to the `standard` folder.
 
-The new InstallManager job and Spatial API deployment will need new names, be sure to update the name of the Spatial API `needs` to match the new InstallManager name.  See `helmfile-premium.yml` as an example.
+The new InstallManager job and Spatial API deployment will need new names, be sure to update the name of the Spatial API `needs` to match the new InstallManager name.  See `helmfile-premium.yaml` as an example.
+
+Unix:
+
+``` bash
+wget https://charts.loqate.com/helmfile-premium.yaml -O helmfile-premium.yaml
+```
+
+Windows:
+
+``` powershell
+Invoke-WebRequest https://charts.loqate.com/helmfile-premium.yaml -OutFile helmfile-premium.yaml
+```
+
 
 You can have one deployment for all premium requests by setting `verify.dataset` to `row` or have country specific deployments in the same way as standard datasets, described in [Adding Country Specific Deployments](#adding-country-specific-deployments)
 
