@@ -1760,6 +1760,13 @@ _[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#acc
 The helmfile contains releases for using the AI Parser.  Not everyone will want to use the AI parser, so they are commented out by default.
 If you want to use the AI Parser, it is recommended that you get the base Verify installation working first, then uncomment the AI Parser sections.
 
+To enable the use of AI parsing you need to enable it by passing a value to Query Coordinator.  In `helmfile.yaml`, in the `querycoordinator` release, under `values:` add the following:
+
+``` yml
+        app:
+          allow_aiparser: true
+```
+
 The helmfile uses environment variables to enable you to override the default storage options.  These are:
 
 - LOQATE_AIPARSER_STORAGE_TYPE - use to define a PV, accepted values 'local' and 'nfs', default 'local'
@@ -1832,6 +1839,12 @@ helmfile sync
 ### AI Parser Helm
 
 #### Installing the Data Models
+
+To enable the use of AI parsing you need to enable it by passing a value to Query Coordinator.  When installing querycoordinator set the `app.allow_aiparser` value to true:
+
+``` shell
+helm install -n loqate querycoordinator loqate/querycoordinator --set imageCredentials.username=<DOCKERHUB USERNAME> --set imageCredentials.password=<DOCKERHUB PASSWORD> --set app.memberlistService=memberlist.loqate.svc --set app.allow_aiparser=true
+```
 
 The helm charts use a number of values to enable you to override the default storage options.  These are:
 
@@ -2110,11 +2123,11 @@ In no event shall GBG be liable to You , whether such liability arises in contra
 SecretAppVersion: 1.16.0 
 
 
-SpatialAPIAppVersion: 0.1.23512 
+SpatialAPIAppVersion: 0.1.76093 
 
 MemberlistAppVersion: 0.1.0 
 
-QueryCoordinatorAppVersion: 0.1.23669 
+QueryCoordinatorAppVersion: 0.1.75261 
 
 InstallManagerAppVersion: 0.1.22799 
 
