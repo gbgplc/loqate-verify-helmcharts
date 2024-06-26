@@ -28,7 +28,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.1
+    version: ^0.2.2
     values:
       - app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
@@ -51,7 +51,7 @@ releases:
   - name: installmanager-premium
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.1
+    version: ^0.2.2
     values:
       - app:
           licenseKey: {{ requiredEnv "PREMIUM_LICENSE_KEY" | quote }}
@@ -74,7 +74,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.4.1
+    version: ^0.4.2
     values:
       - verify:
           dataset: "row"
@@ -97,7 +97,7 @@ releases:
   - name: spatial-api-premium
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.4.1
+    version: ^0.4.2
     values:
       - verify:
           dataset: "row"
@@ -120,7 +120,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.3.1
+    version: ^0.3.2
     values:
       - image:
           tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}

@@ -28,7 +28,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.1
+    version: ^0.2.2
     values:
       - app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
@@ -51,7 +51,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.4.1
+    version: ^0.4.3
     values:
       - verify:
           dataset: "row"
@@ -74,7 +74,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.3.1
+    version: ^0.3.2
     values:
       - image:
           tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}
@@ -95,7 +95,7 @@ releases:
   # - name: installaidata
   #   namespace: loqate
   #   chart: "loqate/installaidata"
-  #   version: ^0.0.3
+  #   version: ^0.0.4
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
@@ -115,7 +115,7 @@ releases:
   # - name: tfserve
   #   namespace: loqate
   #   chart: "loqate/tfserve"
-  #   version: ^0.2.1
+  #   version: ^0.2.2
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
@@ -134,7 +134,7 @@ releases:
   # - name: ai-parse
   #   namespace: loqate
   #   chart: "loqate/ai-parse"
-  #   version: ^0.2.3
+  #   version: ^0.2.4
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}

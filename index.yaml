@@ -3,20 +3,20 @@ entries:
   ai-parse:
   - apiVersion: v2
     appVersion: 0.1.35195
-    created: "2024-06-17T11:47:41.008622961Z"
+    created: "2024-06-26T11:25:45.181096102Z"
     description: loqate-verify-ai-parse-service
-    digest: fddd12c0d94c2d07ae76c220e3deb80f1f0e8daca4325037957b5aa358d9a5bb
+    digest: bb85121d21360fea749c5ed364cab43d19e9ce4d2004849b69aa8c448016afbf
     name: ai-parse
     type: application
     urls:
-    - https://charts.loqate.com/ai-parse-0.2.3.tgz
-    version: 0.2.3
+    - https://charts.loqate.com/ai-parse-0.2.4.tgz
+    version: 0.2.4
   installaidata:
   - apiVersion: v2
     appVersion: 0.1.37868
-    created: "2024-06-17T11:47:41.009532699Z"
+    created: "2024-06-26T11:25:45.181703933Z"
     description: Download and setup loqate data using installaidata job
-    digest: ab1b100272e5b1e051b7bafc5ae0a46ec32371cdf7700547c17a23449eb2f840
+    digest: 43f44c34762e8d3d868ef137d7d9e59bc5b049c00f457788fa19218a8ae19550
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -29,14 +29,14 @@ entries:
     name: installaidata
     type: application
     urls:
-    - https://charts.loqate.com/installaidata-0.0.3.tgz
-    version: 0.0.3
+    - https://charts.loqate.com/installaidata-0.0.4.tgz
+    version: 0.0.4
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.22799
-    created: "2024-06-17T11:47:41.009953505Z"
+    created: "2024-06-26T11:25:45.182054696Z"
     description: Download and setup loqate data using installmanager job
-    digest: 802834d3f0df579976251e6a2fb6caaca70fa61aad7e4ee3c014530846171da2
+    digest: 4b799bbad5ed293866383a7aa1e5d3e551c090796fbfe7bd8f3c5065cc4d4ce9
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -49,14 +49,14 @@ entries:
     name: installmanager
     type: application
     urls:
-    - https://charts.loqate.com/installmanager-0.2.1.tgz
-    version: 0.2.1
+    - https://charts.loqate.com/installmanager-0.2.2.tgz
+    version: 0.2.2
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2024-06-17T11:47:41.013762603Z"
+    created: "2024-06-26T11:25:45.182247766Z"
     description: A Helm chart for Kubernetes
-    digest: 9757b516889a3fac2561f1b504548edcf717ca0c1fddd4b3441e2fa1e402d6be
+    digest: 559ef18156a32537c071a5525e54d3da29042a5855968432338ff2ffee1b4970
     name: memberlist
     type: application
     urls:
@@ -65,20 +65,20 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.75261
-    created: "2024-06-17T11:47:41.014931394Z"
+    created: "2024-06-26T11:25:45.182904488Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: 1e760caf22c8c9f9a2b079761b4d4ca6ed968e0a7d6d75ecb05b0f3e7c5bf5a2
+    digest: 911bf624fb8389125d14226d0491e4f8f3e3d4092564454ab1853925c5c439fb
     name: querycoordinator
     type: application
     urls:
-    - https://charts.loqate.com/querycoordinator-0.3.1.tgz
-    version: 0.3.1
+    - https://charts.loqate.com/querycoordinator-0.3.2.tgz
+    version: 0.3.2
   secret:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-06-17T11:47:41.015303959Z"
+    created: "2024-06-26T11:25:45.183111844Z"
     description: A Helm chart for Kubernetes
-    digest: 50475d688dddc12096ff7a71f55c2f4823bf0267ed0b852bea2ebf7dc3c81674
+    digest: 02835c2347dca4a66d922a1ca252b9a75d89f32e017251e36d2c802d78460893
     name: secret
     type: application
     urls:
@@ -87,23 +87,23 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.76093
-    created: "2024-06-17T11:47:41.016928672Z"
+    created: "2024-06-26T11:25:45.183965583Z"
     description: A Helm chart for Kubernetes
-    digest: fe2fd50435bbaa44c190565b9cf19a02e2fe93c73ee83dc31aafdc6333955ecc
+    digest: 85eb51f657d825224784b7572ced9b7429d43975c65f39781e93c414e8eac890
     name: spatial-api
     type: application
     urls:
-    - https://charts.loqate.com/spatial-api-0.4.1.tgz
-    version: 0.4.1
+    - https://charts.loqate.com/spatial-api-0.4.2.tgz
+    version: 0.4.2
   tfserve:
   - apiVersion: v2
     appVersion: 0.1.37867
-    created: "2024-06-17T11:47:41.018271057Z"
+    created: "2024-06-26T11:25:45.184742747Z"
     description: A Helm chart for Kubernetes
-    digest: 5a695355b2cdda0c274b343a9f9c416a282cc7f3a57fc6e032344ec04fee9741
+    digest: e3908cfa084dc82d0f8da98a8a5e2922a2562f2621be38fd3bed5da7987e6e88
     name: tfserve
     type: application
     urls:
-    - https://charts.loqate.com/tfserve-0.2.1.tgz
-    version: 0.2.1
-generated: "2024-06-17T11:47:41.006959837Z"
+    - https://charts.loqate.com/tfserve-0.2.2.tgz
+    version: 0.2.2
+generated: "2024-06-26T11:25:45.179527523Z"
