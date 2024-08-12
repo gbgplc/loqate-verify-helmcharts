@@ -51,6 +51,17 @@ entries:
     urls:
     - https://charts.loqate.com/installmanager-0.2.2.tgz
     version: 0.2.2
+  membercheck:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2024-08-12T13:20:21.586839063Z"
+    description: A Helm chart for Kubernetes
+    digest: 559cf3e17b8290863305e75cb06a81d4bf00d8dcb7417e9dd3dc913c51289d39
+    name: membercheck
+    type: application
+    urls:
+    - https://charts.loqate.com/membercheck-0.0.1.tgz
+    version: 0.0.1
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -126,4 +137,4 @@ entries:
     urls:
     - https://charts.loqate.com/tfserve-0.2.2.tgz
     version: 0.2.2
-generated: "2024-08-08T07:26:10.753208383Z"
+generated: "2024-08-12T13:20:21.585829934Z"
