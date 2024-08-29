@@ -555,17 +555,23 @@ For examples of how to change config values using Helmfile, see [this section be
 
 #### Premium Datasets
 
-This section explains how to manage installations that include both premium and standard versions of a dataset.  These steps are unnecessary if you only use the premium version.
+There are currently three premium datasets: France, Ireland, and US.
 
-First, you will need two Loqate license keys, one for the standard dataset and the other for the premium dataset.
+You can have one deployment for all premium requests by setting `verify.dataset` value to `row` or have country specific deployments as described in [Adding Country Specific Deployments](#adding-country-specific-deployments)
 
-Note: Certify datasets are considered `standard` therefore should be included in the standard license and installed in the `standard` folder.  Requests that include both the `certify` and `premium` options will have the `premium` option turned off internally.
+The premium US dataset requires more resources than other datasets.  SpatialAPI will need at least these resources values:
 
-Download each set of data using their own InstallManager job to different folders, `standard` and `premium`, by changing `storage.path`.
+```yaml
+    resources:
+      requests:
+        cpu: 2000m
+        memory: 5250Mi
+      limits:
+        cpu: 2200m
+        memory: 5775Mi
+```
 
-Create a Spatial API deployment for each dataset.  For those serving premium data, change the `verify.premium` value to `true` and set `storage.path` to the `premium` folder.  The standard deployments should keep `verify.premium` as `false` and set `storage.path` to the `standard` folder.
-
-The new InstallManager job and Spatial API deployment will need new names, be sure to update the name of the Spatial API `needs` to match the new InstallManager name.  See `helmfile-premium.yaml` as an example.
+See [helmfile-premium.yaml](https://charts.loqate.com/helmfile-premium.yaml) as an example.  It includes premium environment variables for the standard [config values](#config-values).
 
 Unix:
 
@@ -579,15 +585,23 @@ Windows:
 Invoke-WebRequest https://charts.loqate.com/helmfile-premium.yaml -OutFile helmfile-premium.yaml
 ```
 
+You'll need two Loqate license keys, one for the standard datasets and the other for the premium datasets.
 
-You can have one deployment for all premium requests by setting `verify.dataset` to `row` or have country specific deployments in the same way as standard datasets, described in [Adding Country Specific Deployments](#adding-country-specific-deployments)
+Note: Certify datasets are considered `standard` therefore should be included in the standard license and installed in the `standard` folder.  Requests that include both the `certify` and `premium` options will have the `premium` option turned off internally.
 
-Requests for premium data sets need to contain the `premium` option:
+Download each set of data using their own InstallManager job to different folders, `standard` and `premium`, by changing `storage.path`.  See [helmfile-install.yaml](https://charts.loqate.com/helmfile-install.yaml) for an example.
+
+Create a Spatial API deployment for each dataset.  For those serving premium data, change the `verify.premium` value to `true` and set `storage.path` to the `premium` folder.  The standard deployments should keep `verify.premium` as `false` and set `storage.path` to the `standard` folder.
+
+The new InstallManager job and Spatial API deployment will need new names, be sure to update the name of the Spatial API `needs` to match the new InstallManager name.  See [helmfile-premium.yaml](https://charts.loqate.com/helmfile-premium.yaml) as an example.
+
+Requests for premium data sets need to contain the `premium` and `premiumCountries` options:
 
 ``` json
 {
     "options": {
-        "premium": "true"
+        "premium": "true",
+        "premiumCountries": ["FR", "IE", "US"]
     },
     "input": [
         {
@@ -599,6 +613,8 @@ Requests for premium data sets need to contain the `premium` option:
     ]
 }
 ```
+
+The `premiumCountries` option can be used to control access to the specific datasets in a re-seller situation.
 
 ### Helmfile
 

@@ -113,6 +113,13 @@ releases:
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+        resources:
+          requests:
+            cpu: 2000m
+            memory: 5250Mi
+          limits:
+            cpu: 2200m
+            memory: 5775Mi
     needs:
       - installmanager-premium
       - lqtshared

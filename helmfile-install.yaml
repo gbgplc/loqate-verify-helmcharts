@@ -1,0 +1,87 @@
+helmDefaults:
+  # time in seconds to wait for any individual Kubernetes operation
+  # (like Jobs for hooks, and waits on pod/pvc/svc/deployment readiness)
+  # (default 300)
+  timeout: 600
+
+repositories:
+  - name: loqate
+    url: https://charts.loqate.com
+
+# chart url can be local or remote
+releases:
+  - name: lqtshared
+    namespace: loqate
+    chart: "loqate/secret"
+    version: ^0.1.0
+    values:
+      - nameOverride: lqtshared
+        imageCredentials:
+          username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
+          password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
+
+  - name: installmanager
+    namespace: loqate
+    chart: "loqate/installmanager"
+    version: ^0.2.2
+    values:
+      - app:
+          licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
+          products: {{ env "LOQATE_PRODUCTS" | default "ALL" | quote }}
+        storage:
+          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
+          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/standard" | quote }}
+          server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
+          claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
+        createSecret: false
+        imagePullSecrets:
+          - name: "lqtshared"
+        image:
+          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
+          repository: gbgroup/loqate-verify-install-manager
+    waitForJobs: true
+    needs:
+    - lqtshared
+
+  # - name: installmanager-premium
+  #   namespace: loqate
+  #   chart: "loqate/installmanager"
+  #   version: ^0.2.2
+  #   values:
+  #     - app:
+  #         licenseKey: {{ requiredEnv "PREMIUM_LICENSE_KEY" | quote }}
+  #         products: {{ env "PREMIUM_LOQATE_PRODUCTS" | default "ALL" | quote }}
+  #       storage:
+  #         type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
+  #         path: {{ env "PREMIUM_LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/premium" | quote }}
+  #         server: {{ env "PREMIUM_LOQATE_NFS_SHARE_IP" | default "" | quote }}
+  #         claimOverride: {{ env "PREMIUM_CLAIM_OVERRIDE" | default "" | quote }}
+  #       createSecret: false
+  #       imagePullSecrets:
+  #         - name: "lqtshared"
+  #       image:
+  #         tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
+  #         repository: gbgroup/loqate-verify-install-manager
+  #   waitForJobs: true
+  #   needs:
+  #   - lqtshared
+
+  # - name: installaidata
+  #   namespace: loqate
+  #   chart: "loqate/installaidata"
+  #   version: ^0.0.3
+  #   values:
+  #     - storage:
+  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
+  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
+  #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
+  #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
+  #       image:
+  #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "latest" | quote }}
+  #         repository: gbgroup/loqate-verify-install-ai-data
+  #       createSecret: false
+  #       imagePullSecrets:
+  #         - name: "lqtshared"
+  #   waitForJobs: true
+  #   needs:
+  #   - lqtshared
