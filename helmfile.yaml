@@ -103,8 +103,9 @@ releases:
   #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
   #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
   #       image:
-  #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "latest" | quote }}
+  #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "0.1.37868" | quote }}
   #         repository: gbgroup/loqate-verify-install-ai-data
+  #         pullPolicy: IfNotPresent
   #       createSecret: false
   #       imagePullSecrets:
   #         - name: "lqtshared"
