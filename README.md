@@ -982,10 +982,12 @@ The `querycoordinator` chart contains templates for a Kubernetes ingress and an 
 **Options** comprised of the following:
 
 - **Geocode (boolean as string):** if you want geo-coordinates to be appended to your results (if available)
-- **Processes (array of string):** Loqate Process to run. Valid Values: Verify, Search, ReverseGeocode.  Defaults to Verify when not supplied
+- **Processes (array of string):** Loqate Process to run. Valid Values: Verify, Search, Query*, ReverseGeocode.  Defaults to Verify when not supplied
 - **Certify (boolean as string):** use certified dataset. AMAS (AU), CASS (US) or SERP (CA)
 - **Enhance (boolean as string):** use enhanced datasets. Returns enhance fields if applicable
 - **ServerOptions (object):** properties are OptionName and value is OptionValue
+
+*Query is a debug tool to be used to support submission of support cases, and please note this tool is in maintenance mode with no planned future developments or bug fixes.
 
 More information about [server options](https://support.loqate.com/server-options/).
 
@@ -1247,6 +1249,116 @@ We've provided a selection of the most useful examples below for both sample req
                 "Thoroughfare": "Mukawachoyanagisawa"
             }
         ]
+    ]
+}
+</pre>
+
+</details>
+
+<details>
+	<summary>Request - Process Option as ‘Query’</summary>
+
+<pre>
+{
+    "Input": [
+        {}
+    ],
+    "Options": {
+        "Processes": ["Query"],
+        "ServerOptions": {
+            "OutputFields": "Locality",
+            "QueryClause": "Distinct",
+            "AliasPreference": "First",
+            "RangefieldPreference": "Match"
+        },
+        "ProcessOptions": {
+            "Table": "rd_AU_vfy",
+            "QueryString": "(Locality LIKE \"Meadow Heights%*\") || (PostalCodePrimary LIKE \"3048%*\")",
+            "OutputFields": "PremiseNumber, Thoroughfare,Locality, PostalCodePrimary",
+            "QueryClause": "Distinct",
+            "AliasPreference": "First",
+            "RangefieldPreference": "Match"
+        }
+    }
+}
+</pre>
+
+</details>
+
+<details>
+	<summary>Response - Process Option as ‘Query’</summary>
+
+<pre>
+{
+    "output": [
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "Sequence": "1"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "10",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "12",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "14",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "16",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "18",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "20",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "22",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "24",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        },
+        {
+            "Locality": "Meadow Heights",
+            "PostalCodePrimary": "3048",
+            "PremiseNumber": "3",
+            "Sequence": "1",
+            "Thoroughfare": "Abelia Ct"
+        }
     ]
 }
 </pre>
@@ -1651,15 +1763,16 @@ We've provided a selection of the most useful examples below for both sample req
             "Address2": "Redwood City CA 94063-1734",
             "AdministrativeArea": "CA",
             "AdministrativeAreaISO2": "US-CA",
-            "CAMEO_CAT": "9C",
-            "CAMEO_GRP": "9",
-            "CAMEO_INT": "53",
-            "CBSAMetropolitanStatisticalArea": "San Francisco-Oakland-Berkeley, Ca=41860",
+            "BlockCode": "2018",
+            "BlockGroupCode": "2",
+            "CBSACode": "41860",
+            "CBSAName": "San Francisco-Oakland-Berkeley, Ca Metro Area",
             "CensusClassCode": "C1",
             "CensusCode": "60102",
-            "CensusIndicator": "Locality",
+            "CensusIndicator": "Premise",
             "Country": "US",
             "CountryName": "United States",
+            "CountyCode": "081",
             "DeliveryAddress": "805 Veterans Blvd",
             "DeliveryAddress1": "805 Veterans Blvd",
             "GNISFeatureID": "2410919",
@@ -1668,13 +1781,17 @@ We've provided a selection of the most useful examples below for both sample req
             "ISO3166-3": "USA",
             "ISO3166-N": "840",
             "Locality": "Redwood City",
-            "MatchRuleLabel": "C2 1 1 1 1",
-            "MetropolitanDivision": "San Francisco-San Mateo-Redwood City, Ca=41884",
+            "MatchRuleLabel": "C2 d1 d1 d1 d1",
+	    "MetroDivisionCode": "41884",
+            "MetroDivisionName": "San Francisco-San Mateo-Redwood City, Ca",
+            "OldMSACode": "7360",
+            "OldMSAName": "San Francisco, Ca Pmsa",
             "PostalCode": "94063-1734",
             "PostalCodePrimary": "94063",
             "PostalCodeSecondary": "1734",
             "Premise": "805",
             "PremiseNumber": "805",
+            "ResCom_Flag": "Com",
             "Sequence": "1",
             "SubAdministrativeArea": "San Mateo",
             "Thoroughfare": "Veterans Blvd",
@@ -1684,6 +1801,7 @@ We've provided a selection of the most useful examples below for both sample req
             "TimeZone_DST": "-07:00",
             "TimeZone_Name": "Pacific Standard Time",
             "TimeZone_UTC": "-08:00"
+            "TractCode": "610202"
         }
     ]
 }
@@ -1759,7 +1877,7 @@ We've provided a selection of the most useful examples below for both sample req
 
 The AI Parser requires a Persistent Volume, ideally different from the main data storage. The data is downloaded using `installaidata` chart and accessed by the `ai-parse` and `tfserve` charts. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
 
-Currently, to store all the data you will need at least 4Gi of storage.
+Currently, to store the global data set you will need at least 4Gi of storage.
 
 These charts will work with any RWX (ReadWriteMany) Persistent Volume, but faster storage will produce better response times.
 
