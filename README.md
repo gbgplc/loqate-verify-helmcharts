@@ -1894,6 +1894,8 @@ _[Read more](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#acc
 The helmfile contains releases for using the AI Parser.  Not everyone will want to use the AI parser, so they are commented out by default.
 If you want to use the AI Parser, it is recommended that you get the base Verify installation working first, then uncomment the AI Parser sections.
 
+NOTE: This is now turned on by default
+
 To enable the use of AI parsing you need to enable it by passing a value to Query Coordinator.  In `helmfile.yaml`, in the `querycoordinator` release, under `values:` add the following:
 
 ``` yml
