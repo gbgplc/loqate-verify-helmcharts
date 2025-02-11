@@ -2,10 +2,10 @@ apiVersion: v1
 entries:
   ai-parse:
   - apiVersion: v2
-    appVersion: 0.1.35195
-    created: "2025-02-03T12:51:45.120926402Z"
+    appVersion: 0.1.89138
+    created: "2025-02-11T12:17:59.171071517Z"
     description: loqate-verify-ai-parse-service
-    digest: 39ce4f6ff0ece7a5310a5ac92d53749596e6287b715377919ab5ae59e1b6d0e4
+    digest: fd459f6a5da3eaf6472c28bc3857bc6af4af674e4152a1edcb193c4faa9c2d0b
     name: ai-parse
     type: application
     urls:
@@ -14,9 +14,9 @@ entries:
   installaidata:
   - apiVersion: v2
     appVersion: 0.1.37868
-    created: "2025-02-03T12:51:45.121307766Z"
+    created: "2025-02-11T12:17:59.171750014Z"
     description: Download and setup loqate data using installaidata job
-    digest: c5be60abcae887ab64d3f5e6dac2fda6c9a3af1de90189da0a76780b9479db6d
+    digest: 30fe8460c76f525473673213c8a6f6d3d952c2a968c2f1624e7165b171f30672
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -34,9 +34,9 @@ entries:
   installmanager:
   - apiVersion: v2
     appVersion: 0.1.22799
-    created: "2025-02-03T12:51:45.121663021Z"
+    created: "2025-02-11T12:17:59.172096139Z"
     description: Download and setup loqate data using installmanager job
-    digest: b5e91499a2294df6418198935cd91b035aaf02c31c327b728554b92964976691
+    digest: fb562346a2705b63541b8dd8a6ea9f116e6b9a0e351b9a76643e293cadc93526
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -65,9 +65,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2025-02-03T12:51:45.121878695Z"
+    created: "2025-02-11T12:17:59.172288549Z"
     description: A Helm chart for Kubernetes
-    digest: 0d02c88397630cfca3bc206c725ad3c8b4458c068b370f729556124eaa4f218d
+    digest: b5fc4eaf1e09121ce6aaffe7744d602103df7f6f1eb9d196c2a72947748a7922
     name: memberlist
     type: application
     urls:
@@ -75,10 +75,10 @@ entries:
     version: 0.1.0
   querycoordinator:
   - apiVersion: v2
-    appVersion: 0.1.84110
-    created: "2025-02-03T12:51:45.122567185Z"
+    appVersion: 0.1.89144
+    created: "2025-02-11T12:17:59.172972776Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: 135b4cc4b4403ca68cc715060f80d86eafdb3c96ce5cc2919fa796775e7ffbca
+    digest: c8cf62c9838105990acf9c24cee0e4dbcf708dfc58e02aa8995c10b462bdeb18
     name: querycoordinator
     type: application
     urls:
@@ -117,15 +117,25 @@ entries:
   secret:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-02-03T12:51:45.122776907Z"
+    created: "2025-02-11T12:17:59.173182447Z"
     description: A Helm chart for Kubernetes
-    digest: 2767234713e3b06836d2b7ca30df53ec17a242e5f2813ad49ce9be671efebcd4
+    digest: 83341497cbd844c0ab291004ab0533c4fae0c7e8243f6c9516456d77d9e96a4f
     name: secret
     type: application
     urls:
     - https://charts.loqate.com/secret-0.1.0.tgz
     version: 0.1.0
   spatial-api:
+  - apiVersion: v2
+    appVersion: 0.1.91471
+    created: "2025-02-11T12:17:59.17407328Z"
+    description: A Helm chart for Kubernetes
+    digest: 1f7ef49a2a1ad99c9445296685a8092ba2cae0b310e3a8d22b64d7b451a359e8
+    name: spatial-api
+    type: application
+    urls:
+    - https://charts.loqate.com/spatial-api-0.4.5.tgz
+    version: 0.4.5
   - apiVersion: v2
     appVersion: 0.1.84109
     created: "2025-02-03T12:51:45.123709884Z"
@@ -158,13 +168,13 @@ entries:
     version: 0.4.2
   tfserve:
   - apiVersion: v2
-    appVersion: 0.1.37867
-    created: "2025-02-03T12:51:45.124414614Z"
+    appVersion: 0.1.85865
+    created: "2025-02-11T12:17:59.174752868Z"
     description: A Helm chart for Kubernetes
-    digest: ab77d915e1484e77d4e94a37cdb042d926e16333c35c1d6c0b939eb2eee52c8d
+    digest: 90a5698878f795c5f2e9578d7d5adeb7b632da51274f2cb09513748f08c22fff
     name: tfserve
     type: application
     urls:
     - https://charts.loqate.com/tfserve-0.2.2.tgz
     version: 0.2.2
-generated: "2025-02-03T12:51:45.11842052Z"
+generated: "2025-02-11T12:17:59.169574133Z"

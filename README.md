@@ -2259,11 +2259,11 @@ In no event shall GBG be liable to You , whether such liability arises in contra
 SecretAppVersion: 1.16.0 
 
 
-SpatialAPIAppVersion: 0.1.84109 
+SpatialAPIAppVersion: 0.1.91471 
 
 MemberlistAppVersion: 0.1.0 
 
-QueryCoordinatorAppVersion: 0.1.84110 
+QueryCoordinatorAppVersion: 0.1.89144 
 
 InstallManagerAppVersion: 0.1.22799 
 
