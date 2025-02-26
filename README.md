@@ -969,6 +969,7 @@ The `querycoordinator` chart contains templates for a Kubernetes ingress and an 
 | Verify   | POST   | <http://localhost:8900/verify> |
 | Version  | GET    | <http://localhost:8900/api/version> |
 | GKR info | GET    | <http://localhost:8900/api/gkrinfo> |
+| GKR info (Premium data) | GET    | <http://localhost:8900/api/gkrinfo?premium=true> |
 
 ### Verify Request
 
