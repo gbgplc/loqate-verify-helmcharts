@@ -236,11 +236,9 @@ Note: If you want to run the quick start again without a data download, see [Re-
 
 ### Download Just a Subset of the Allowed Datasets
 
-If you have a license that allows lots of datasets but you only want to download a subset of them, you can choose which datasets to download.
+The install process, by default, will download all datasets listed on your key. If you only want to download a subset of the available data, you can choose which datasets to download by setting the environment variable `LOQATE_PRODUCTS` to the required value, for example `"KBCOMMON,DSVGBR"`.
 
-Set the environment variable `LOQATE_PRODUCTS` to the required value, for example `"KBCOMMON,DSVGBR"`.
-
-The datasets/products available to you are listed in your license email.  You will always want `KBCOMMON`.
+The datasets/products available to you are listed in your license email.  You should always include `KBCOMMON`.
 
 **Unix:**
 
