@@ -2159,20 +2159,46 @@ For requests to use AI Parsing, they need to have an extra option set:
 
 In this section we've put together some suggestions for how to handle commonly-found errors or problems.
 
-The instructions below should apply if you get one of the following errors from a query:
+Check the logs of querycoordinator and spatial-api pods for the following:
+
+### Errors with Memberlist
+
+- “No private IP address found, and explicit IP not provided”
+- “...(*Memberlist).UpdateStatus(0x0, 0x0, 0x0, 0x1)”
+
+Solution:
+
+Set the value `memberlist.useAddrRef` to `true` for both querycoordinator and spatial-api.
+
+### Errors with Data
+
+- “...is not a valid Global Knowledge Repository path”
+
+Solutions:
+
+Occasionally, not all the data is downloaded successfully or there is not enough room to unpack the data.
+
+Make sure your install manager finished properly as per the [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) section.
+
+If the log says there is not enough space, then the storage size should be increased.
+
+If the log does not contain the following lines, repeat the installation process with minimal data as outlined in [Download Just a Subset of the Allowed Datasets](#download-just-a-subset-of-the-allowed-datasets)
+
+```text
+Completed installing the data packs.
+Datapack installation was successfull.
+```
+
+If the minimal install works, run the full install again.  It may take multiple runs to install the complete set of data.
+
+### Errors with Requests
 
 - “No spatialapi available”
 - “Failed to process”
 
-### Suggested Fix
+Solution:
 
-First, make sure your install manager finished properly as per the [Checking the Progress of the Data Installation](#checking-the-progress-of-the-data-installation) section.
-
-Then wait three minutes before checking whether the error is still happening.
-
-If the error is still happening:
-
-- First find the pods names using:
+- Find the pods names using:
 
 ```bash
 kubectl get pods -n loqate
@@ -2222,7 +2248,7 @@ If you are still getting the error, delete each release and reinstall one at a t
   - First spatial-api, then querycoordinator.
   - You may have to repeat this a few times (i.e. spatial-api, querycoordinator, spatial-api …)
 
-If the error has still not been resolved, please contact support@loqate.com to arrange a further discussion.
+If the error has still not been resolved, please contact <support@loqate.com> to arrange a further discussion.
 
 ## TERMS AND CONDITIONS FOR USE
 
@@ -2258,11 +2284,11 @@ In no event shall GBG be liable to You , whether such liability arises in contra
 SecretAppVersion: 1.16.0 
 
 
-SpatialAPIAppVersion: 0.1.91471 
+SpatialAPIAppVersion: 0.1.97547 
 
 MemberlistAppVersion: 0.1.0 
 
-QueryCoordinatorAppVersion: 0.1.89144 
+QueryCoordinatorAppVersion: 0.1.97544 
 
 InstallManagerAppVersion: 0.1.22799 
 
