@@ -2279,18 +2279,29 @@ Unless required by applicable law or agreed to in writing, GBG provides the Veri
 
 In no event shall GBG be liable to You , whether such liability arises in contract, tort (including, without limitation, negligence) misrepresentation or otherwise for damages, including any direct, indirect, special, incidental, or consequential damages whatsoever arising as a result of this Licence or out of the use or inability to use the Loqate Verify Software (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if GBG has been advised of the possibility of such damages.
 
-# Application Version Information 
+# Chart and Application Version Information 
 
-SecretAppVersion: 1.16.0 
+Secret Chart Version: 0.1.0
 
+Secret App Version: 1.16.0
 
-SpatialAPIAppVersion: 0.1.97547 
+SpatialAPI Chart Version: 0.5.1
 
-MemberlistAppVersion: 0.1.0 
+SpatialAPI App Version: 0.1.97547
 
-QueryCoordinatorAppVersion: 0.1.97544 
+Memberlist Chart Version: 0.1.0
 
-InstallManagerAppVersion: 0.1.22799 
+Memberlist App Version: 0.1.0
 
-InstallAIDataAppVersion: 0.1.37868 
+QueryCoordinator Chart Version: 0.4.0
+
+QueryCoordinator App Version: 0.1.97544
+
+InstallManager Chart Version: 0.2.3
+
+InstallManager App Version: 0.1.22799
+
+InstallAIData Chart Version: 0.0.4
+
+InstallAIData App Version: 0.1.37868
 
