@@ -28,7 +28,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.3
+    version: ^0.2.5
     values:
       - app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
@@ -51,7 +51,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.5.0
+    version: ^0.5.2
     values:
       - verify:
           dataset: "row"

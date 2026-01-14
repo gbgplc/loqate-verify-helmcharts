@@ -74,7 +74,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.5.0
+    version: ^0.5.2
     values:
       - verify:
           dataset: "row"
@@ -97,7 +97,7 @@ releases:
   - name: spatial-api-premium
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.5.0
+    version: ^0.5.2
     values:
       - verify:
           dataset: "row"
