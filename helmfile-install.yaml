@@ -23,7 +23,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.2.5
+    version: ^0.2.6
     values:
       - app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
