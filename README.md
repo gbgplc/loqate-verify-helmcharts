@@ -2297,7 +2297,7 @@ QueryCoordinator Chart Version: 0.4.0
 
 QueryCoordinator App Version: 0.1.97544
 
-InstallManager Chart Version: 0.2.6
+InstallManager Chart Version: 0.2.7
 
 InstallManager App Version: 0.1.22799
 

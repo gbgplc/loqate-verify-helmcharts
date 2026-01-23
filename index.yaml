@@ -3,9 +3,9 @@ entries:
   ai-parse:
   - apiVersion: v2
     appVersion: 0.1.89138
-    created: "2026-01-19T11:16:11.474600404Z"
+    created: "2026-01-23T14:10:03.349769016Z"
     description: loqate-verify-ai-parse-service
-    digest: 7ac785efbdb7e85c7e53311461593327b61219929cf32a7308076c3435e0aaad
+    digest: 598408e6d360b97339d702ce32322ce2e45dee16b313cf811406ba0c8eb21a79
     name: ai-parse
     type: application
     urls:
@@ -24,9 +24,9 @@ entries:
   installaidata:
   - apiVersion: v2
     appVersion: 0.1.37868
-    created: "2026-01-19T11:16:11.475258508Z"
+    created: "2026-01-23T14:10:03.350558891Z"
     description: Download and setup loqate data using installaidata job
-    digest: 7a44b9d66757c9df984ed326ea434f1112136996edc757453f1958e3a176f79a
+    digest: 63ec0e341097d1ed20db5ba34327ac8d20147e4999af841adf965f10eb0e4653
     home: https://www.loqate.com/en-gb/
     icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
     keywords:
@@ -42,6 +42,25 @@ entries:
     - https://charts.loqate.com/installaidata-0.0.4.tgz
     version: 0.0.4
   installmanager:
+  - apiVersion: v2
+    appVersion: 0.1.22799
+    created: "2026-01-23T14:10:03.3509601Z"
+    description: Download and setup loqate data using installmanager job
+    digest: 7bb3d5d7304af6546826b62f7231fcf485f8347896157aaebfca16895778dcc3
+    home: https://www.loqate.com/en-gb/
+    icon: https://www.loqate.com/content/images/loqate_logo_dark.svg
+    keywords:
+    - loqate
+    - verify
+    - installmanager
+    maintainers:
+    - email: help@gbgplc.com
+      name: GBG
+    name: installmanager
+    type: application
+    urls:
+    - https://charts.loqate.com/installmanager-0.2.7.tgz
+    version: 0.2.7
   - apiVersion: v2
     appVersion: 0.1.22799
     created: "2026-01-19T11:16:11.476026446Z"
@@ -151,9 +170,9 @@ entries:
   memberlist:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2026-01-19T11:16:11.476388592Z"
+    created: "2026-01-23T14:10:03.351183548Z"
     description: A Helm chart for Kubernetes
-    digest: d561bff8cf97fde6611392ea61716a64966c22b81b128e3499f43c01aca48e34
+    digest: c46e4b44fb18eb6ec8cf7fb72f2df1a86e0ffe87541bd37cac35d38a6178794b
     name: memberlist
     type: application
     urls:
@@ -162,9 +181,9 @@ entries:
   querycoordinator:
   - apiVersion: v2
     appVersion: 0.1.97544
-    created: "2026-01-19T11:16:11.477343919Z"
+    created: "2026-01-23T14:10:03.351901299Z"
     description: A Helm chart for Loqate Verify's QueryCoordinator
-    digest: f710e6dfab6425c01e547ed1a4a2de4c92eb04bb9e1a2771cbf60cb71612bcd3
+    digest: 664f5cddc82ff82d5a9884a25e204b5e6416efa8f911e12f68ae1b0ca9d26849
     name: querycoordinator
     type: application
     urls:
@@ -243,9 +262,9 @@ entries:
   secret:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-01-19T11:16:11.477606316Z"
+    created: "2026-01-23T14:10:03.352135437Z"
     description: A Helm chart for Kubernetes
-    digest: e00f81d4cba3f091b77e069a835a9ca4dc8dc6e0857c1476f6bbf4ea39a025f1
+    digest: daf4bceb4e244aa9545fc99d8d76d2639fa459b1dbd95960b8079a07113004dd
     name: secret
     type: application
     urls:
@@ -254,9 +273,9 @@ entries:
   spatial-api:
   - apiVersion: v2
     appVersion: 0.1.97547
-    created: "2026-01-19T11:16:11.478535905Z"
+    created: "2026-01-23T14:10:03.353048624Z"
     description: A Helm chart for Kubernetes
-    digest: c005c0306cbaa1667a6a29e3a66d9ec051cdef0ee9a0c1c75aa5afe4dfa79f00
+    digest: 7156652966c3e39101149ebf1f149bd4a6d45e0e26d7884ce2ba6cae6e877d0d
     name: spatial-api
     type: application
     urls:
@@ -375,9 +394,9 @@ entries:
   tfserve:
   - apiVersion: v2
     appVersion: 0.1.85865
-    created: "2026-01-19T11:16:11.47923777Z"
+    created: "2026-01-23T14:10:03.353920553Z"
     description: A Helm chart for Kubernetes
-    digest: 2e2d3e62b10f0fcb4944f696bc5bc0b4439a850bbfb87899081932aa15b8de06
+    digest: d8f9a431dd62847881e0eab53cc93e456095846f293004b523ca6f81ad032dfb
     name: tfserve
     type: application
     urls:
@@ -393,4 +412,4 @@ entries:
     urls:
     - https://charts.loqate.com/tfserve-0.2.2.tgz
     version: 0.2.2
-generated: "2026-01-19T11:16:11.473514575Z"
+generated: "2026-01-23T14:10:03.348039153Z"
