@@ -10,11 +10,6 @@ repositories:
 
 # chart url can be local or remote
 releases:
-  - name: memberlist
-    namespace: loqate
-    chart: "loqate/memberlist"
-    version: ^0.1.0
-
   - name: lqtshared
     namespace: loqate
     chart: "loqate/secret"
@@ -25,28 +20,10 @@ releases:
           username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
           password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
 
-  - name: installmanager
+  - name: memberlist
     namespace: loqate
-    chart: "loqate/installmanager"
-    version: ^0.2.7
-    values:
-      - app:
-          licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
-          products: {{ env "LOQATE_PRODUCTS" | default "ALL" | quote }}
-        storage:
-          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
-          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
-          server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
-          claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
-        createSecret: false
-        imagePullSecrets:
-          - name: "lqtshared"
-        image:
-          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
-          repository: gbgroup/loqate-verify-install-manager
-    waitForJobs: true
-    needs:
-    - lqtshared
+    chart: "loqate/memberlist"
+    version: ^0.1.0
 
   - name: spatial-api
     namespace: loqate
@@ -58,7 +35,7 @@ releases:
           premium: false
         storage:
           type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
-          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data" | quote }}
+          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/standard" | quote }}
           server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
           claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
         image:
@@ -67,8 +44,10 @@ releases:
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+        podSecurityContext:
+          runAsUser: {{ env "POD_USER" | default 1000 }}
+          fsGroup: {{ env "POD_GROUP" | default 1000 }}
     needs:
-      - installmanager
       - lqtshared
 
   - name: querycoordinator
@@ -91,27 +70,6 @@ releases:
   #       periodSeconds: 120
     needs:
       - lqtshared
-
-  # - name: installaidata
-  #   namespace: loqate
-  #   chart: "loqate/installaidata"
-  #   version: ^0.0.4
-  #   values:
-  #     - storage:
-  #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
-  #         path: {{ env "LOQATE_AIPARSER_STORAGE_PATH" | default "/run/desktop/mnt/host/c/loqate/models_structured" | quote }}
-  #         server: {{ env "LOQATE_AIPARSER_STORAGE_SERVER" | default "" | quote }}
-  #         claimOverride: {{ env "LOQATE_AIPARSER_CLAIM_OVERRIDE" | default "" | quote }}
-  #       image:
-  #         tag: {{ env "LOQATE_AI_DATA_VERSION" | default "0.1.37868" | quote }}
-  #         repository: gbgroup/loqate-verify-install-ai-data
-  #         pullPolicy: IfNotPresent
-  #       createSecret: false
-  #       imagePullSecrets:
-  #         - name: "lqtshared"
-  #   waitForJobs: true
-  #   needs:
-  #   - lqtshared
 
   # - name: tfserve
   #   namespace: loqate

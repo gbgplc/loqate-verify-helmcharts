@@ -178,33 +178,75 @@ Whether using Unix or Windows, first make sure you're in the directory that you 
 
 **Unix:**
 
+- Download the example helmfiles:
+
+```bash
+wget https://charts.loqate.com/helmfile-install.yaml -O helmfile-install.yaml
+wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
+```
+
+- Enter your license key and Docker Hub account information:
+
+```bash
+export LICENSE_KEY="<API KEY>"
+export DOCKER_USERNAME="<DOCKER USERNAME>"
+export DOCKER_PASSWORD="<DOCKER PASSWORD>"
+```
+
 - If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
 ```bash
 export CLAIM_OVERRIDE="<CLAIM NAME>"
 ```
 
-- Enter your license key and Docker Hub account information:
+- Ensure the data installer can write to the volume
 
-``` bash
-export LICENSE_KEY="<API KEY>"
-export DOCKER_USERNAME="<DOCKER USERNAME>"
-export DOCKER_PASSWORD="<DOCKER PASSWORD>"
+Following good security practices, the installer pod does not run as the root user. This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume.
+
+For production use, set the user and group of the installer to match the volume's ownership:
+
+```bash
+export POD_USER="<VOLUME USER ID>"
+export POD_GROUP="<VOLUME GROUP ID>"
 ```
 
-- Next download the default helmfile.yaml:
+For local use, create the folder and make the volume writable:
 
-``` bash
-wget https://charts.loqate.com/helmfile.yaml -O helmfile.yaml
+```bash
+mkdir /opt/loqate/data
+chmod -R 777 /opt/loqate/data
 ```
 
-- Finally run the Helmfile install:
+- Install the data:
 
-``` bash
+```bash
+helmfile apply -f helmfile-install.yaml
+```
+
+- [Check the Progress of the Data Installation](#checking-the-progress-of-the-data-installation)
+
+- Finally apply helmfile if it was successful:
+
+```bash
 helmfile apply
 ```
 
 **Windows:**
+
+- Download the example helmfiles:
+
+```powershell
+Invoke-WebRequest https://charts.loqate.com/helmfile-install.yaml -OutFile helmfile-install.yaml
+Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
+```
+
+- Enter your license key and Docker Hub account information (“Please note the $ sign below is part of the command for setting environment variable on power shell.”):
+
+```powershell
+$env:LICENSE_KEY="<API KEY>"
+$env:DOCKER_USERNAME="<DOCKER USERNAME>"
+$env:DOCKER_PASSWORD="<DOCKER PASSWORD>"
+```
 
 - If you are using your own custom Persistent Volume Claim (PVC) you first need to set the following environment variable (if not, you can skip straight to the next step):
 
@@ -212,23 +254,40 @@ helmfile apply
 $env:CLAIM_OVERRIDE="<CLAIM NAME>"
 ```
 
-- Enter your license key and Docker Hub account information (“Please note the $ sign below is part of the command for setting environment variable on power shell.”):
+- Ensure the data installer can write to the volume
 
-``` powershell
-$env:LICENSE_KEY="<API KEY>"
-$env:DOCKER_USERNAME="<DOCKER USERNAME>"
-$env:DOCKER_PASSWORD="<DOCKER PASSWORD>"
+Following good security practices, the installer pod does not run as the root user. This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume.
+
+For production use, set the user and group of the installer to match the volume's ownership:
+
+```powershell
+$env:POD_USER="<VOLUME USER ID>"
+$env:POD_GROUP="<VOLUME GROUP ID>"
 ```
 
-- Next download the default helmfile.yaml:
+For local use, make the destination folder:
 
-``` powershell
-Invoke-WebRequest https://charts.loqate.com/helmfile.yaml -OutFile helmfile.yaml
+```powershell
+New-Item -Path "c:/loqate/data/standard" -ItemType "Directory"
 ```
 
-- Finally run the Helmfile install:
+- Install the data:
 
-``` powershell
+```powershell
+helmfile sync -f helmfile-install.yaml
+```
+
+- [Check the Progress of the Data Installation](#checking-the-progress-of-the-data-installation)
+
+If there was a problem writing to the destination, make the folder writable:
+
+```powershell
+docker run --rm -it -v /run/desktop/mnt/host/c/loqate/data/standard:/data busybox chmod -R 777 /data
+```
+
+Then apply the install helmfile again.
+
+```powershell
 helmfile sync
 ```
 
@@ -2301,7 +2360,7 @@ InstallManager Chart Version: 0.2.7
 
 InstallManager App Version: 0.1.22799
 
-InstallAIData Chart Version: 0.0.4
+InstallAIData Chart Version: 0.0.5
 
 InstallAIData App Version: 0.1.37868
 

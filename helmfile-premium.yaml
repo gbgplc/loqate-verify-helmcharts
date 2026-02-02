@@ -10,11 +10,6 @@ repositories:
 
 # chart url can be local or remote
 releases:
-  - name: memberlist
-    namespace: loqate
-    chart: "loqate/memberlist"
-    version: ^0.1.0
-
   - name: lqtshared
     namespace: loqate
     chart: "loqate/secret"
@@ -25,51 +20,10 @@ releases:
           username: {{ requiredEnv "DOCKER_USERNAME" | quote }}
           password: {{ requiredEnv "DOCKER_PASSWORD" | quote }}
 
-  - name: installmanager
+  - name: memberlist
     namespace: loqate
-    chart: "loqate/installmanager"
-    version: ^0.2.7
-    values:
-      - app:
-          licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
-          products: {{ env "LOQATE_PRODUCTS" | default "ALL" | quote }} # "KBCOMMON,DSVIRL"
-        storage:
-          type: {{ env "LOQATE_STORAGE_TYPE" | default "local" | quote }}
-          path: {{ env "LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/standard" | quote }}
-          server: {{ env "LOQATE_NFS_SHARE_IP" | default "" | quote }}
-          claimOverride: {{ env "CLAIM_OVERRIDE" | default "" | quote }}
-        createSecret: false
-        imagePullSecrets:
-          - name: "lqtshared"
-        image:
-          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
-          repository: gbgroup/loqate-verify-install-manager
-    waitForJobs: true
-    needs:
-    - lqtshared
-
-  - name: installmanager-premium
-    namespace: loqate
-    chart: "loqate/installmanager"
-    version: ^0.2.7
-    values:
-      - app:
-          licenseKey: {{ requiredEnv "PREMIUM_LICENSE_KEY" | quote }}
-          products: {{ env "PREMIUM_LOQATE_PRODUCTS" | default "ALL" | quote }} # "KBCOMMON,DSVIRLP"
-        storage:
-          type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
-          path: {{ env "PREMIUM_LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/premium" | quote }}
-          server: {{ env "PREMIUM_LOQATE_NFS_SHARE_IP" | default "" | quote }}
-          claimOverride: {{ env "PREMIUM_CLAIM_OVERRIDE" | default "" | quote }}
-        createSecret: false
-        imagePullSecrets:
-          - name: "lqtshared"
-        image:
-          tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
-          repository: gbgroup/loqate-verify-install-manager
-    waitForJobs: true
-    needs:
-    - lqtshared
+    chart: "loqate/memberlist"
+    version: ^0.1.0
 
   - name: spatial-api
     namespace: loqate
@@ -90,8 +44,10 @@ releases:
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+        podSecurityContext:
+          runAsUser: {{ env "POD_USER" | default 1000 }}
+          fsGroup: {{ env "POD_GROUP" | default 1000 }}
     needs:
-      - installmanager
       - lqtshared
 
   - name: spatial-api-premium
@@ -121,7 +77,6 @@ releases:
             cpu: 2200m
             memory: 5775Mi
     needs:
-      - installmanager-premium
       - lqtshared
 
   - name: querycoordinator

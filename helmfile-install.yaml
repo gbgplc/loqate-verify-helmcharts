@@ -39,6 +39,9 @@ releases:
         image:
           tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
           repository: gbgroup/loqate-verify-install-manager
+        podSecurityContext:
+          runAsUser: {{ env "POD_USER" | default 1000 }}
+          fsGroup: {{ env "POD_GROUP" | default 1000 }}
     waitForJobs: true
     needs:
     - lqtshared
@@ -62,6 +65,9 @@ releases:
   #       image:
   #         tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-install-manager
+  #       podSecurityContext:
+  #         runAsUser: {{ env "POD_USER" | default 1000 }}
+  #         fsGroup: {{ env "POD_GROUP" | default 1000 }}
   #   waitForJobs: true
   #   needs:
   #   - lqtshared
@@ -69,7 +75,7 @@ releases:
   # - name: installaidata
   #   namespace: loqate
   #   chart: "loqate/installaidata"
-  #   version: ^0.0.4
+  #   version: ^0.0.5
   #   values:
   #     - storage:
   #         type: {{ env "LOQATE_AIPARSER_STORAGE_TYPE" | default "local" | quote }}
@@ -83,6 +89,9 @@ releases:
   #       createSecret: false
   #       imagePullSecrets:
   #         - name: "lqtshared"
+  #       podSecurityContext:
+  #         runAsUser: {{ env "POD_USER" | default 1000 }}
+  #         fsGroup: {{ env "POD_GROUP" | default 1000 }}
   #   waitForJobs: true
   #   needs:
   #   - lqtshared
