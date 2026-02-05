@@ -44,15 +44,17 @@ releases:
           fsGroup: {{ env "POD_GROUP" | default 1000 }}
     waitForJobs: true
     needs:
-    - lqtshared
+      - lqtshared
 
+  # Uncomment to install premium data to a separate storage path
+  # You will need a PREMIUM_LICENSE_KEY
   # - name: installmanager-premium
   #   namespace: loqate
   #   chart: "loqate/installmanager"
   #   version: ^0.2.7
   #   values:
   #     - app:
-  #         licenseKey: {{ requiredEnv "PREMIUM_LICENSE_KEY" | quote }}
+  #         licenseKey: {{ env "PREMIUM_LICENSE_KEY" | quote }}
   #         products: {{ env "PREMIUM_LOQATE_PRODUCTS" | default "ALL" | quote }}
   #       storage:
   #         type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
@@ -70,8 +72,9 @@ releases:
   #         fsGroup: {{ env "POD_GROUP" | default 1000 }}
   #   waitForJobs: true
   #   needs:
-  #   - lqtshared
+  #     - lqtshared
 
+  # Uncomment to install ai parser components
   # - name: installaidata
   #   namespace: loqate
   #   chart: "loqate/installaidata"
@@ -94,4 +97,4 @@ releases:
   #         fsGroup: {{ env "POD_GROUP" | default 1000 }}
   #   waitForJobs: true
   #   needs:
-  #   - lqtshared
+  #     - lqtshared
