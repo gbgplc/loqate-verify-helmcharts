@@ -2352,7 +2352,7 @@ Memberlist Chart Version: 0.1.0
 
 Memberlist App Version: 0.1.0
 
-QueryCoordinator Chart Version: 0.4.0
+QueryCoordinator Chart Version: 0.5.0
 
 QueryCoordinator App Version: 0.1.97544
 
