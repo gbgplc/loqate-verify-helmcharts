@@ -50,6 +50,8 @@ A Docker Hub ID and password will be required for installation. You can create a
 
 _Verify has been tested using the version numbers stated above. Please avoid using earlier application versions than those stated._
 
+**Note for Windows users:** If using Docker Desktop on Windows, we recommend configuring Kubernetes to use **kubeadm** (rather than kind) and enabling file sharing for your data directories. See the [Docker Desktop Configuration](#docker-desktop-configuration-windows) section for details. While other configurations may work, our documentation and support are optimized for this setup.
+
 ### Reference Data Storage
 
 The reference data is accessed using a Persistent Volume (PV); it is downloaded using the `installmanager` chart and accessed by the `spatial-api` chart. The provided yaml files mount a local volume and will need updating/replacing with the details of your PV. The `values.yaml` files for both charts have `storage` properties for configuring the PV.
@@ -163,6 +165,50 @@ Example:
 $env:LOQATE_NFS_SHARE="/run/desktop/mnt/host/c/loqate/data"
 ```
 
+#### Docker Desktop Configuration (Windows)
+
+Docker Desktop for Windows requires some configuration for Verify to access host filesystem paths.
+
+**1. Configure Kubernetes to Use kubeadm:**
+
+Docker Desktop supports two Kubernetes distributions: kubeadm and kind. For simplicity, these instructions use the kubeadm distribution.
+
+- Open Docker Desktop
+- Go to **Settings** → **Kubernetes**
+- We recommend setting Kubernetes to use **kubeadm** (rather than kind)
+  - If you're using kind, you'll see nodes named `desktop-control-plane`
+  - With kubeadm, nodes are named `docker-desktop`
+- If using kind and experiencing issues with host path access, consider switching to kubeadm and restarting Docker Desktop
+
+**2. Enable File Sharing:**
+
+Docker Desktop must have permission to access your data directory on the Windows host.
+
+- Open Docker Desktop
+- Go to **Settings** → **Resources** → **File Sharing**
+- Add the parent folder of your data directory (e.g., `C:\loqate`)
+- Click **Apply** and restart Docker Desktop
+
+**Important:** You must share the parent folder (e.g., `C:\loqate`), not just the data subfolder. This allows flexibility for both standard and premium data paths.
+
+**3. Verify Configuration:**
+
+After Docker Desktop restarts, verify the setup:
+
+```powershell
+# Check that you're using the correct Kubernetes distribution
+kubectl get nodes
+```
+
+You should see output like:
+
+```shell
+NAME             STATUS   ROLES           AGE   VERSION
+docker-desktop   Ready    control-plane   1d    v1.28.2
+```
+
+If you see `desktop-control-plane` instead, you're using kind. While kind can work with additional configuration, our instructions assume kubeadm for simplicity.
+
 ## Quick Start Installation
 
 To get you up and running with Verify as quickly as possible, we've provided this quick start method which uses [Helmfile](#helmfile) and, on Unix, the Helm plugin **helm-diff**. This will allow you to quickly get to a point where you can test your basic installation, before moving on to a more detailed setup afterwards.
@@ -265,11 +311,15 @@ $env:POD_USER="<VOLUME USER ID>"
 $env:POD_GROUP="<VOLUME GROUP ID>"
 ```
 
-For local use, make the destination folder:
+For local use, make the destination folder and set the user and group to 0:
 
 ```powershell
 New-Item -Path "c:/loqate/data/standard" -ItemType "Directory"
+$env:POD_USER="0"
+$env:POD_GROUP="0"
 ```
+
+**Note:** Ensure you have configured Docker Desktop file sharing for the `C:\loqate` folder as described in the [Docker Desktop Configuration](#docker-desktop-configuration-windows) section above.
 
 - Install the data:
 
