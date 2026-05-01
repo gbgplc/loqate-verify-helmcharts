@@ -23,12 +23,12 @@ releases:
   - name: memberlist
     namespace: loqate
     chart: "loqate/memberlist"
-    version: ^0.1.0
+    version: ^0.2.0
 
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.5.3
+    version: ^0.6.0
     values:
       - verify:
           dataset: "row"
@@ -53,7 +53,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.4.0
+    version: ^0.6.0
     values:
       - image:
           tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}
