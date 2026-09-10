@@ -28,7 +28,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.6.0
+    version: ^0.7.0
     values:
       - verify:
           dataset: "row"
@@ -53,7 +53,7 @@ releases:
   - name: querycoordinator
     namespace: loqate
     chart: "loqate/querycoordinator"
-    version: ^0.6.0
+    version: ^0.7.0
     values:
       - image:
           tag: {{ env "LOQATE_QUERY_COORDINATOR_VERSION" | default "latest" | quote }}

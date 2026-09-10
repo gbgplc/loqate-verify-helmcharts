@@ -2394,7 +2394,7 @@ Secret Chart Version: 0.1.0
 
 Secret App Version: 1.16.0
 
-SpatialAPI Chart Version: 0.6.0
+SpatialAPI Chart Version: 0.7.0
 
 SpatialAPI App Version: 0.1.97547
 
@@ -2402,11 +2402,11 @@ Memberlist Chart Version: 0.2.0
 
 Memberlist App Version: 0.1.0
 
-QueryCoordinator Chart Version: 0.6.0
+QueryCoordinator Chart Version: 0.7.0
 
 QueryCoordinator App Version: 0.1.97544
 
-InstallManager Chart Version: 0.2.7
+InstallManager Chart Version: 0.3.0
 
 InstallManager App Version: 0.1.22799
 
