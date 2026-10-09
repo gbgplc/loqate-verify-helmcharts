@@ -119,6 +119,10 @@ This path is used to configure the PV for the host filesystem, assuming Windows 
 
 **Claim Override:** the default creates a Persistent Volume (PV) and a Persistent Volume Claim (PVC) to use the host filesystem. If you already have a PV and PVC setup to use network storage you will use an override to connect to this pre-existing PVC. The environment variable name for this is CLAIM_OVERRIDE. You will see how it is set and used for different cases through this document.
 
+**A note on container security:** by default (local host-filesystem storage), installmanager runs as root inside its container. This is a deliberate, low-risk exception for local testing only — Docker Desktop's Windows file sharing can't reliably support the non-root write access installmanager needs, and Kubernetes' `fsGroup` mechanism (its normal fix for this) doesn't apply to this kind of local storage either. If you configure real network storage (an NFS share, or your own pre-existing PVC via `CLAIM_OVERRIDE`), installmanager automatically switches to running as a non-root user instead. spatial-api and querycoordinator always run as non-root, in every configuration; only installmanager writes to the storage volume. In the local case installmanager runs with group `65534`, so the folders it creates are readable by the non-root services.
+
+**Upgrading from an earlier install:** a data folder created by an earlier install may be owned by `root:root` with mode `0750`, which the non-root spatial-api and querycoordinator can't read (spatial-api's health check then fails with `... is not a valid Global Knowledge Repository path`). Delete that folder and run the install again; the data is downloaded again and the folder is recreated readable by group `65534`.
+
 Next we'll take you through how to make changes to those directories.
 
 ### Unix
@@ -247,21 +251,22 @@ export CLAIM_OVERRIDE="<CLAIM NAME>"
 
 - Ensure the data installer can write to the volume
 
-Following good security practices, the installer pod does not run as the root user. This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume.
+Following good security practices, the installer pod runs as a non-root user when using network storage or your own PVC (`CLAIM_OVERRIDE`). This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume. The only exception is the default local host-filesystem storage, where the installer runs as root (see the note on container security in [Initial Setup](#initial-setup)).
 
-For production use, set the user and group of the installer to match the volume's ownership:
+For production use, set the user (`POD_USER`, default `65534`) and the volume group (`POD_GROUP`, default `65534`, applied as the pod's `fsGroup`) to match the volume's ownership:
 
 ```bash
 export POD_USER="<VOLUME USER ID>"
 export POD_GROUP="<VOLUME GROUP ID>"
 ```
 
-For local use, create the folder and make the volume writable:
+For local use, just create the folder. There is nothing to set for the user or group - the installer runs as root automatically:
 
 ```bash
 mkdir /opt/loqate/data
-chmod -R 777 /opt/loqate/data
 ```
+
+If you set `POD_USER` or `POD_GROUP` to `0` for an earlier install, unset them (`unset POD_USER POD_GROUP`) - a root user is rejected by the non-root containers.
 
 - Install the data:
 
@@ -302,21 +307,25 @@ $env:CLAIM_OVERRIDE="<CLAIM NAME>"
 
 - Ensure the data installer can write to the volume
 
-Following good security practices, the installer pod does not run as the root user. This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume.
+Following good security practices, the installer pod runs as a non-root user when using network storage or your own PVC (`CLAIM_OVERRIDE`). This means the permissions of the volume and installer pod must align to ensure the pod can write to the mounted volume. The only exception is the default local host-filesystem storage, where the installer runs as root (see the note on container security in [Initial Setup](#initial-setup)).
 
-For production use, set the user and group of the installer to match the volume's ownership:
+For production use, set the user (`POD_USER`, default `65534`) and the volume group (`POD_GROUP`, default `65534`, applied as the pod's `fsGroup`) to match the volume's ownership:
 
 ```powershell
 $env:POD_USER="<VOLUME USER ID>"
 $env:POD_GROUP="<VOLUME GROUP ID>"
 ```
 
-For local use, make the destination folder and set the user and group to 0:
+For local use, just make the destination folder. There is nothing to set for the user or group - the installer runs as root automatically:
 
 ```powershell
 New-Item -Path "c:/loqate/data/standard" -ItemType "Directory"
-$env:POD_USER="0"
-$env:POD_GROUP="0"
+```
+
+If you set `POD_USER` or `POD_GROUP` to `0` for an earlier install (older versions of these steps did), unset them in this session and in any profile or script that sets them - a root user is rejected by the non-root containers:
+
+```powershell
+Remove-Item Env:POD_USER, Env:POD_GROUP -ErrorAction SilentlyContinue
 ```
 
 **Note:** Ensure you have configured Docker Desktop file sharing for the `C:\loqate` folder as described in the [Docker Desktop Configuration](#docker-desktop-configuration-windows) section above.
@@ -329,11 +338,7 @@ helmfile sync -f helmfile-install.yaml
 
 - [Check the Progress of the Data Installation](#checking-the-progress-of-the-data-installation)
 
-If there was a problem writing to the destination, make the folder writable:
-
-```powershell
-docker run --rm -it -v /run/desktop/mnt/host/c/loqate/data/standard:/data busybox chmod -R 777 /data
-```
+If there was a problem writing to the destination, check that Docker Desktop file sharing includes your data directory's parent folder (`C:\loqate`) - see the [Docker Desktop Configuration](#docker-desktop-configuration-windows) section above. Making the folder writable won't help, because the local installer runs as root.
 
 Then apply the install helmfile again.
 
@@ -2394,7 +2399,7 @@ Secret Chart Version: 0.1.0
 
 Secret App Version: 1.16.0
 
-SpatialAPI Chart Version: 0.7.0
+SpatialAPI Chart Version: 0.7.1
 
 SpatialAPI App Version: 0.1.97547
 
@@ -2406,7 +2411,7 @@ QueryCoordinator Chart Version: 0.7.0
 
 QueryCoordinator App Version: 0.1.97544
 
-InstallManager Chart Version: 0.3.0
+InstallManager Chart Version: 0.3.1
 
 InstallManager App Version: 0.1.22799
 

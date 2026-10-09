@@ -28,7 +28,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.7.0
+    version: ^0.7.1
     values:
       - verify:
           dataset: "row"
@@ -44,16 +44,17 @@ releases:
         createSecret: false
         imagePullSecrets:
           - name: "lqtshared"
+        securityContext:
+          runAsUser: {{ env "POD_USER" | default 65534 }}
         podSecurityContext:
-          runAsUser: {{ env "POD_USER" | default 1000 }}
-          fsGroup: {{ env "POD_GROUP" | default 1000 }}
+          fsGroup: {{ env "POD_GROUP" | default 65534 }}
     needs:
       - lqtshared
 
   - name: spatial-api-premium
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.7.0
+    version: ^0.7.1
     values:
       - verify:
           dataset: "row"

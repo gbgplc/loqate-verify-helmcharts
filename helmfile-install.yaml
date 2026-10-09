@@ -23,7 +23,7 @@ releases:
   - name: installmanager
     namespace: loqate
     chart: "loqate/installmanager"
-    version: ^0.3.0
+    version: ^0.3.1
     values:
       - app:
           licenseKey: {{ requiredEnv "LICENSE_KEY" | quote }}
@@ -39,9 +39,10 @@ releases:
         image:
           tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
           repository: gbgroup/loqate-verify-install-manager
+        securityContext:
+          runAsUser: {{ env "POD_USER" | default 65534 }}
         podSecurityContext:
-          runAsUser: {{ env "POD_USER" | default 1000 }}
-          fsGroup: {{ env "POD_GROUP" | default 1000 }}
+          fsGroup: {{ env "POD_GROUP" | default 65534 }}
     waitForJobs: true
     needs:
       - lqtshared
@@ -51,7 +52,7 @@ releases:
   # - name: installmanager-premium
   #   namespace: loqate
   #   chart: "loqate/installmanager"
-  #   version: ^0.3.0
+  #   version: ^0.3.1
   #   values:
   #     - app:
   #         licenseKey: {{ env "PREMIUM_LICENSE_KEY" | quote }}
@@ -67,9 +68,10 @@ releases:
   #       image:
   #         tag: {{ env "LOQATE_INSTALLMANAGER_VERSION" | default "latest" | quote }}
   #         repository: gbgroup/loqate-verify-install-manager
+  #       securityContext:
+  #         runAsUser: {{ env "POD_USER" | default 65534 }}
   #       podSecurityContext:
-  #         runAsUser: {{ env "POD_USER" | default 1000 }}
-  #         fsGroup: {{ env "POD_GROUP" | default 1000 }}
+  #         fsGroup: {{ env "POD_GROUP" | default 65534 }}
   #   waitForJobs: true
   #   needs:
   #     - lqtshared
