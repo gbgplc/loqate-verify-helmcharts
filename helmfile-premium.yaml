@@ -28,7 +28,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.7.1
+    version: ^0.8.0
     values:
       - verify:
           dataset: "row"
@@ -54,11 +54,15 @@ releases:
   - name: spatial-api-premium
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.7.1
+    version: ^0.8.0
     values:
       - verify:
           dataset: "row"
           premium: true
+        # Per-deployment loqate.ini settings (needs spatial-api image 0.1.1260013 or later).
+        # app:
+        #   ini:
+        #     referencePageCacheSize: 4
         storage:
           type: {{ env "PREMIUM_LOQATE_STORAGE_TYPE" | default "local" | quote }}
           path: {{ env "PREMIUM_LOQATE_NFS_SHARE" | default "/run/desktop/mnt/host/c/loqate/data/premium" | quote }}

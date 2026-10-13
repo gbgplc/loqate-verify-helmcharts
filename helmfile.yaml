@@ -28,7 +28,7 @@ releases:
   - name: spatial-api
     namespace: loqate
     chart: "loqate/spatial-api"
-    version: ^0.7.1
+    version: ^0.8.0
     values:
       - verify:
           dataset: "row"

@@ -728,6 +728,11 @@ Requests for premium data sets need to contain the `premium` and `premiumCountri
 
 The `premiumCountries` option can be used to control access to the specific datasets in a re-seller situation.
 
+#### Further Configuration
+
+- [**INI file settings:**](ini-file-settings.md) set options in `loqate.ini`, for the data installation or for an individual Spatial-API deployment
+- [**Metrics:**](metrics.md) the metrics that Verify exposes
+
 ### Helmfile
 
 Helmfile can be used to easily install all components in a simple Kubernetes environment. It will automatically pull from the Loqate charts repository.
@@ -2399,9 +2404,9 @@ Secret Chart Version: 0.1.0
 
 Secret App Version: 1.16.0
 
-SpatialAPI Chart Version: 0.7.1
+SpatialAPI Chart Version: 0.8.0
 
-SpatialAPI App Version: 0.1.97547
+SpatialAPI App Version: 0.1.1260013
 
 Memberlist Chart Version: 0.2.0
 
